@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://curiowkf3kow1"
+path="res://.godot/imported/041 - Quicksand Cave.mp3-0fde7cff5b91198d713c3fc88896fa73.mp3str"
+
+[deps]
+
+source_file="res://music/041 - Quicksand Cave.mp3"
+dest_files=["res://.godot/imported/041 - Quicksand Cave.mp3-0fde7cff5b91198d713c3fc88896fa73.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dms7l2x07butl"
+path="res://.godot/imported/053 - Deep Dusk Forest.mp3-28b9100042802e7d3b55c460053189c2.mp3str"
+
+[deps]
+
+source_file="res://music/053 - Deep Dusk Forest.mp3"
+dest_files=["res://.godot/imported/053 - Deep Dusk Forest.mp3-28b9100042802e7d3b55c460053189c2.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

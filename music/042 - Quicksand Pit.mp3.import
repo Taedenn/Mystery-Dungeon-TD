@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b6hlmj5l6oqwe"
+path="res://.godot/imported/042 - Quicksand Pit.mp3-d1d73ff107238ae16c3d934b56e62cce.mp3str"
+
+[deps]
+
+source_file="res://music/042 - Quicksand Pit.mp3"
+dest_files=["res://.godot/imported/042 - Quicksand Pit.mp3-d1d73ff107238ae16c3d934b56e62cce.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

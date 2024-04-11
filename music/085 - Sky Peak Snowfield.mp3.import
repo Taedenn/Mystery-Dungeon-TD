@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://87ayy643lmr1"
+path="res://.godot/imported/085 - Sky Peak Snowfield.mp3-995f3177c333ce6cc99e814898486cd4.mp3str"
+
+[deps]
+
+source_file="res://music/085 - Sky Peak Snowfield.mp3"
+dest_files=["res://.godot/imported/085 - Sky Peak Snowfield.mp3-995f3177c333ce6cc99e814898486cd4.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

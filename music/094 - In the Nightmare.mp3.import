@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://crmrbgt6q57hc"
+path="res://.godot/imported/094 - In the Nightmare.mp3-a3e398870d1ccde34f16554056476a85.mp3str"
+
+[deps]
+
+source_file="res://music/094 - In the Nightmare.mp3"
+dest_files=["res://.godot/imported/094 - In the Nightmare.mp3-a3e398870d1ccde34f16554056476a85.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

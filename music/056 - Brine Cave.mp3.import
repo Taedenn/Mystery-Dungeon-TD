@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://3efdmqx676rw"
+path="res://.godot/imported/056 - Brine Cave.mp3-b27ad1e5996f47641a10e58ef8638d25.mp3str"
+
+[deps]
+
+source_file="res://music/056 - Brine Cave.mp3"
+dest_files=["res://.godot/imported/056 - Brine Cave.mp3-b27ad1e5996f47641a10e58ef8638d25.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
