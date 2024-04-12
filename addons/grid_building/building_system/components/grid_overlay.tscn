@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://d2035afjc3igd"]
+
+[ext_resource type="Texture2D" uid="uid://df1xwu2to0bgo" path="res://addons/grid_building/building_system/components/grid_overlay_tile.png" id="1_eoukl"]
+
+
+[node name="GridOverlay" type="TextureRect"]
+offset_right = 16.0
+offset_bottom = 16.0
+texture = ExtResource("1_eoukl")
+stretch_mode = 1

@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://m2y2c30ul83o"]
+
+[ext_resource type="Script" path="res://scripts/structure.gd" id="1_gkjw4"]
+[ext_resource type="Texture2D" uid="uid://ve8ac0iaqeke" path="res://assets/fence.png" id="1_na4jr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gmdob"]
+size = Vector2(22, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_txulv"]
+size = Vector2(7.93651, 20)
+
+[node name="fence" type="StaticBody2D"]
+collision_layer = 32
+collision_mask = 45
+script = ExtResource("1_gkjw4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 6)
+shape = SubResource("RectangleShape2D_gmdob")
+
+[node name="Fence" type="Sprite2D" parent="CollisionShape2D"]
+visibility_layer = 2
+position = Vector2(0, -5)
+texture = ExtResource("1_na4jr")
+
+[node name="CollisionArea" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea"]
+position = Vector2(0, 6)
+scale = Vector2(2.52, 0.318174)
+shape = SubResource("RectangleShape2D_txulv")
+
+[connection signal="area_entered" from="CollisionArea" to="." method="_on_collision_area_area_entered"]
+[connection signal="area_exited" from="CollisionArea" to="." method="_on_collision_area_area_exited"]

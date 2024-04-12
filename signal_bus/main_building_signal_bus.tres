@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="BuildingSignalBus" load_steps=2 format=3 uid="uid://c8dbp5kkhf0oe"]
+
+[ext_resource type="Script" path="res://addons/grid_building/building_system/building_signal_bus.gd" id="1_k667c"]
+
+[resource]
+script = ExtResource("1_k667c")

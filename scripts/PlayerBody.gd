@@ -22,6 +22,7 @@ var rng = RandomNumberGenerator.new()
 var shooting = false
 var is_attacking = false
 var freeze_input = true
+var left_tutorial_area = false
 
 var direction = "down"
 
@@ -199,6 +200,8 @@ func _on_player_area_area_entered(area):
 		pass
 
 
-func _on_tutorial_end_area_entered(area):
-	background_music_day()
-	dc.start()
+func _on_tutorial_end_area_entered(_area):
+	if not left_tutorial_area:
+		background_music_day()
+		dc.start()
+		left_tutorial_area = true

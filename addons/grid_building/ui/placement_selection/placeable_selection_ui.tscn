@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://erm78oe3trac"]
+
+[ext_resource type="Script" path="res://addons/grid_building/ui/placement_selection/placeable_selection_ui.gd" id="1_l0tpr"]
+[ext_resource type="PackedScene" uid="uid://bof2cxk2s371v" path="res://addons/grid_building/ui/placement_selection/placement_item_list_template.tscn" id="2_uk533"]
+
+[node name="PlaceableSelectionUI" type="Control" node_paths=PackedStringArray("ui_root", "tab_container")]
+layout_mode = 3
+anchor_left = 0.7
+anchor_top = 0.26
+anchor_right = 0.93
+anchor_bottom = 0.735
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+script = ExtResource("1_l0tpr")
+placeable_item_list_template = ExtResource("2_uk533")
+ui_root = NodePath("TabContainer")
+tab_container = NodePath("TabContainer")
+metadata/_edit_use_anchors_ = true
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+size_flags_vertical = 3
+mouse_filter = 0
+mouse_default_cursor_shape = 9

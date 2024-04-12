@@ -1,0 +1,34 @@
+[gd_scene load_steps=8 format=3 uid="uid://cfvuw0dd8twce"]
+
+[ext_resource type="Script" path="res://addons/grid_building/building_system/rule_check_indicator/rule_check_indicator.gd" id="1_6fi7t"]
+[ext_resource type="Shape2D" uid="uid://cctb06egwxho6" path="res://addons/grid_building/building_system/rule_check_indicator/indicator_isometric_shape.tres" id="1_g08qw"]
+[ext_resource type="Script" path="res://addons/grid_building/building_system/rule_check_indicator/indicator_visual_settings.gd" id="2_qitpm"]
+[ext_resource type="Texture2D" uid="uid://c61k2qhg3j02n" path="res://addons/grid_building/building_system/rule_check_indicator/tile_textures/green_tile_overlay_16x16_100_opacity.png" id="3_jvy07"]
+[ext_resource type="Texture2D" uid="uid://c6aq2mchnso0e" path="res://addons/grid_building/building_system/rule_check_indicator/tile_textures/red_collision_tile_overlay_16x16_100_opacity.png" id="5_a8rjq"]
+
+[sub_resource type="Resource" id="Resource_xwbxt"]
+script = ExtResource("2_qitpm")
+texture = ExtResource("3_jvy07")
+modulate = Color(1, 1, 1, 1)
+
+[sub_resource type="Resource" id="Resource_ieknp"]
+script = ExtResource("2_qitpm")
+texture = ExtResource("5_a8rjq")
+modulate = Color(1, 1, 1, 1)
+
+[node name="RuleCheckIndicatorIsometric" type="ShapeCast2D" node_paths=PackedStringArray("validity_sprite")]
+shape = ExtResource("1_g08qw")
+target_position = Vector2(0, 0)
+collision_mask = 0
+script = ExtResource("1_6fi7t")
+validity_sprite = NodePath("Sprite2D")
+valid_settings = SubResource("Resource_xwbxt")
+invalid_settings = SubResource("Resource_ieknp")
+debug_mode = null
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0.0766226, 0.0518627)
+rotation = 0.523599
+scale = Vector2(3.12948, 3.12745)
+skew = 0.523599
+texture = ExtResource("3_jvy07")

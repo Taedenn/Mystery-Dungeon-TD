@@ -317,7 +317,7 @@ _data = {
 
 [node name="Sableye" type="CharacterBody2D"]
 collision_layer = 8
-collision_mask = 13
+collision_mask = 45
 script = ExtResource("1_8ws2x")
 health = 100
 
@@ -356,6 +356,7 @@ libraries = {
 }
 
 [node name="healthbar" parent="." instance=ExtResource("5_y4n2h")]
+visible = false
 offset_left = -19.0
 offset_top = -27.0
 offset_right = 20.0

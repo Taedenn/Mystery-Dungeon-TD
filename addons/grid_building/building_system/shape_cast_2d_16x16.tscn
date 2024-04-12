@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://dm7axhmg1okoc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vp2r8"]
+size = Vector2(128, 128)
+
+[node name="16x16_ShapeCast2D" type="ShapeCast2D"]
+shape = SubResource("RectangleShape2D_vp2r8")
+target_position = Vector2(0, 0)
+max_results = 64
+collision_mask = 513

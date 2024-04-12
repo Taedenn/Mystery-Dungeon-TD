@@ -1,13 +1,46 @@
-[gd_scene load_steps=16 format=3 uid="uid://p7tx0x7sfwtx"]
+[gd_scene load_steps=29 format=3 uid="uid://p7tx0x7sfwtx"]
 
 [ext_resource type="PackedScene" uid="uid://bw27bm0nouknq" path="res://scenes/player.tscn" id="1_03s17"]
 [ext_resource type="Texture2D" uid="uid://7eh803jggcnd" path="res://tilemaps/sat_tiles.png" id="1_aum2n"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_xco7g"]
+[ext_resource type="Script" path="res://addons/grid_building/building_system/building_system.gd" id="2_3arct"]
+[ext_resource type="Script" path="res://addons/grid_building/grid_targeting_system/grid_targeting_system.gd" id="3_jh4ky"]
+[ext_resource type="PackedScene" uid="uid://ctr73a3smgupf" path="res://addons/grid_building/building_system/rule_check_indicator/rule_check_indicator_16x16_minimal.tscn" id="3_qhfb2"]
 [ext_resource type="Script" path="res://scripts/DayNightCycle.gd" id="4_entqq"]
+[ext_resource type="Script" path="res://addons/grid_building/building_system/building_rules/template_rules/collisions_check_rule.gd" id="4_inuow"]
+[ext_resource type="Script" path="res://addons/grid_building/building_system/building_rules/placement_validator.gd" id="4_jeb5k"]
+[ext_resource type="Resource" uid="uid://c8dbp5kkhf0oe" path="res://signal_bus/main_building_signal_bus.tres" id="5_o153p"]
 [ext_resource type="Texture2D" uid="uid://cp5n2lrnh78sj" path="res://assets/tree.png" id="8_bh611"]
 [ext_resource type="Texture2D" uid="uid://ds20w7x4x7bo1" path="res://assets/thin_tree.png" id="8_ry0gu"]
 [ext_resource type="Texture2D" uid="uid://cr031w12y407s" path="res://assets/leaning_tree.png" id="10_nltw0"]
 [ext_resource type="Texture2D" uid="uid://bt5qoeq1i1ld3" path="res://assets/stons.png" id="11_lyh5t"]
+[ext_resource type="PackedScene" uid="uid://b85csecsg3tsa" path="res://addons/grid_building/grid_targeting_system/grid_targeter/grid_targeter.tscn" id="14_m3t5n"]
+[ext_resource type="PackedScene" uid="uid://erm78oe3trac" path="res://addons/grid_building/ui/placement_selection/placeable_selection_ui.tscn" id="15_qq2s4"]
+[ext_resource type="Resource" uid="uid://co7ln6rgr0o4x" path="res://objects/Categorical_Tags/wall_tag.tres" id="16_ocekn"]
+[ext_resource type="Resource" uid="uid://8n0bwarataxy" path="res://objects/fence_placeable.tres" id="17_g8tpr"]
+[ext_resource type="PackedScene" uid="uid://c8ojrn6h4bmri" path="res://scenes/Zubat.tscn" id="19_07kjx"]
+
+[sub_resource type="Resource" id="Resource_418yo"]
+script = ExtResource("4_inuow")
+pass_on_collision = false
+collision_mask = 45
+success_message = "No placement collisions found"
+expected_no_collisions_message = "Must have no collisions"
+expected_collisions_message = "Must overlap "
+prepend_resource_name = false
+append_layer_names = false
+layers_tested_prefix = " : Layers Checked: "
+no_indicators_message = "No tile collision indicators to check for collisions in placement"
+apply_to_objects_mask = 45
+visual_priority = 0
+
+[sub_resource type="Resource" id="Resource_yly6e"]
+script = ExtResource("4_jeb5k")
+base_rules = Array[Resource("res://addons/grid_building/building_system/building_rules/building_rule.gd")]([SubResource("Resource_418yo")])
+all_succeeded_message = "All building placement validation checks passed"
+failed_validations_message = "--- Rules Failed ---"
+failed_message_base = "Failed Placement"
+show_debug_shapes = false
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mjadm"]
 texture = ExtResource("1_aum2n")
@@ -217,7 +250,7 @@ physics_layer_0/collision_mask = 9
 sources/0 = SubResource("TileSetAtlasSource_mjadm")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_64v5p"]
-size = Vector2(99, 25)
+size = Vector2(99, 4)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pg0jf"]
 radius = 144.031
@@ -234,9 +267,32 @@ radius = 110.114
 [node name="Main" type="Node2D"]
 script = ExtResource("1_xco7g")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="Systems" type="Node" parent="."]
 
-[node name="TileMap" type="TileMap" parent="."]
+[node name="BuildingSystem" type="Node" parent="Systems" node_paths=PackedStringArray("placer", "positioner", "tilemap", "placed_objects_parent")]
+script = ExtResource("2_3arct")
+placer = NodePath("../../World/Player")
+positioner = NodePath("../../World/GridTargeter")
+tilemap = NodePath("../../World/TileMap")
+placed_objects_parent = NodePath("../../World/AssetFolder")
+rule_check_indicator_template = ExtResource("3_qhfb2")
+placement_validator = SubResource("Resource_yly6e")
+building_signal_bus = ExtResource("5_o153p")
+exit_build_mode_action = &"exit_build"
+build_action = &"build"
+rotate_right_action = &""
+rotate_left_action = &""
+flip_horizontally_action = &""
+flip_vertically_action = &""
+
+[node name="GridTargetingSystem" type="Node" parent="Systems" node_paths=PackedStringArray("positioner", "tilemap")]
+script = ExtResource("3_jh4ky")
+positioner = NodePath("../../World/GridTargeter")
+tilemap = NodePath("../../World/TileMap")
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="TileMap" type="TileMap" parent="World"]
 z_index = -2
 tile_set = SubResource("TileSet_o5wge")
 cell_quadrant_size = 24
@@ -265,736 +321,766 @@ layer_3/y_sort_origin = 0
 layer_3/z_index = 0
 layer_3/tile_data = PackedInt32Array(1638396, 720896, 2, 1703932, 720896, 3, 1769468, 720896, 4, 1572867, 983040, 2, 1638403, 983040, 3, 1703939, 983040, 4, 1441800, 983040, 2, 1507336, 983040, 3, 1572872, 983040, 4, 1507334, 983040, 2, 1572870, 983040, 3, 1638406, 983040, 4, 1572857, 720896, 2, 1638393, 720896, 3, 1703929, 720896, 4, 1507319, 720896, 2, 1572855, 720896, 3, 1638391, 720896, 4, 1310731, 983040, 2, 1376267, 983040, 3, 1441803, 983040, 4, -1376237, 720896, 2, -1310701, 720896, 3, -1245165, 720896, 4, -1441774, 720896, 2, -1376238, 720896, 3, -1310702, 720896, 4, -1310700, 720896, 2, -1245164, 720896, 3, -1179628, 720896, 4, -1310694, 983040, 2, -1245158, 983040, 3, -1179622, 983040, 4, 1376244, 720896, 2, 1441780, 720896, 3, 1507316, 720896, 4, 655382, 983040, 2, 720918, 983040, 3, 786454, 983040, 4, 786451, 983040, 2, 851987, 983040, 3, 917523, 983040, 4, 851984, 983040, 2, 917520, 983040, 3, 983056, 983040, 4, 917516, 983040, 2, 983052, 983040, 3, 1048588, 983040, 4, 589845, 917504, 1, 589846, 983040, 1, -1507310, 720896, 1, -1572847, 720896, 2, -1507311, 720896, 3, -1441775, 720896, 4)
 
-[node name="Player" parent="." instance=ExtResource("1_03s17")]
+[node name="Player" parent="World" instance=ExtResource("1_03s17")]
 position = Vector2(0, 370)
+sleepy_start = false
 
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
+[node name="CanvasModulate" type="CanvasModulate" parent="World"]
 script = ExtResource("4_entqq")
 
-[node name="Nightfall" type="Timer" parent="CanvasModulate"]
+[node name="Nightfall" type="Timer" parent="World/CanvasModulate"]
 wait_time = 60.0
 one_shot = true
 
-[node name="Sunrise" type="Timer" parent="CanvasModulate"]
+[node name="Sunrise" type="Timer" parent="World/CanvasModulate"]
 wait_time = 60.0
 one_shot = true
 
-[node name="TutorialEnd" type="Area2D" parent="."]
+[node name="TutorialEnd" type="Area2D" parent="World"]
+collision_layer = 0
 
-[node name="LeavingTutorialArea" type="CollisionShape2D" parent="TutorialEnd"]
-position = Vector2(0.5, 156.5)
+[node name="LeavingTutorialArea" type="CollisionShape2D" parent="World/TutorialEnd"]
+position = Vector2(0.5, 146)
 shape = SubResource("RectangleShape2D_64v5p")
 
-[node name="assetFolder" type="Node2D" parent="."]
+[node name="AssetFolder" type="Node2D" parent="World"]
 
-[node name="Tree" type="Sprite2D" parent="assetFolder"]
+[node name="Tree" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-85, 492)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-81, 527)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree2" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree2" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-112, 512)
 texture = ExtResource("8_ry0gu")
 
-[node name="Tree2" type="Sprite2D" parent="assetFolder"]
+[node name="Tree2" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-47, 527)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree3" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree3" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-27, 552)
 texture = ExtResource("8_ry0gu")
 flip_h = true
 
-[node name="Tree3" type="Sprite2D" parent="assetFolder"]
+[node name="Tree3" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(86, 499)
 texture = ExtResource("8_bh611")
 flip_h = true
 
-[node name="ThinTree4" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree4" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(60, 526)
 texture = ExtResource("8_ry0gu")
 flip_h = true
 
-[node name="ThinTree5" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree5" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(106, 523)
 texture = ExtResource("8_ry0gu")
 
-[node name="Tree4" type="Sprite2D" parent="assetFolder"]
+[node name="Tree4" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(56, 632)
 texture = ExtResource("8_bh611")
 
-[node name="Tree5" type="Sprite2D" parent="assetFolder"]
+[node name="Tree5" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(14, 520)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree6" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree6" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-2, 545)
 texture = ExtResource("8_ry0gu")
 flip_h = true
 
-[node name="ThinTree7" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree7" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(39, 541)
 texture = ExtResource("8_ry0gu")
 
-[node name="Tree6" type="Sprite2D" parent="assetFolder"]
+[node name="Tree6" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-137, 487)
 texture = ExtResource("8_bh611")
 flip_h = true
 
-[node name="Tree8" type="Sprite2D" parent="assetFolder"]
+[node name="Tree8" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-156, -362)
 texture = ExtResource("8_bh611")
 
-[node name="Tree7" type="Sprite2D" parent="assetFolder"]
+[node name="Tree7" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(142, 488)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree8" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree8" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-170, -337)
 texture = ExtResource("8_ry0gu")
 
-[node name="Tree9" type="Sprite2D" parent="assetFolder"]
+[node name="Tree9" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-232, -405)
 texture = ExtResource("8_bh611")
 flip_h = true
 
-[node name="ThinTree9" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree9" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-235, -371)
 texture = ExtResource("8_ry0gu")
 flip_h = true
 
-[node name="ThinTree10" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree10" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-197, -364)
 texture = ExtResource("8_ry0gu")
 
-[node name="Tree10" type="Sprite2D" parent="assetFolder"]
+[node name="Tree10" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-61, 143)
 texture = ExtResource("8_bh611")
 
-[node name="Tree11" type="Sprite2D" parent="assetFolder"]
+[node name="Tree11" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(65, 125)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree11" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree11" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(48, 159)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree12" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree12" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-76, 175)
 texture = ExtResource("8_ry0gu")
 flip_h = true
 
-[node name="ThinTree13" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree13" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(69, 171)
 texture = ExtResource("8_ry0gu")
 
-[node name="Tree12" type="Sprite2D" parent="assetFolder"]
+[node name="Tree12" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-217, 95)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree14" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree14" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-238, 115)
 texture = ExtResource("8_ry0gu")
 
-[node name="Tree13" type="Sprite2D" parent="assetFolder"]
+[node name="Tree13" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(206, 127)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree15" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree15" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(229, 153)
 texture = ExtResource("8_ry0gu")
 flip_h = true
 
-[node name="Tree14" type="Sprite2D" parent="assetFolder"]
+[node name="Tree14" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-392, -190)
 texture = ExtResource("8_bh611")
 
-[node name="Tree15" type="Sprite2D" parent="assetFolder"]
+[node name="Tree15" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(441, -231)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree16" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree16" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(426, -204)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree17" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree17" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(169, -250)
 texture = ExtResource("8_ry0gu")
 flip_h = true
 
-[node name="ThinTree18" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree18" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(337, -177)
 texture = ExtResource("8_ry0gu")
 
-[node name="Tree16" type="Sprite2D" parent="assetFolder"]
+[node name="Tree16" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(130, -283)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree19" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree19" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-299, -178)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree20" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree20" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-373, -165)
 texture = ExtResource("8_ry0gu")
 flip_h = true
 
-[node name="ThinTree21" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree21" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(119, -251)
 texture = ExtResource("8_ry0gu")
 
-[node name="Tree17" type="Sprite2D" parent="assetFolder"]
+[node name="Tree17" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-121, 179)
 texture = ExtResource("8_bh611")
 
-[node name="Tree18" type="Sprite2D" parent="assetFolder"]
+[node name="Tree18" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(91, 152)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree22" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree22" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(105, 183)
 texture = ExtResource("8_ry0gu")
 flip_h = true
 
-[node name="ThinTree23" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree23" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-203, 129)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree24" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree24" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-142, 150)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree25" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree25" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(123, 135)
 texture = ExtResource("8_ry0gu")
 
-[node name="Tree19" type="Sprite2D" parent="assetFolder"]
+[node name="Tree19" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-179, 426)
 texture = ExtResource("8_bh611")
 
-[node name="Tree20" type="Sprite2D" parent="assetFolder"]
+[node name="Tree20" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(264, 320)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree26" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree26" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(189, 457)
 texture = ExtResource("8_ry0gu")
 flip_h = true
 
-[node name="Tree22" type="Sprite2D" parent="assetFolder"]
+[node name="Tree22" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-234, 150)
 texture = ExtResource("8_bh611")
 
-[node name="Tree23" type="Sprite2D" parent="assetFolder"]
+[node name="Tree23" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(308, 197)
 texture = ExtResource("8_bh611")
 
-[node name="Tree24" type="Sprite2D" parent="assetFolder"]
+[node name="Tree24" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-458, 215)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree28" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree28" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-477, 239)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree29" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree29" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-255, 182)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree30" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree30" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(285, 222)
 texture = ExtResource("8_ry0gu")
 
-[node name="Tree25" type="Sprite2D" parent="assetFolder"]
+[node name="Tree25" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-514, -113)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree31" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree31" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-534, -41)
 texture = ExtResource("8_ry0gu")
 
-[node name="Tree26" type="Sprite2D" parent="assetFolder"]
+[node name="Tree26" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(546, -144)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree32" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree32" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(563, -112)
 texture = ExtResource("8_ry0gu")
 
-[node name="Tree27" type="Sprite2D" parent="assetFolder"]
+[node name="Tree27" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(12, -530)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree33" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree33" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-38, -537)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree34" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree34" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-142, 211)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree35" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree35" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(149, 220)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree36" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree36" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-197, 390)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree37" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree37" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(226, 401)
 texture = ExtResource("8_ry0gu")
 
-[node name="Tree21" type="Sprite2D" parent="assetFolder"]
+[node name="Tree21" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(175, 405)
 texture = ExtResource("8_bh611")
 flip_h = true
 
-[node name="ThinTree27" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree27" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(199, 424)
 texture = ExtResource("8_ry0gu")
 
-[node name="Tree28" type="Sprite2D" parent="assetFolder"]
+[node name="Tree28" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-110, 615)
 texture = ExtResource("8_bh611")
 
-[node name="Tree29" type="Sprite2D" parent="assetFolder"]
+[node name="Tree29" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(103, 611)
 texture = ExtResource("8_bh611")
 flip_h = true
 
-[node name="Tree30" type="Sprite2D" parent="assetFolder"]
+[node name="Tree30" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(164, 509)
 texture = ExtResource("8_bh611")
 
-[node name="Tree31" type="Sprite2D" parent="assetFolder"]
+[node name="Tree31" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-231, 540)
 texture = ExtResource("8_bh611")
 
-[node name="Tree32" type="Sprite2D" parent="assetFolder"]
+[node name="Tree32" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(223, 537)
 texture = ExtResource("8_bh611")
 
-[node name="Tree33" type="Sprite2D" parent="assetFolder"]
+[node name="Tree33" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-237, 421)
 texture = ExtResource("8_bh611")
 
-[node name="Tree34" type="Sprite2D" parent="assetFolder"]
+[node name="Tree34" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(270, 392)
 texture = ExtResource("8_bh611")
 flip_h = true
 
-[node name="Tree35" type="Sprite2D" parent="assetFolder"]
+[node name="Tree35" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-196, 309)
 texture = ExtResource("8_bh611")
 flip_h = true
 
-[node name="Tree36" type="Sprite2D" parent="assetFolder"]
+[node name="Tree36" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(158, 163)
 texture = ExtResource("8_bh611")
 
-[node name="Tree37" type="Sprite2D" parent="assetFolder"]
+[node name="Tree37" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-188, 192)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree38" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree38" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-186, 226)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree39" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree39" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(182, 193)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree40" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree40" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-213, 345)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree41" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree41" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-400, -149)
 texture = ExtResource("8_ry0gu")
 
-[node name="Tree38" type="Sprite2D" parent="assetFolder"]
+[node name="Tree38" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(365, -216)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree42" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree42" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(68, -537)
 texture = ExtResource("8_ry0gu")
 flip_h = true
 
-[node name="Tree39" type="Sprite2D" parent="assetFolder"]
+[node name="Tree39" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-487, -252)
 texture = ExtResource("8_bh611")
 
-[node name="Tree40" type="Sprite2D" parent="assetFolder"]
+[node name="Tree40" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-468, -137)
 texture = ExtResource("8_bh611")
 
-[node name="Tree41" type="Sprite2D" parent="assetFolder"]
+[node name="Tree41" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(505, -345)
 texture = ExtResource("8_bh611")
 
-[node name="Tree42" type="Sprite2D" parent="assetFolder"]
+[node name="Tree42" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(494, 167)
 texture = ExtResource("8_bh611")
 
-[node name="Tree43" type="Sprite2D" parent="assetFolder"]
+[node name="Tree43" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-258, 233)
 texture = ExtResource("8_bh611")
 
-[node name="Tree44" type="Sprite2D" parent="assetFolder"]
+[node name="Tree44" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(182, 279)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree43" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree43" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(221, 292)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree44" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree44" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-202, 255)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree45" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree45" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-161, 111)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree46" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree46" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(156, 106)
 texture = ExtResource("8_ry0gu")
 
-[node name="LeaningTree" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-170, 359)
 texture = ExtResource("10_nltw0")
 
-[node name="LeaningTree2" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree2" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-171, 264)
 texture = ExtResource("10_nltw0")
 
-[node name="LeaningTree3" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree3" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-173, 442)
 texture = ExtResource("10_nltw0")
 
-[node name="LeaningTree4" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree4" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(177, 317)
 texture = ExtResource("10_nltw0")
 flip_h = true
 
-[node name="LeaningTree5" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree5" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(166, 438)
 texture = ExtResource("10_nltw0")
 flip_h = true
 
-[node name="LeaningTree6" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree6" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-167, 516)
 texture = ExtResource("10_nltw0")
 
-[node name="LeaningTree7" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree7" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-504, 169)
 texture = ExtResource("10_nltw0")
 
-[node name="LeaningTree8" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree8" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(269, 153)
 texture = ExtResource("10_nltw0")
 
-[node name="LeaningTree9" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree9" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-444, -220)
 texture = ExtResource("10_nltw0")
 
-[node name="LeaningTree10" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree10" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-531, -328)
 texture = ExtResource("10_nltw0")
 
-[node name="LeaningTree11" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree11" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-555, 17)
 texture = ExtResource("10_nltw0")
 
-[node name="LeaningTree12" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree12" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(558, -56)
 texture = ExtResource("10_nltw0")
 flip_h = true
 
-[node name="LeaningTree13" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree13" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(535, 108)
 texture = ExtResource("10_nltw0")
 flip_h = true
 
-[node name="LeaningTree14" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree14" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-506, -482)
 texture = ExtResource("10_nltw0")
 
-[node name="Tree45" type="Sprite2D" parent="assetFolder"]
+[node name="Tree45" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-545, -442)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree47" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree47" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-527, -412)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree48" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree48" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-558, -307)
 texture = ExtResource("8_ry0gu")
 
-[node name="LeaningTree15" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree15" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(485, -400)
 texture = ExtResource("10_nltw0")
 flip_h = true
 
-[node name="LeaningTree16" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree16" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(485, -286)
 texture = ExtResource("10_nltw0")
 flip_h = true
 
-[node name="ThinTree49" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree49" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(518, -303)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree50" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree50" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(482, -204)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree51" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree51" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-577, 57)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree52" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree52" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-481, -97)
 texture = ExtResource("8_ry0gu")
 
-[node name="Tree46" type="Sprite2D" parent="assetFolder"]
+[node name="Tree46" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(462, 227)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree53" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree53" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(433, 244)
 texture = ExtResource("8_ry0gu")
 
-[node name="Tree47" type="Sprite2D" parent="assetFolder"]
+[node name="Tree47" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(559, 151)
 texture = ExtResource("8_bh611")
 
-[node name="Tree48" type="Sprite2D" parent="assetFolder"]
+[node name="Tree48" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(583, -19)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree54" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree54" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(564, 7)
 texture = ExtResource("8_ry0gu")
 
-[node name="Tree49" type="Sprite2D" parent="assetFolder"]
+[node name="Tree49" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-537, 210)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree55" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree55" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-556, 172)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree56" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree56" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-289, 252)
 texture = ExtResource("8_ry0gu")
 
-[node name="Tree50" type="Sprite2D" parent="assetFolder"]
+[node name="Tree50" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-574, -31)
 texture = ExtResource("8_bh611")
 
-[node name="LeaningTree17" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree17" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-504, -72)
 texture = ExtResource("10_nltw0")
 
-[node name="LeaningTree18" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree18" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-456, -553)
 texture = ExtResource("10_nltw0")
 
-[node name="ThinTree57" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree57" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-477, -525)
 texture = ExtResource("8_ry0gu")
 
-[node name="LeaningTree19" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree19" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(343, 236)
 texture = ExtResource("10_nltw0")
 
-[node name="ThinTree58" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree58" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(384, 229)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree59" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree59" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(532, 173)
 texture = ExtResource("8_ry0gu")
 
-[node name="ThinTree60" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree60" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(563, 88)
 texture = ExtResource("8_ry0gu")
 
-[node name="LeaningTree20" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree20" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-322, 224)
 texture = ExtResource("10_nltw0")
 flip_h = true
 
-[node name="ThinTree61" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree61" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-341, 255)
 texture = ExtResource("8_ry0gu")
 
-[node name="LeaningTree21" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree21" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-494, -210)
 texture = ExtResource("10_nltw0")
 
-[node name="Tree51" type="Sprite2D" parent="assetFolder"]
+[node name="Tree51" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-534, -228)
 texture = ExtResource("8_bh611")
 flip_h = true
 
-[node name="LeaningTree22" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree22" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(209, 224)
 texture = ExtResource("10_nltw0")
 flip_h = true
 
-[node name="Tree52" type="Sprite2D" parent="assetFolder"]
+[node name="Tree52" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-245, 293)
 texture = ExtResource("8_bh611")
 
-[node name="Tree53" type="Sprite2D" parent="assetFolder"]
+[node name="Tree53" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(252, 256)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree62" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree62" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(240, 183)
 texture = ExtResource("8_ry0gu")
 
-[node name="LeaningTree23" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree23" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(511, 212)
 texture = ExtResource("10_nltw0")
 
-[node name="LeaningTree24" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree24" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-433, 269)
 texture = ExtResource("10_nltw0")
 
-[node name="ThinTree63" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree63" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-454, 295)
 texture = ExtResource("8_ry0gu")
 
-[node name="Tree54" type="Sprite2D" parent="assetFolder"]
+[node name="Tree54" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-393, 249)
 texture = ExtResource("8_bh611")
 
-[node name="ThinTree64" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree64" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-555, 74)
 texture = ExtResource("8_ry0gu")
 flip_h = true
 
-[node name="Stons" type="Sprite2D" parent="assetFolder"]
+[node name="Stons" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-53, 641)
 texture = ExtResource("11_lyh5t")
 
-[node name="Stons2" type="Sprite2D" parent="assetFolder"]
+[node name="Stons2" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-81, 618)
 texture = ExtResource("11_lyh5t")
 
-[node name="Stons3" type="Sprite2D" parent="assetFolder"]
+[node name="Stons3" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(3, 642)
 texture = ExtResource("11_lyh5t")
 
-[node name="Stons4" type="Sprite2D" parent="assetFolder"]
+[node name="Stons4" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(156, 595)
 texture = ExtResource("11_lyh5t")
 flip_h = true
 
-[node name="Stons5" type="Sprite2D" parent="assetFolder"]
+[node name="Stons5" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(576, -415)
 texture = ExtResource("11_lyh5t")
 
-[node name="Stons6" type="Sprite2D" parent="assetFolder"]
+[node name="Stons6" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(468, -462)
 texture = ExtResource("11_lyh5t")
 
-[node name="Stons7" type="Sprite2D" parent="assetFolder"]
+[node name="Stons7" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(446, -510)
 texture = ExtResource("11_lyh5t")
 flip_h = true
 
-[node name="Stons8" type="Sprite2D" parent="assetFolder"]
+[node name="Stons8" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(490, -438)
 texture = ExtResource("11_lyh5t")
 
-[node name="ThinTree65" type="Sprite2D" parent="assetFolder"]
+[node name="ThinTree65" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(555, -394)
 texture = ExtResource("8_ry0gu")
 
-[node name="Tree55" type="Sprite2D" parent="assetFolder"]
+[node name="Tree55" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(529, -413)
 texture = ExtResource("8_bh611")
 
-[node name="Stons9" type="Sprite2D" parent="assetFolder"]
+[node name="Stons9" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-208, 547)
 texture = ExtResource("11_lyh5t")
 
-[node name="Tree56" type="Sprite2D" parent="assetFolder"]
+[node name="Tree56" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(57, 563)
 texture = ExtResource("8_bh611")
 
-[node name="Stons10" type="Sprite2D" parent="assetFolder"]
+[node name="Stons10" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(133, 619)
 texture = ExtResource("11_lyh5t")
 
-[node name="LeaningTree25" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree25" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(243, 462)
 texture = ExtResource("10_nltw0")
 
-[node name="LeaningTree26" type="Sprite2D" parent="assetFolder"]
+[node name="LeaningTree26" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(-213, 463)
 texture = ExtResource("10_nltw0")
 flip_h = true
 
-[node name="Stons11" type="Sprite2D" parent="assetFolder"]
+[node name="Stons11" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(247, 403)
 texture = ExtResource("11_lyh5t")
 
-[node name="Stons12" type="Sprite2D" parent="assetFolder"]
+[node name="Stons12" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(340, 377)
 texture = ExtResource("11_lyh5t")
 
-[node name="Stons13" type="Sprite2D" parent="assetFolder"]
+[node name="Stons13" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(411, 354)
 texture = ExtResource("11_lyh5t")
 
-[node name="Stons14" type="Sprite2D" parent="assetFolder"]
+[node name="Stons14" type="Sprite2D" parent="World/AssetFolder"]
 position = Vector2(485, 306)
 texture = ExtResource("11_lyh5t")
 
-[node name="Spawner" type="Timer" parent="."]
+[node name="Spawners" type="Node2D" parent="World"]
+
+[node name="Spawner" type="Timer" parent="World/Spawners"]
 wait_time = 5.0
 autostart = true
 
-[node name="Spawn _Area_1" type="Area2D" parent="."]
+[node name="Spawn _Area_1" type="Area2D" parent="World/Spawners"]
+visible = false
 
-[node name="sa1" type="CollisionShape2D" parent="Spawn _Area_1"]
+[node name="sa1" type="CollisionShape2D" parent="World/Spawners/Spawn _Area_1"]
 position = Vector2(367, 15)
 shape = SubResource("CircleShape2D_pg0jf")
 
-[node name="Spawn_Area_2" type="Area2D" parent="."]
+[node name="Spawn_Area_2" type="Area2D" parent="World/Spawners"]
+visible = false
 
-[node name="sa2" type="CollisionShape2D" parent="Spawn_Area_2"]
+[node name="sa2" type="CollisionShape2D" parent="World/Spawners/Spawn_Area_2"]
 position = Vector2(-384, 66)
 shape = SubResource("CircleShape2D_0rsn5")
 
-[node name="Spawn_Area_3" type="Area2D" parent="."]
+[node name="Spawn_Area_3" type="Area2D" parent="World/Spawners"]
+visible = false
 
-[node name="sa3" type="CollisionShape2D" parent="Spawn_Area_3"]
+[node name="sa3" type="CollisionShape2D" parent="World/Spawners/Spawn_Area_3"]
 position = Vector2(285, -350)
 shape = SubResource("CircleShape2D_h40yi")
 
-[node name="Spawn_Area_4" type="Area2D" parent="."]
+[node name="Spawn_Area_4" type="Area2D" parent="World/Spawners"]
+visible = false
 
-[node name="sa4" type="CollisionShape2D" parent="Spawn_Area_4"]
+[node name="sa4" type="CollisionShape2D" parent="World/Spawners/Spawn_Area_4"]
 position = Vector2(-385, -361)
 shape = SubResource("CircleShape2D_u8afx")
 
-[connection signal="timeout" from="CanvasModulate/Nightfall" to="." method="_on_nightfall_timeout"]
-[connection signal="timeout" from="CanvasModulate/Nightfall" to="CanvasModulate" method="_on_day_cycle_timeout"]
-[connection signal="timeout" from="CanvasModulate/Sunrise" to="." method="_on_sunrise_timeout"]
-[connection signal="timeout" from="CanvasModulate/Sunrise" to="CanvasModulate" method="_on_night_cycle_timeout"]
-[connection signal="area_entered" from="TutorialEnd" to="." method="_on_tutorial_end_area_entered"]
-[connection signal="area_entered" from="TutorialEnd" to="Player" method="_on_tutorial_end_area_entered"]
-[connection signal="area_entered" from="TutorialEnd" to="CanvasModulate" method="_on_tutorial_end_area_entered"]
-[connection signal="timeout" from="Spawner" to="." method="_on_spawner_timeout"]
+[node name="GridTargeter" parent="World" instance=ExtResource("14_m3t5n")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PlaceableSelectionUI" parent="CanvasLayer" node_paths=PackedStringArray("building_system") instance=ExtResource("15_qq2s4")]
+anchor_left = 0.739583
+anchor_top = 0.275741
+anchor_right = 1.00573
+anchor_bottom = 1.14148
+offset_left = -1378.0
+offset_top = -224.8
+offset_right = -1378.0
+offset_bottom = -224.8
+building_system = NodePath("../../Systems/BuildingSystem")
+open_actions = Array[StringName]([&"open_build"])
+category_tags = Array[Resource("res://addons/grid_building/categorical_tag.gd")]([ExtResource("16_ocekn")])
+placeables = Array[Resource("res://addons/grid_building/building_system/placeable/placeable.gd")]([ExtResource("17_g8tpr")])
+
+[node name="Zubat" parent="." instance=ExtResource("19_07kjx")]
+position = Vector2(6, -75)
+player_tutorial_end = true
+
+[connection signal="timeout" from="World/CanvasModulate/Nightfall" to="." method="_on_nightfall_timeout"]
+[connection signal="timeout" from="World/CanvasModulate/Nightfall" to="World/CanvasModulate" method="_on_day_cycle_timeout"]
+[connection signal="timeout" from="World/CanvasModulate/Sunrise" to="." method="_on_sunrise_timeout"]
+[connection signal="timeout" from="World/CanvasModulate/Sunrise" to="World/CanvasModulate" method="_on_night_cycle_timeout"]
+[connection signal="area_entered" from="World/TutorialEnd" to="." method="_on_tutorial_end_area_entered"]
+[connection signal="area_entered" from="World/TutorialEnd" to="World/Player" method="_on_tutorial_end_area_entered"]
+[connection signal="area_entered" from="World/TutorialEnd" to="World/CanvasModulate" method="_on_tutorial_end_area_entered"]
+[connection signal="timeout" from="World/Spawners/Spawner" to="." method="_on_spawner_timeout"]

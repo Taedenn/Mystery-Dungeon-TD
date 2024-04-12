@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://bof2cxk2s371v"]
+
+[node name="placement_item_list_template" type="ItemList"]
+offset_bottom = 8.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 0
+same_column_width = true
+icon_mode = 0

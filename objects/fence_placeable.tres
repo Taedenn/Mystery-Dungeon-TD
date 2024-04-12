@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Placeable" load_steps=5 format=3 uid="uid://8n0bwarataxy"]
+
+[ext_resource type="Script" path="res://addons/grid_building/building_system/placeable/placeable.gd" id="1_6udr5"]
+[ext_resource type="Texture2D" uid="uid://ve8ac0iaqeke" path="res://assets/fence.png" id="1_ii5ed"]
+[ext_resource type="PackedScene" uid="uid://m2y2c30ul83o" path="res://objects/fence.tscn" id="2_sctj3"]
+[ext_resource type="Resource" uid="uid://co7ln6rgr0o4x" path="res://objects/Categorical_Tags/wall_tag.tres" id="4_7nghm"]
+
+[resource]
+script = ExtResource("1_6udr5")
+display_name = &"Spiked Fence"
+icon = ExtResource("1_ii5ed")
+packed_scene = ExtResource("2_sctj3")
+tags = Array[Resource]([ExtResource("4_7nghm")])
+placement_rules = Array[Resource("res://addons/grid_building/building_system/building_rules/building_rule.gd")]([])
+preview_excluded_nodes = Array[NodePath]([])
+ignore_base_rules = false
+rotateable = false
+flippable_h = false
+flippable_v = false

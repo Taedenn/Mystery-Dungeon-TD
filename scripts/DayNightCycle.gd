@@ -6,8 +6,10 @@ const DAY_COLOR = Color("#ffffea")
 @export var TIME_SCALE = 0.0005
 
 var time = 0
+
 var nightfall = false
 var sunrise = true
+var tutorial_end = false
 
 @onready var nf = $Nightfall
 @onready var sr = $Sunrise
@@ -34,7 +36,9 @@ func _on_night_cycle_timeout():
 	nightfall = true
 
 
-func _on_tutorial_end_area_entered(area):
-	sr.start()
-	sunrise = true
-	nightfall = false
+func _on_tutorial_end_area_entered(_area):
+	if not tutorial_end:
+		sr.start()
+		sunrise = true
+		nightfall = false
+		tutorial_end = true

@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://cy2u2ip3nxwo7"]
+
+[ext_resource type="Script" path="res://addons/grid_building/building_system/building_system.gd" id="1_e8xuf"]
+[ext_resource type="Script" path="res://addons/grid_building/building_system/building_rules/placement_validator.gd" id="3_4ceni"]
+
+[sub_resource type="Resource" id="Resource_i2rrt"]
+script = ExtResource("3_4ceni")
+base_rules = Array[Resource("res://addons/grid_building/building_system/building_rules/building_rule.gd")]([])
+all_succeeded_message = "All building placement validation checks passed"
+failed_validations_message = "--- Rules Failed ---"
+failed_message_base = "Failed Placement"
+
+[node name="BuildingSystem" type="Node"]
+script = ExtResource("1_e8xuf")
+placement_validator = SubResource("Resource_i2rrt")
+preview_modulate_color = Color(0.6, 0.6, 1, 0.521569)

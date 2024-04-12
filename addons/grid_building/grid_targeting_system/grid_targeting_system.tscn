@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b15fp8e5psppo"]
+
+[ext_resource type="Script" path="res://addons/grid_building/grid_targeting_system/grid_targeting_system.gd" id="1_2my1v"]
+
+[node name="GridTargetingSystem" type="Node"]
+script = ExtResource("1_2my1v")

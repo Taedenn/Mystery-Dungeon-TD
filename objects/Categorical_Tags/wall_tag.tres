@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="CategoricalTag" load_steps=3 format=3 uid="uid://co7ln6rgr0o4x"]
+
+[ext_resource type="Texture2D" uid="uid://ve8ac0iaqeke" path="res://assets/fence.png" id="1_gqecr"]
+[ext_resource type="Script" path="res://addons/grid_building/categorical_tag.gd" id="2_w3n7i"]
+
+[resource]
+script = ExtResource("2_w3n7i")
+display_name = &"Walls"
+icon = ExtResource("1_gqecr")

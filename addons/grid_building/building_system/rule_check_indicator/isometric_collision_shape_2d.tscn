@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://yipp80b8uuet"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yubh2"]
+size = Vector2(49.8, 49.8)
+
+[node name="IsometricCollisionShape" type="CollisionShape2D"]
+rotation = 0.523599
+skew = 0.523599
+shape = SubResource("RectangleShape2D_yubh2")

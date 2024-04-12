@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cp3aubopx0o75"]
+
+[ext_resource type="PackedScene" uid="uid://b85csecsg3tsa" path="res://addons/grid_building/grid_targeting_system/grid_targeter/grid_targeter.tscn" id="1_3eavp"]
+
+[node name="GridPositioner" type="Node2D"]
+z_index = 1000
+
+[node name="GridTargeter" parent="." instance=ExtResource("1_3eavp")]
+z_index = 2000

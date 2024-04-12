@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://b85csecsg3tsa"]
+
+[ext_resource type="Texture2D" uid="uid://npiwpojmygus" path="res://addons/grid_building/grid_targeting_system/grid_targeter/grid_targeter_1.png" id="1_npuvp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l360l"]
+atlas = ExtResource("1_npuvp")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pno16"]
+atlas = ExtResource("1_npuvp")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0vay1"]
+atlas = ExtResource("1_npuvp")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kddac"]
+atlas = ExtResource("1_npuvp")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4omko"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l360l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pno16")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0vay1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kddac")
+}],
+"loop": true,
+"name": &"loop",
+"speed": 5.0
+}]
+
+[node name="GridTargeter" type="AnimatedSprite2D"]
+z_index = 1000
+sprite_frames = SubResource("SpriteFrames_4omko")
+animation = &"loop"
+autoplay = "loop"
+frame_progress = 0.585304

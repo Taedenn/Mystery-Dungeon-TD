@@ -16,10 +16,10 @@ var nighttime = false
 
 
 func _ready():
-	sa1 = $"Spawn _Area_1/sa1"
-	sa2 = $Spawn_Area_2/sa2
-	sa3 = $Spawn_Area_3/sa3
-	sa4 = $Spawn_Area_4/sa4
+	sa1 = $"World/Spawners/Spawn _Area_1/sa1"
+	sa2 = $World/Spawners/Spawn_Area_2/sa2
+	sa3 = $World/Spawners/Spawn_Area_3/sa3
+	sa4 = $World/Spawners/Spawn_Area_4/sa4
 	
 
 func _on_spawner_timeout():

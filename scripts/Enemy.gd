@@ -7,8 +7,9 @@ extends CharacterBody2D
 const DAMAGE_TICK_INTERVAL = 0.8
 const ATTACK_INTERVAL = 0.1
 
-@onready var player = $"../Player"
+@onready var player = $"../World/Player"
 @onready var _animated_enemy = $EnemyAnimations
+@onready var areaCollider = $AreaCollider
 @onready var hb = $healthbar
 @onready var walk = $walk
 @onready var hurt = $hurt
@@ -27,6 +28,7 @@ func _ready():
 	walk.visible = true
 	hurt.visible = false
 	self.add_to_group("enemies")
+	areaCollider.add_to_group("enemies")
 	hb.init_health(health)
 
 func update_animations(_delta):
@@ -98,9 +100,6 @@ func _on_collider_area_entered(area):
 	if area.is_in_group("player"):
 		player_in_range = true
 		player.speed = 70
-	elif area.is_in_group("hazards"):
-		set_health(5)
-
 
 func _on_collider_area_exited(area):
 	if area.is_in_group("player"):
