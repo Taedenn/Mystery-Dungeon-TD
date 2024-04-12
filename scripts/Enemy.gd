@@ -13,16 +13,21 @@ const ATTACK_INTERVAL = 0.1
 @onready var hb = $healthbar
 @onready var walk = $walk
 @onready var hurt = $hurt
+@onready var soul_shard_scene = preload("res://scenes/soul_shard.tscn")
 
 var direction = position
-var player_in_range = false
-var damage_tick = true
+var structure = StaticBody2D
+
 var dir = "down"
 var time_since_last_tick = 1.0
 var attack_cooldown_timer = 0.0
 var speed = 50
+var recoil = 0
 var is_hurt = false
 var is_vulnerable = true
+var player_in_range = false
+var damage_tick = true
+var taking_recoil = false
 
 func _ready():
 	walk.visible = true
@@ -62,10 +67,15 @@ func update_animations(_delta):
 		is_hurt = false
 
 func _physics_process(delta):
+	time_since_last_tick += delta
+	attack_cooldown_timer += delta
+	if taking_recoil:
+		if time_since_last_tick >= DAMAGE_TICK_INTERVAL:
+			set_health(recoil)
+			time_since_last_tick = 0.0
+			
 	if player_tutorial_end:
 		if player_in_range:
-			time_since_last_tick += delta
-			attack_cooldown_timer += delta
 			if time_since_last_tick >= DAMAGE_TICK_INTERVAL:
 				
 				# take damage
@@ -94,18 +104,29 @@ func set_health(d):
 		hurt.visible = true
 		_animated_enemy.play("hurt_" + dir)
 		await _animated_enemy.animation_finished
+		var soul_shard = soul_shard_scene.instantiate()
+		soul_shard.position = self.position
+		add_child(soul_shard)
 		queue_free()
 	
 func _on_collider_area_entered(area):
 	if area.is_in_group("player"):
 		player_in_range = true
 		player.speed = 70
+	
+	if area.is_in_group("structures"):
+		structure = area.get_parent()
+		recoil = structure.recoil
+		taking_recoil = true
 
 func _on_collider_area_exited(area):
 	if area.is_in_group("player"):
 		time_since_last_tick = 1.0
 		player.speed = 100
 		player_in_range = false
+		
+	if area.is_in_group("structures"):
+		taking_recoil = false
 
 func _on_tutorial_end_area_entered(area):
 	if area.is_in_group("player"):

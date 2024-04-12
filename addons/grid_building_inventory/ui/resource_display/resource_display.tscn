@@ -1,0 +1,48 @@
+[gd_scene load_steps=5 format=3 uid="uid://cgsmo8657adi3"]
+
+[ext_resource type="Script" path="res://addons/grid_building_inventory/ui/resource_display/resource_display.gd" id="1_xui1t"]
+[ext_resource type="PackedScene" uid="uid://bhtuafpwb14qt" path="res://addons/grid_building_inventory/ui/resource_display/resource_item_display.tscn" id="2_obstr"]
+
+[sub_resource type="Gradient" id="Gradient_g6cnt"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_14xxs"]
+gradient = SubResource("Gradient_g6cnt")
+
+[node name="ResourceDisplay" type="MarginContainer" node_paths=PackedStringArray("grid_container")]
+offset_right = 362.0
+offset_bottom = 76.0
+mouse_filter = 0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+script = ExtResource("1_xui1t")
+item_display_template = ExtResource("2_obstr")
+grid_container = NodePath("NinePatchRect/MarginContainer/GridContainer")
+remove_0_count_display = true
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+self_modulate = Color(1, 1, 1, 0.854902)
+layout_mode = 2
+texture = SubResource("GradientTexture1D_14xxs")
+region_rect = Rect2(56, 128, 32, 32)
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 16
+
+[node name="MarginContainer" type="MarginContainer" parent="NinePatchRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.00015, 1)
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="GridContainer" type="GridContainer" parent="NinePatchRect/MarginContainer"]
+layout_mode = 2

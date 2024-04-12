@@ -10,9 +10,10 @@ size = Vector2(22, 8)
 size = Vector2(7.93651, 20)
 
 [node name="fence" type="StaticBody2D"]
-collision_layer = 32
+collision_layer = 34
 collision_mask = 45
 script = ExtResource("1_gkjw4")
+health = 20
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 6)
@@ -24,7 +25,7 @@ position = Vector2(0, -5)
 texture = ExtResource("1_na4jr")
 
 [node name="CollisionArea" type="Area2D" parent="."]
-collision_layer = 32
+collision_layer = 34
 collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea"]

@@ -1,0 +1,59 @@
+[gd_scene load_steps=6 format=3 uid="uid://bhtuafpwb14qt"]
+
+[ext_resource type="Script" path="res://addons/grid_building_inventory/ui/resource_display/base_item_display.gd" id="1_oe2ql"]
+
+
+[sub_resource type="Gradient" id="Gradient_k8teg"]
+colors = PackedColorArray(0.324219, 0.324219, 0.324219, 1, 0.253906, 0.253906, 0.253906, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_rc2kf"]
+gradient = SubResource("Gradient_k8teg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_abmd0"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+texture = SubResource("GradientTexture1D_rc2kf")
+
+[sub_resource type="LabelSettings" id="LabelSettings_7p72w"]
+shadow_size = 2
+shadow_color = Color(0, 0, 0, 1)
+
+[node name="Panel" type="PanelContainer" node_paths=PackedStringArray("item_texture", "item_label")]
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 75.0
+offset_bottom = 43.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxTexture_abmd0")
+script = ExtResource("1_oe2ql")
+item_texture = NodePath("ResourceItemDisplay/HBoxContainer/ItemTexture")
+item_label = NodePath("ResourceItemDisplay/HBoxContainer/ItemLabel")
+
+[node name="ResourceItemDisplay" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ResourceItemDisplay"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ItemTexture" type="TextureRect" parent="ResourceItemDisplay/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+stretch_mode = 5
+
+[node name="ItemLabel" type="Label" parent="ResourceItemDisplay/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "0"
+label_settings = SubResource("LabelSettings_7p72w")
+vertical_alignment = 1

@@ -22,7 +22,7 @@ window/size/mode=2
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/grid_building/plugin.cfg")
+enabled=PackedStringArray("res://addons/grid_building/plugin.cfg", "res://addons/grid_building_inventory/plugin.cfg")
 
 [input]
 

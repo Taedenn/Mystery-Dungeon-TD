@@ -13,6 +13,8 @@ var sa4 = CollisionShape2D
 var spawn_area = CollisionShape2D
 var spawn_pos = Vector2(0,0)
 var nighttime = false
+var basehealth = 100
+var healthscaling = 0
 
 
 func _ready():
@@ -46,6 +48,7 @@ func _on_spawner_timeout():
 
 		enemy.position = spawn_pos
 		enemy.player_tutorial_end = true
+		enemy.health += healthscaling
 		add_child(enemy)
 
 
@@ -60,3 +63,6 @@ func _on_sunrise_timeout():
 
 func _on_nightfall_timeout():
 	nighttime = false
+	healthscaling += (basehealth * 0.25)
+	basehealth += healthscaling
+	
