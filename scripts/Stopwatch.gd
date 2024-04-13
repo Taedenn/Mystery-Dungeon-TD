@@ -5,10 +5,7 @@ var counter = 1
 var is_stopped := true
 
 func _process(delta: float) -> void:
-	if is_stopped:
-		$"..".visible = false
 	if !is_stopped:
-		$"..".visible = true
 		time_elapsed += delta
 		$".".text = str(time_elapsed).pad_decimals(2)
 

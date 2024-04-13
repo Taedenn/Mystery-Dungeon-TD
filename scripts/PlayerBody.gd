@@ -14,7 +14,16 @@ extends CharacterBody2D
 @onready var nc = $Night_Cycle
 @onready var md = $Midday
 @onready var area2d = $player_area
+
+@onready var full = $"../../CanvasLayer/BoxContainer/PanelContainer/Full"
+@onready var ouch = $"../../CanvasLayer/BoxContainer/PanelContainer/Ouch"
+@onready var half = $"../../CanvasLayer/BoxContainer/PanelContainer/Half"
+@onready var low = $"../../CanvasLayer/BoxContainer/PanelContainer/Low"
+@onready var knockout = $"../../CanvasLayer/BoxContainer/PanelContainer/KnockOut"
+@onready var UI = $"../../CanvasLayer"
+
 @onready var projectile = preload("res://scenes/razor_leaf.tscn")
+@onready var Enemies = preload("res://scripts/Enemy.gd")
 
 var bg_music := AudioStreamPlayer.new()
 var sound_player := AudioStreamPlayer.new()
@@ -27,6 +36,7 @@ var left_tutorial_area = false
 
 var direction = "down"
 
+var max_health = 100
 var health = 100
 var num = 0
 
@@ -50,6 +60,11 @@ func _ready():
 		freeze_input = false
 	
 	hb.init_health(health)
+	full.visible = true
+	ouch.visible = false
+	half.visible = false
+	low.visible = false
+	knockout.visible = false
 	
 	add_child(bg_music)
 	add_child(sound_player)
@@ -154,21 +169,60 @@ func _physics_process(_delta):
 		if Input.is_action_just_pressed("attack"):
 			is_attacking = true
 			
+		if Input.is_action_just_pressed("open_build"):
+			if UI.visible:
+				UI.visible = false
+			else:
+				UI.visible = true
+			
 		if health <= 0:
 			freeze_input = true
+			Enemies.player_tutorial_end = false
 			# play death scene
 			get_tree().reload_current_scene()
 			
 		update_animation()
 
 func _set_health(d):
-	if health > 0:
+	if health - d > 0:
 		health -= d
 		hb._set_health(health)
+		if health > max_health * (4.0/5.0) and health <= max_health:
+			full.visible = true
+			ouch.visible = false
+			half.visible = false
+			low.visible = false
+			knockout.visible = false
+		elif health > max_health * (3.0/5.0) and health < max_health * (4.0/5.0):
+			full.visible = false
+			ouch.visible = true
+			half.visible = false
+			low.visible = false
+			knockout.visible = false
+		elif health > max_health * (2.0/5.0) and health < max_health * (3.0/5.0):
+			full.visible = false
+			ouch.visible = false
+			half.visible = true
+			low.visible = false
+			knockout.visible = false
+		elif health > max_health * (1.0/5.0) and health < max_health * (2.0/5.0):
+			full.visible = false
+			ouch.visible = false
+			half.visible = false
+			low.visible = true
+			knockout.visible = false
+		elif health >= 0 and health < max_health * (1.0/5.0):
+			full.visible = false
+			ouch.visible = false
+			half.visible = false
+			low.visible = false
+			knockout.visible = true
+	elif health - d <= 0: 
+		hb._set_health(0)
 
 func _on_regen_timeout():
 	if health < 100 and health > 0:
-		health += 1
+		health += 2
 		hb._set_health(health)
 
 func wake_up():

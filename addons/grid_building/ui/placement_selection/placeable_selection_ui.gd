@@ -12,7 +12,7 @@ extends Control
 @export var open_actions : Array[StringName] = []
 
 ## Show immediately on ready or not
-@export var show_at_start : bool = false
+@export var show_at_start : bool = true
 
 ## Placeables will be filtered into individual tag categories for placement
 ## Expects display_name and texture properties

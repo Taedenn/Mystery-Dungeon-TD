@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://p7tx0x7sfwtx"]
+[gd_scene load_steps=54 format=3 uid="uid://p7tx0x7sfwtx"]
 
 [ext_resource type="PackedScene" uid="uid://bw27bm0nouknq" path="res://scenes/player.tscn" id="1_03s17"]
 [ext_resource type="Texture2D" uid="uid://7eh803jggcnd" path="res://tilemaps/sat_tiles.png" id="1_aum2n"]
@@ -31,6 +31,11 @@
 [ext_resource type="FontFile" uid="uid://ck6f0v3yk0xf4" path="res://assets/m5x7.ttf" id="25_d3i24"]
 [ext_resource type="Resource" uid="uid://capjqpsvi5h24" path="res://objects/xatu_placeable.tres" id="25_h7lyt"]
 [ext_resource type="Script" path="res://scripts/Stopwatch.gd" id="26_e6skh"]
+[ext_resource type="Texture2D" uid="uid://ble3q482nnmgw" path="res://character_models/Sprigatito_Happy_Emote.png" id="30_77ipl"]
+[ext_resource type="Texture2D" uid="uid://dvu1sn82ypqxi" path="res://character_models/Sprigatito_KnockOut_Emote.png" id="30_yrc4s"]
+[ext_resource type="Texture2D" uid="uid://drk0f1upg0bj5" path="res://character_models/Sprigatito_LowHealth_Emote.png" id="31_f1lly"]
+[ext_resource type="Texture2D" uid="uid://f217gka2d73u" path="res://character_models/Sprigatito_HalfHealth_Emote.png" id="32_gwit7"]
+[ext_resource type="Texture2D" uid="uid://b30ciu7th6tcf" path="res://character_models/Sprigatito_Ouch_Emote.png" id="33_bpoxt"]
 
 [sub_resource type="Resource" id="Resource_tw68v"]
 script = ExtResource("4_inuow")
@@ -303,6 +308,12 @@ texture_margin_bottom = 10.0
 Panel/styles/panel = SubResource("StyleBoxTexture_4f52o")
 PanelContainer/styles/panel = ExtResource("20_7xf2f")
 
+[sub_resource type="Theme" id="Theme_12tbb"]
+PanelContainer/styles/panel = ExtResource("20_7xf2f")
+
+[sub_resource type="Theme" id="Theme_ksj8p"]
+PanelContainer/styles/panel = ExtResource("20_7xf2f")
+
 [node name="Main" type="Node2D"]
 script = ExtResource("1_xco7g")
 
@@ -370,9 +381,6 @@ _slots = Array[ExtResource("11_4q3sb")]([SubResource("Resource_8ro8j")])
 
 [node name="sleep" parent="World/Player" index="4"]
 visible = true
-
-[node name="PlayerAnimations" parent="World/Player" index="9"]
-blend_times = [&"walk_down_right", &"walk_down", 0.001]
 
 [node name="Day_Cycle" parent="World/Player" index="13"]
 wait_time = 30.0
@@ -1118,10 +1126,14 @@ shape = SubResource("CircleShape2D_u8afx")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="BoxContainer" type="BoxContainer" parent="CanvasLayer"]
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 410.0
-offset_bottom = 554.0
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 66.0
+offset_top = -474.0
+offset_right = 466.0
+offset_bottom = 474.0
+grow_vertical = 2
 vertical = true
 
 [node name="Catalogue" type="PanelContainer" parent="CanvasLayer/BoxContainer"]
@@ -1135,20 +1147,18 @@ layout_direction = 2
 layout_mode = 2
 theme = SubResource("Theme_ryng5")
 building_system = NodePath("../../../../Systems/BuildingSystem")
-open_actions = Array[StringName]([&"open_build"])
 category_tags = Array[Resource("res://addons/grid_building/categorical_tag.gd")]([ExtResource("16_ocekn"), ExtResource("23_lhlbw")])
 placeables = Array[Resource("res://addons/grid_building/building_system/placeable/placeable.gd")]([ExtResource("17_g8tpr"), ExtResource("25_h7lyt")])
 
 [node name="BoxContainer" type="BoxContainer" parent="CanvasLayer/BoxContainer"]
 layout_mode = 2
 
-[node name="BaseItemDisplay" type="PanelContainer" parent="CanvasLayer/BoxContainer/BoxContainer" node_paths=PackedStringArray("item_texture", "item_label", "amount_label")]
+[node name="BaseItemDisplay" type="PanelContainer" parent="CanvasLayer/BoxContainer/BoxContainer" node_paths=PackedStringArray("item_texture", "amount_label")]
 custom_minimum_size = Vector2(130, 130)
 layout_mode = 2
 theme = SubResource("Theme_hmodl")
 script = ExtResource("22_876ad")
 item_texture = NodePath("GridContainer/TextureRect")
-item_label = NodePath("")
 amount_label = NodePath("GridContainer/Amount")
 
 [node name="GridContainer" type="GridContainer" parent="CanvasLayer/BoxContainer/BoxContainer/BaseItemDisplay"]
@@ -1185,6 +1195,58 @@ theme_override_font_sizes/font_size = 96
 horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("26_e6skh")
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/BoxContainer"]
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 2
+theme = SubResource("Theme_12tbb")
+
+[node name="KnockOut" type="TextureRect" parent="CanvasLayer/BoxContainer/PanelContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("30_yrc4s")
+stretch_mode = 5
+
+[node name="Low" type="TextureRect" parent="CanvasLayer/BoxContainer/PanelContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("31_f1lly")
+stretch_mode = 5
+
+[node name="Half" type="TextureRect" parent="CanvasLayer/BoxContainer/PanelContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("32_gwit7")
+stretch_mode = 5
+
+[node name="Ouch" type="TextureRect" parent="CanvasLayer/BoxContainer/PanelContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("33_bpoxt")
+stretch_mode = 5
+
+[node name="Full" type="TextureRect" parent="CanvasLayer/BoxContainer/PanelContainer"]
+layout_mode = 2
+texture = ExtResource("30_77ipl")
+stretch_mode = 5
+
+[node name="TextboxCanvas" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Textbox" type="PanelContainer" parent="TextboxCanvas"]
+anchors_preset = -1
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 468.0
+offset_top = 75.0
+offset_right = 1294.0
+offset_bottom = 474.0
+grow_vertical = 2
+theme = SubResource("Theme_ksj8p")
+
+[node name="Label" type="Label" parent="TextboxCanvas/Textbox"]
+custom_minimum_size = Vector2(1200, 380)
+layout_mode = 2
 
 [node name="Enemies" type="Node2D" parent="."]
 

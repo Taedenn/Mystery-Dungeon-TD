@@ -357,6 +357,7 @@ libraries = {
 }
 
 [node name="healthbar" parent="." instance=ExtResource("3_mrusb")]
+visible = false
 offset_left = -19.0
 offset_top = -27.0
 offset_right = 20.0

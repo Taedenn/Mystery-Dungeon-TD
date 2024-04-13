@@ -21,7 +21,7 @@ locator = ExtResource("3_kn0x6")
 
 [resource]
 script = ExtResource("1_6udr5")
-display_name = &"Spiked Fence"
+display_name = &"Spiked Fence (1)"
 icon = ExtResource("1_ii5ed")
 packed_scene = ExtResource("2_sctj3")
 tags = Array[Resource]([ExtResource("4_7nghm")])
