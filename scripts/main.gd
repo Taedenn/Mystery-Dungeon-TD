@@ -1,9 +1,16 @@
 extends Node2D
 
-var zubat_scene = preload("res://scenes/Zubat.tscn")
-var gligar_scene = preload("res://scenes/Gligar.tscn")
-var sableye_scene = preload("res://scenes/Sableye.tscn")
-var banette_scene = preload("res://scenes/Banette.tscn")
+@onready var zubat_scene = preload("res://scenes/Zubat.tscn")
+@onready var gligar_scene = preload("res://scenes/Gligar.tscn")
+@onready var sableye_scene = preload("res://scenes/Sableye.tscn")
+@onready var banette_scene = preload("res://scenes/Banette.tscn")
+@onready var soul_shard_scene = preload("res://scenes/soul_shard.tscn")
+
+@onready var world_enemies = $Enemies
+@onready var player = $World/Player
+@onready var item_container = $World/Player/Camera2D/ItemContainer
+@onready var stopwatch = $CanvasLayer/BoxContainer/BoxContainer/Stopwatch/Time
+
 var player_tutorial_end = false
 
 var sa1 = CollisionShape2D
@@ -22,6 +29,7 @@ func _ready():
 	sa2 = $World/Spawners/Spawn_Area_2/sa2
 	sa3 = $World/Spawners/Spawn_Area_3/sa3
 	sa4 = $World/Spawners/Spawn_Area_4/sa4
+	
 	
 
 func _on_spawner_timeout():
@@ -49,12 +57,13 @@ func _on_spawner_timeout():
 		enemy.position = spawn_pos
 		enemy.player_tutorial_end = true
 		enemy.health += healthscaling
-		add_child(enemy)
+		world_enemies.add_child(enemy)
 
 
 func _on_tutorial_end_area_entered(area):
 	if area.is_in_group("player"):
 		player_tutorial_end = true
+		stopwatch.start()
 
 
 func _on_sunrise_timeout():
@@ -66,3 +75,11 @@ func _on_nightfall_timeout():
 	healthscaling += (basehealth * 0.25)
 	basehealth += healthscaling
 	
+	for x in range(5):
+		var soul_shard = soul_shard_scene.instantiate()
+		soul_shard.position = player.position
+		world_enemies.add_child(soul_shard)
+
+
+func _on_midday_timeout():
+	nighttime = true

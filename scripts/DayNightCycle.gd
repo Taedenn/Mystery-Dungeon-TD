@@ -13,6 +13,7 @@ var tutorial_end = false
 
 @onready var nf = $Nightfall
 @onready var sr = $Sunrise
+@onready var md = $Midday
 
 func _process(delta:float) -> void:
 	self.time += delta * TIME_SCALE
@@ -38,7 +39,13 @@ func _on_night_cycle_timeout():
 
 func _on_tutorial_end_area_entered(_area):
 	if not tutorial_end:
-		sr.start()
+		md.start()
 		sunrise = true
 		nightfall = false
 		tutorial_end = true
+
+
+func _on_midday_timeout():
+	nf.start()
+	sunrise = false
+	nightfall = true

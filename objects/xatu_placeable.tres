@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="Placeable" load_steps=11 format=3 uid="uid://capjqpsvi5h24"]
+
+[ext_resource type="Texture2D" uid="uid://b14wuft11nb6y" path="res://assets/xatu.png" id="1_7gpks"]
+[ext_resource type="Script" path="res://addons/grid_building/building_system/placeable/placeable.gd" id="1_oxjk0"]
+[ext_resource type="PackedScene" uid="uid://boxs2shmlbmwn" path="res://objects/xatu.tscn" id="2_6tqld"]
+[ext_resource type="Resource" uid="uid://ht43mx5sifwv" path="res://resources/item_container_locator.tres" id="3_wvvcm"]
+[ext_resource type="Resource" uid="uid://c6wcdo8xicrve" path="res://objects/Categorical_Tags/tower_tag.tres" id="4_fo5u0"]
+[ext_resource type="Script" path="res://addons/grid_building/building_system/building_rules/template_rules/resources/resource_stack.gd" id="4_t2drc"]
+[ext_resource type="Resource" uid="uid://u6mqp04h8dtt" path="res://materials/soul_shard.tres" id="5_713ph"]
+[ext_resource type="Script" path="res://addons/grid_building/building_system/building_rules/template_rules/spend_materials_rule_generic.gd" id="6_cskee"]
+
+[sub_resource type="Resource" id="Resource_mg0s7"]
+script = ExtResource("4_t2drc")
+type = ExtResource("5_713ph")
+count = 2
+
+[sub_resource type="Resource" id="Resource_dhyge"]
+script = ExtResource("6_cskee")
+resource_stacks_to_spend = Array[ExtResource("4_t2drc")]([SubResource("Resource_mg0s7")])
+locator = ExtResource("3_wvvcm")
+
+[resource]
+script = ExtResource("1_oxjk0")
+display_name = &"Xatu Totem"
+icon = ExtResource("1_7gpks")
+packed_scene = ExtResource("2_6tqld")
+tags = Array[Resource]([ExtResource("4_fo5u0")])
+placement_rules = Array[Resource("res://addons/grid_building/building_system/building_rules/building_rule.gd")]([SubResource("Resource_dhyge")])
+preview_excluded_nodes = Array[NodePath]([])
+ignore_base_rules = false
+rotateable = false
+flippable_h = false
+flippable_v = false

@@ -318,7 +318,7 @@ _data = {
 [node name="Banette" type="CharacterBody2D"]
 position = Vector2(0, 1)
 collision_layer = 8
-collision_mask = 45
+collision_mask = 41
 script = ExtResource("1_p6c1o")
 health = 100
 

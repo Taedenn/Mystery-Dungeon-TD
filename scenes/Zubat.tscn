@@ -317,7 +317,7 @@ _data = {
 
 [node name="Zubat" type="CharacterBody2D"]
 collision_layer = 8
-collision_mask = 45
+collision_mask = 41
 script = ExtResource("1_v005v")
 health = 100
 damage = 2
@@ -357,7 +357,6 @@ libraries = {
 }
 
 [node name="healthbar" parent="." instance=ExtResource("3_mrusb")]
-visible = false
 offset_left = -19.0
 offset_top = -27.0
 offset_right = 20.0

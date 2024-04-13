@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BaseItem" load_steps=3 format=3 uid="uid://lahjyalye0qa"]
+
+[ext_resource type="Script" path="res://addons/grid_building_inventory/items/base_item.gd" id="1_6bk1m"]
+[ext_resource type="Texture2D" uid="uid://c6jiyoyqkdbky" path="res://assets/soul_shard_mini.png" id="1_o1t0j"]
+
+[resource]
+script = ExtResource("1_6bk1m")
+display_name = ""
+icon = ExtResource("1_o1t0j")
+tags = Array[Resource]([])
+stack_maximum = 1

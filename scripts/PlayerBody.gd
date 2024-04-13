@@ -12,6 +12,7 @@ extends CharacterBody2D
 @onready var hb = $healthbar
 @onready var dc = $Day_Cycle
 @onready var nc = $Night_Cycle
+@onready var md = $Midday
 @onready var area2d = $player_area
 @onready var projectile = preload("res://scenes/razor_leaf.tscn")
 
@@ -203,5 +204,11 @@ func _on_player_area_area_entered(area):
 func _on_tutorial_end_area_entered(_area):
 	if not left_tutorial_area:
 		background_music_day()
-		dc.start()
+		md.start()
 		left_tutorial_area = true
+
+
+func _on_midday_timeout():
+	bg_music.stop()
+	background_music_night()
+	nc.start()

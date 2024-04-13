@@ -2,6 +2,7 @@ extends StaticBody2D
 
 @onready var player = $"../../World/Player"
 @onready var soul_shard_material = preload("res://materials/soul_shard.tres")
+@onready var item_display = $"../../CanvasLayer/BoxContainer/BoxContainer/BaseItemDisplay"
 
 var detection_radius = 100
 var pickup_radius = 5
@@ -27,6 +28,7 @@ func pick_up_shard():
 	var inventory = $"../../World/Player/Camera2D/ItemContainer"
 	var shard_item = soul_shard_material
 	var added_amount = inventory.try_add(shard_item, 1)
+	item_display.update_inventory_display()
 	
 	if added_amount > 0:
 		queue_free()

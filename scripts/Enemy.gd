@@ -7,27 +7,31 @@ extends CharacterBody2D
 const DAMAGE_TICK_INTERVAL = 0.8
 const ATTACK_INTERVAL = 0.1
 
-@onready var player = $"../World/Player"
+@onready var player = $"../../World/Player"
 @onready var _animated_enemy = $EnemyAnimations
 @onready var areaCollider = $AreaCollider
 @onready var hb = $healthbar
 @onready var walk = $walk
 @onready var hurt = $hurt
+@onready var Enemy_Container = $".."
 @onready var soul_shard_scene = preload("res://scenes/soul_shard.tscn")
 
 var direction = position
 var structure = StaticBody2D
+var hazard = Area2D
 
 var dir = "down"
 var time_since_last_tick = 1.0
 var attack_cooldown_timer = 0.0
 var speed = 50
 var recoil = 0
+var hazard_tick = 0
 var is_hurt = false
 var is_vulnerable = true
 var player_in_range = false
 var damage_tick = true
 var taking_recoil = false
+var hazard_damage = false
 
 func _ready():
 	walk.visible = true
@@ -69,7 +73,12 @@ func update_animations(_delta):
 func _physics_process(delta):
 	time_since_last_tick += delta
 	attack_cooldown_timer += delta
-	if taking_recoil:
+	if hazard_damage:
+		if time_since_last_tick >= (DAMAGE_TICK_INTERVAL / 1.2):
+			set_health(hazard_tick)
+			time_since_last_tick = 0.0
+			
+	elif taking_recoil:
 		if time_since_last_tick >= DAMAGE_TICK_INTERVAL:
 			set_health(recoil)
 			time_since_last_tick = 0.0
@@ -104,9 +113,10 @@ func set_health(d):
 		hurt.visible = true
 		_animated_enemy.play("hurt_" + dir)
 		await _animated_enemy.animation_finished
-		var soul_shard = soul_shard_scene.instantiate()
-		soul_shard.position = self.position
-		add_child(soul_shard)
+		if Enemy_Container != null:
+			var soul_shard = soul_shard_scene.instantiate()
+			soul_shard.global_position = position
+			Enemy_Container.add_child(soul_shard)
 		queue_free()
 	
 func _on_collider_area_entered(area):
@@ -118,6 +128,12 @@ func _on_collider_area_entered(area):
 		structure = area.get_parent()
 		recoil = structure.recoil
 		taking_recoil = true
+	
+	if area.is_in_group("hazards"):
+		hazard = area.get_parent()
+		print(hazard.aura)
+		hazard_tick = hazard.aura
+		hazard_damage = true
 
 func _on_collider_area_exited(area):
 	if area.is_in_group("player"):
@@ -127,6 +143,9 @@ func _on_collider_area_exited(area):
 		
 	if area.is_in_group("structures"):
 		taking_recoil = false
+		
+	if area.is_in_group("hazards"):
+		hazard_damage = false
 
 func _on_tutorial_end_area_entered(area):
 	if area.is_in_group("player"):

@@ -317,7 +317,7 @@ _data = {
 
 [node name="Sableye" type="CharacterBody2D"]
 collision_layer = 8
-collision_mask = 45
+collision_mask = 41
 script = ExtResource("1_8ws2x")
 health = 100
 

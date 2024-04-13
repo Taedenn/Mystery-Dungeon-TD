@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://p7tx0x7sfwtx"]
+[gd_scene load_steps=47 format=3 uid="uid://p7tx0x7sfwtx"]
 
 [ext_resource type="PackedScene" uid="uid://bw27bm0nouknq" path="res://scenes/player.tscn" id="1_03s17"]
 [ext_resource type="Texture2D" uid="uid://7eh803jggcnd" path="res://tilemaps/sat_tiles.png" id="1_aum2n"]
@@ -17,15 +17,22 @@
 [ext_resource type="Script" path="res://addons/grid_building_inventory/items/base_item_stack.gd" id="11_4q3sb"]
 [ext_resource type="Texture2D" uid="uid://bt5qoeq1i1ld3" path="res://assets/stons.png" id="11_lyh5t"]
 [ext_resource type="Resource" uid="uid://u6mqp04h8dtt" path="res://materials/soul_shard.tres" id="12_vaedw"]
-[ext_resource type="Texture2D" uid="uid://b5hyukneecg2u" path="res://assets/soul_shard.png" id="12_yxwi3"]
 [ext_resource type="PackedScene" uid="uid://b85csecsg3tsa" path="res://addons/grid_building/grid_targeting_system/grid_targeter/grid_targeter.tscn" id="14_m3t5n"]
 [ext_resource type="PackedScene" uid="uid://erm78oe3trac" path="res://addons/grid_building/ui/placement_selection/placeable_selection_ui.tscn" id="15_qq2s4"]
 [ext_resource type="Resource" uid="uid://co7ln6rgr0o4x" path="res://objects/Categorical_Tags/wall_tag.tres" id="16_ocekn"]
 [ext_resource type="Resource" uid="uid://8n0bwarataxy" path="res://objects/fence_placeable.tres" id="17_g8tpr"]
 [ext_resource type="PackedScene" uid="uid://c8ojrn6h4bmri" path="res://scenes/Zubat.tscn" id="19_07kjx"]
+[ext_resource type="StyleBox" uid="uid://danwv2f5syeji" path="res://resources/textbox_resource.tres" id="20_7xf2f"]
+[ext_resource type="Texture2D" uid="uid://i0cf6nlnqd2" path="res://assets/text_box.png" id="22_3hne5"]
 [ext_resource type="Script" path="res://addons/grid_building_inventory/ui/resource_display/base_item_display.gd" id="22_876ad"]
+[ext_resource type="Resource" uid="uid://c6wcdo8xicrve" path="res://objects/Categorical_Tags/tower_tag.tres" id="23_lhlbw"]
+[ext_resource type="Texture2D" uid="uid://c6jiyoyqkdbky" path="res://assets/soul_shard_mini.png" id="24_kfuv2"]
+[ext_resource type="PackedScene" uid="uid://d4gityf6073j8" path="res://scenes/soul_shard.tscn" id="25_6tesc"]
+[ext_resource type="FontFile" uid="uid://ck6f0v3yk0xf4" path="res://assets/m5x7.ttf" id="25_d3i24"]
+[ext_resource type="Resource" uid="uid://capjqpsvi5h24" path="res://objects/xatu_placeable.tres" id="25_h7lyt"]
+[ext_resource type="Script" path="res://scripts/Stopwatch.gd" id="26_e6skh"]
 
-[sub_resource type="Resource" id="Resource_418yo"]
+[sub_resource type="Resource" id="Resource_tw68v"]
 script = ExtResource("4_inuow")
 pass_on_collision = false
 collision_mask = 45
@@ -41,7 +48,7 @@ visual_priority = 0
 
 [sub_resource type="Resource" id="Resource_yly6e"]
 script = ExtResource("4_jeb5k")
-base_rules = Array[Resource("res://addons/grid_building/building_system/building_rules/building_rule.gd")]([SubResource("Resource_418yo")])
+base_rules = Array[Resource("res://addons/grid_building/building_system/building_rules/building_rule.gd")]([SubResource("Resource_tw68v")])
 all_succeeded_message = "All building placement validation checks passed"
 failed_validations_message = "--- Rules Failed ---"
 failed_message_base = "Failed Placement"
@@ -274,6 +281,28 @@ radius = 127.035
 [sub_resource type="CircleShape2D" id="CircleShape2D_u8afx"]
 radius = 110.114
 
+[sub_resource type="Theme" id="Theme_ymw8k"]
+PanelContainer/styles/panel = ExtResource("20_7xf2f")
+
+[sub_resource type="Theme" id="Theme_ryng5"]
+default_font = ExtResource("25_d3i24")
+default_font_size = 24
+PanelContainer/styles/panel = ExtResource("20_7xf2f")
+
+[sub_resource type="Theme" id="Theme_hmodl"]
+PanelContainer/styles/panel = ExtResource("20_7xf2f")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4f52o"]
+texture = ExtResource("22_3hne5")
+texture_margin_left = 13.0
+texture_margin_top = 10.0
+texture_margin_right = 13.0
+texture_margin_bottom = 10.0
+
+[sub_resource type="Theme" id="Theme_q7uvs"]
+Panel/styles/panel = SubResource("StyleBoxTexture_4f52o")
+PanelContainer/styles/panel = ExtResource("20_7xf2f")
+
 [node name="Main" type="Node2D"]
 script = ExtResource("1_xco7g")
 
@@ -339,22 +368,38 @@ sleepy_start = false
 script = ExtResource("10_nb7a6")
 _slots = Array[ExtResource("11_4q3sb")]([SubResource("Resource_8ro8j")])
 
+[node name="sleep" parent="World/Player" index="4"]
+visible = true
+
+[node name="PlayerAnimations" parent="World/Player" index="9"]
+blend_times = [&"walk_down_right", &"walk_down", 0.001]
+
+[node name="Day_Cycle" parent="World/Player" index="13"]
+wait_time = 30.0
+
+[node name="Night_Cycle" parent="World/Player" index="14"]
+wait_time = 30.0
+
 [node name="CanvasModulate" type="CanvasModulate" parent="World"]
 script = ExtResource("4_entqq")
 
 [node name="Nightfall" type="Timer" parent="World/CanvasModulate"]
-wait_time = 60.0
+wait_time = 30.0
 one_shot = true
 
 [node name="Sunrise" type="Timer" parent="World/CanvasModulate"]
-wait_time = 60.0
+wait_time = 30.0
+one_shot = true
+
+[node name="Midday" type="Timer" parent="World/CanvasModulate"]
+wait_time = 30.0
 one_shot = true
 
 [node name="TutorialEnd" type="Area2D" parent="World"]
 collision_layer = 0
 
 [node name="LeavingTutorialArea" type="CollisionShape2D" parent="World/TutorialEnd"]
-position = Vector2(0.5, 146)
+position = Vector2(-1, 166)
 shape = SubResource("RectangleShape2D_64v5p")
 
 [node name="AssetFolder" type="Node2D" parent="World"]
@@ -1072,63 +1117,94 @@ shape = SubResource("CircleShape2D_u8afx")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="PlaceableSelectionUI" parent="CanvasLayer" node_paths=PackedStringArray("building_system") instance=ExtResource("15_qq2s4")]
+[node name="BoxContainer" type="BoxContainer" parent="CanvasLayer"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 410.0
+offset_bottom = 554.0
+vertical = true
+
+[node name="Catalogue" type="PanelContainer" parent="CanvasLayer/BoxContainer"]
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 2
+theme = SubResource("Theme_ymw8k")
+
+[node name="PlaceableSelectionUI" parent="CanvasLayer/BoxContainer/Catalogue" node_paths=PackedStringArray("building_system") instance=ExtResource("15_qq2s4")]
 custom_minimum_size = Vector2(360, 360)
 layout_direction = 2
-anchor_left = 0.05
-anchor_top = 0.5
-anchor_right = 0.05
-anchor_bottom = 0.5
-offset_top = -180.0
-offset_right = 360.0
-offset_bottom = 180.0
-grow_vertical = 2
-building_system = NodePath("../../Systems/BuildingSystem")
+layout_mode = 2
+theme = SubResource("Theme_ryng5")
+building_system = NodePath("../../../../Systems/BuildingSystem")
 open_actions = Array[StringName]([&"open_build"])
-category_tags = Array[Resource("res://addons/grid_building/categorical_tag.gd")]([ExtResource("16_ocekn")])
-placeables = Array[Resource("res://addons/grid_building/building_system/placeable/placeable.gd")]([ExtResource("17_g8tpr")])
+category_tags = Array[Resource("res://addons/grid_building/categorical_tag.gd")]([ExtResource("16_ocekn"), ExtResource("23_lhlbw")])
+placeables = Array[Resource("res://addons/grid_building/building_system/placeable/placeable.gd")]([ExtResource("17_g8tpr"), ExtResource("25_h7lyt")])
 
-[node name="BaseItemDisplay" type="PanelContainer" parent="CanvasLayer/PlaceableSelectionUI" node_paths=PackedStringArray("item_texture", "item_label")]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.05
-anchor_top = 0.682
-anchor_right = 0.05
-anchor_bottom = 0.682
-offset_left = -18.0
-offset_top = 131.04
-offset_right = 78.0
-offset_bottom = 252.04
-scale = Vector2(1, 0.992047)
+[node name="BoxContainer" type="BoxContainer" parent="CanvasLayer/BoxContainer"]
+layout_mode = 2
+
+[node name="BaseItemDisplay" type="PanelContainer" parent="CanvasLayer/BoxContainer/BoxContainer" node_paths=PackedStringArray("item_texture", "item_label", "amount_label")]
+custom_minimum_size = Vector2(130, 130)
+layout_mode = 2
+theme = SubResource("Theme_hmodl")
 script = ExtResource("22_876ad")
 item_texture = NodePath("GridContainer/TextureRect")
-item_label = NodePath("GridContainer/Label")
+item_label = NodePath("")
+amount_label = NodePath("GridContainer/Amount")
 
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/PlaceableSelectionUI/BaseItemDisplay"]
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/BoxContainer/BoxContainer/BaseItemDisplay"]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/PlaceableSelectionUI/BaseItemDisplay/GridContainer"]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/BoxContainer/BoxContainer/BaseItemDisplay/GridContainer"]
 custom_minimum_size = Vector2(90, 90)
 layout_mode = 2
-texture = ExtResource("12_yxwi3")
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("24_kfuv2")
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="CanvasLayer/PlaceableSelectionUI/BaseItemDisplay/GridContainer"]
+[node name="Amount" type="Label" parent="CanvasLayer/BoxContainer/BoxContainer/BaseItemDisplay/GridContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 17
-text = "Soul Shards"
+theme_override_fonts/font = ExtResource("25_d3i24")
+theme_override_font_sizes/font_size = 36
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Zubat" parent="." instance=ExtResource("19_07kjx")]
+[node name="Update" type="Timer" parent="CanvasLayer/BoxContainer/BoxContainer/BaseItemDisplay"]
+wait_time = 0.1
+autostart = true
+
+[node name="Stopwatch" type="PanelContainer" parent="CanvasLayer/BoxContainer/BoxContainer"]
+custom_minimum_size = Vector2(266, 0)
+layout_mode = 2
+theme = SubResource("Theme_q7uvs")
+
+[node name="Time" type="Label" parent="CanvasLayer/BoxContainer/BoxContainer/Stopwatch"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("25_d3i24")
+theme_override_font_sizes/font_size = 96
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("26_e6skh")
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="SoulShard" parent="Enemies" instance=ExtResource("25_6tesc")]
+position = Vector2(0, 232)
+
+[node name="Zubat" parent="Enemies" instance=ExtResource("19_07kjx")]
+position = Vector2(-4, 175)
+player_tutorial_end = true
 
 [connection signal="timeout" from="World/CanvasModulate/Nightfall" to="." method="_on_nightfall_timeout"]
 [connection signal="timeout" from="World/CanvasModulate/Nightfall" to="World/CanvasModulate" method="_on_day_cycle_timeout"]
 [connection signal="timeout" from="World/CanvasModulate/Sunrise" to="." method="_on_sunrise_timeout"]
 [connection signal="timeout" from="World/CanvasModulate/Sunrise" to="World/CanvasModulate" method="_on_night_cycle_timeout"]
+[connection signal="timeout" from="World/CanvasModulate/Midday" to="." method="_on_midday_timeout"]
+[connection signal="timeout" from="World/CanvasModulate/Midday" to="World/CanvasModulate" method="_on_midday_timeout"]
 [connection signal="area_entered" from="World/TutorialEnd" to="." method="_on_tutorial_end_area_entered"]
 [connection signal="area_entered" from="World/TutorialEnd" to="World/Player" method="_on_tutorial_end_area_entered"]
 [connection signal="area_entered" from="World/TutorialEnd" to="World/CanvasModulate" method="_on_tutorial_end_area_entered"]
 [connection signal="timeout" from="World/Spawners/Spawner" to="." method="_on_spawner_timeout"]
+[connection signal="timeout" from="CanvasLayer/BoxContainer/BoxContainer/BaseItemDisplay/Update" to="CanvasLayer/BoxContainer/BoxContainer/BaseItemDisplay" method="_on_update_timeout"]
 
 [editable path="World/Player"]
