@@ -21,8 +21,9 @@ extends CharacterBody2D
 @onready var low = $"../../CanvasLayer/BoxContainer/PanelContainer/Low"
 @onready var knockout = $"../../CanvasLayer/BoxContainer/PanelContainer/KnockOut"
 @onready var UI = $"../../CanvasLayer"
+@onready var scroll = $"../sigil/Scroll"
 
-@onready var projectile = preload("res://scenes/razor_leaf.tscn")
+@onready var DialogueBoxStartScene = preload("res://scenes/dialogue_box.tscn")
 @onready var Enemies = preload("res://scripts/Enemy.gd")
 
 var bg_music := AudioStreamPlayer.new()
@@ -33,25 +34,37 @@ var shooting = false
 var is_attacking = false
 var freeze_input = true
 var left_tutorial_area = false
+var is_dead = false
 
 var direction = "down"
 
-var max_health = 100
-var health = 100
+@export var max_health := 100
+@export var regen := 2
+var health
 var num = 0
+var dialogue
+var dialogue_finished = false
 
 func _ready():
 	self.add_to_group("player", true)
 	area2d.add_to_group("player", true)
 	
 	if sleepy_start:
+		scroll.visible = true
 		hb.visible = false
 		walk.visible = false
 		attack.visible = false
 		wake.visible = false
 		sleep.visible = true
-		_animated_sprite.play("sleep")	
+		_animated_sprite.play("sleep")
+		dialogue = DialogueBoxStartScene.instantiate()
+		dialogue.messages = [
+			"If you're reading this, you're finally awake...",  
+			"I'm protecting you from the others noticing your presence... But once you leave this area they'll start coming for you at night...",
+			"You can generate defenses using Soul Shards... I've left some behind for you. Good luck."]
+		dialogue.connect("label_finished", _on_label_finished)
 	else:
+		scroll.visible = false
 		hb.visible = true
 		wake.visible = false
 		attack.visible= false
@@ -59,6 +72,7 @@ func _ready():
 		walk.visible = true
 		freeze_input = false
 	
+	health = max_health
 	hb.init_health(health)
 	full.visible = true
 	ouch.visible = false
@@ -107,14 +121,16 @@ func get_input():
 
 func update_animation():
 	if velocity.length() == 0:
-		if not is_attacking:
+		if is_dead:
+			_animated_sprite.play("sleep")
+			await $PlayerAnimations.animation_finished
+		elif not is_attacking:
 			_animated_sprite.stop()
 			return
 		else:
 			attack.visible = true
 			walk.visible = false
 			_animated_sprite.play("attack_" + direction)
-			# shoot()
 			await $PlayerAnimations.animation_finished
 			shooting = false
 			is_attacking = false
@@ -140,7 +156,6 @@ func update_animation():
 		_animated_sprite.play("attack_" + direction, false)
 		attack.visible = true
 		walk.visible = false
-		# shoot()
 		await $PlayerAnimations.animation_finished
 		shooting = false
 		is_attacking = false
@@ -150,15 +165,6 @@ func update_animation():
 			_animated_sprite.play("walk_" + direction)
 			attack.visible = false
 			walk.visible = true
-
-func shoot():
-	if not shooting:
-		shooting = true
-		var bullet = projectile.instantiate()
-		get_parent().add_child(bullet)
-		var pos = position
-		pos.y += 46
-		bullet.shoot(pos)
 
 func _physics_process(_delta):
 	if not freeze_input:
@@ -176,12 +182,14 @@ func _physics_process(_delta):
 				UI.visible = true
 			
 		if health <= 0:
+			is_dead = true
 			freeze_input = true
-			Enemies.player_tutorial_end = false
-			# play death scene
-			get_tree().reload_current_scene()
 			
 		update_animation()
+		
+	elif is_dead:
+		update_animation()
+		get_tree().change_scene_to_file("res://scenes/death_scene.tscn")
 
 func _set_health(d):
 	if health - d > 0:
@@ -217,13 +225,18 @@ func _set_health(d):
 			half.visible = false
 			low.visible = false
 			knockout.visible = true
-	elif health - d <= 0: 
+	else:
+		full.visible = false
+		ouch.visible = false
+		half.visible = false
+		low.visible = false
+		knockout.visible = true
+		health = 0
 		hb._set_health(0)
 
 func _on_regen_timeout():
-	if health < 100 and health > 0:
-		health += 2
-		hb._set_health(health)
+	if health < max_health and health > 0:
+		_set_health(-regen)
 
 func wake_up():
 	wake.visible = true
@@ -232,8 +245,13 @@ func wake_up():
 	await $PlayerAnimations.animation_finished
 	wake.visible = false
 	walk.visible = true
-	hb.visible = true
+	
+	add_child(dialogue)
+
+func _on_label_finished():
 	freeze_input = false
+	hb.visible = true
+	scroll.visible = false
 
 func _on_sleeping_timeout():
 	if sleepy_start:
@@ -249,18 +267,15 @@ func _on_night_cycle_timeout():
 	background_music_day()
 	dc.start()
 
-
 func _on_player_area_area_entered(area):
 	if area.is_in_group("enemies"):
 		pass
-
 
 func _on_tutorial_end_area_entered(_area):
 	if not left_tutorial_area:
 		background_music_day()
 		md.start()
 		left_tutorial_area = true
-
 
 func _on_midday_timeout():
 	bg_music.stop()

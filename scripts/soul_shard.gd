@@ -8,9 +8,6 @@ var detection_radius = 100
 var pickup_radius = 5
 var move_speed = 75
 
-func _ready():
-	pass
-
 func _process(delta):
 	var distance_to_player = global_position.distance_to(player.global_position)
 	if distance_to_player < detection_radius:

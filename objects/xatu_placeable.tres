@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Placeable" load_steps=11 format=3 uid="uid://capjqpsvi5h24"]
 
-[ext_resource type="Texture2D" uid="uid://b14wuft11nb6y" path="res://assets/xatu.png" id="1_7gpks"]
 [ext_resource type="Script" path="res://addons/grid_building/building_system/placeable/placeable.gd" id="1_oxjk0"]
+[ext_resource type="Texture2D" uid="uid://nye6g1je1wpi" path="res://attacks/xatu_aura_idle.png" id="1_papqj"]
 [ext_resource type="PackedScene" uid="uid://boxs2shmlbmwn" path="res://objects/xatu.tscn" id="2_6tqld"]
 [ext_resource type="Resource" uid="uid://ht43mx5sifwv" path="res://resources/item_container_locator.tres" id="3_wvvcm"]
 [ext_resource type="Resource" uid="uid://c6wcdo8xicrve" path="res://objects/Categorical_Tags/tower_tag.tres" id="4_fo5u0"]
@@ -22,7 +22,7 @@ locator = ExtResource("3_wvvcm")
 [resource]
 script = ExtResource("1_oxjk0")
 display_name = &"Xatu Totem (2)"
-icon = ExtResource("1_7gpks")
+icon = ExtResource("1_papqj")
 packed_scene = ExtResource("2_6tqld")
 tags = Array[Resource]([ExtResource("4_fo5u0")])
 placement_rules = Array[Resource("res://addons/grid_building/building_system/building_rules/building_rule.gd")]([SubResource("Resource_dhyge")])

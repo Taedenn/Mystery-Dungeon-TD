@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://u4vugkvxckav"
-path="res://.godot/imported/razor_leaf.png-e70d01ffebba33fc5ef2a5d4a41359d0.ctex"
+uid="uid://8t4llo64mi6w"
+path="res://.godot/imported/cascoon_attack.png-5c26f7d8d3210646c2a3b8046abc7e8b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://attacks/razor_leaf.png"
-dest_files=["res://.godot/imported/razor_leaf.png-e70d01ffebba33fc5ef2a5d4a41359d0.ctex"]
+source_file="res://attacks/cascoon_attack.png"
+dest_files=["res://.godot/imported/cascoon_attack.png-5c26f7d8d3210646c2a3b8046abc7e8b.ctex"]
 
 [params]
 

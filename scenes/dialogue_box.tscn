@@ -1,0 +1,48 @@
+[gd_scene load_steps=5 format=3 uid="uid://x6iflfftj1vg"]
+
+[ext_resource type="Script" path="res://scripts/DialogueBox.gd" id="1_xw6gj"]
+[ext_resource type="StyleBox" uid="uid://danwv2f5syeji" path="res://resources/textbox_resource.tres" id="2_jbrvg"]
+[ext_resource type="FontFile" uid="uid://ck6f0v3yk0xf4" path="res://assets/m5x7.ttf" id="3_515wh"]
+
+[sub_resource type="Theme" id="Theme_8mpww"]
+PanelContainer/styles/panel = ExtResource("2_jbrvg")
+
+[node name="DialogueBox" type="Node2D"]
+script = ExtResource("1_xw6gj")
+
+[node name="TextboxCanvas" type="CanvasLayer" parent="."]
+
+[node name="Textbox" type="PanelContainer" parent="TextboxCanvas"]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 480.0
+offset_top = 93.5
+offset_right = 1680.0
+offset_bottom = 525.5
+grow_vertical = 2
+theme = SubResource("Theme_8mpww")
+
+[node name="GridContainer" type="GridContainer" parent="TextboxCanvas/Textbox"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="TextboxCanvas/Textbox/GridContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_515wh")
+theme_override_font_sizes/font_size = 60
+
+[node name="Label" type="Label" parent="TextboxCanvas/Textbox/GridContainer"]
+custom_minimum_size = Vector2(1152, 332)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_515wh")
+theme_override_font_sizes/font_size = 60
+autowrap_mode = 3
+
+[node name="nextchar" type="Timer" parent="."]
+
+[node name="nextmessage" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[connection signal="timeout" from="nextchar" to="." method="_on_nextchar_timeout"]
+[connection signal="timeout" from="nextmessage" to="." method="_on_nextmessage_timeout"]

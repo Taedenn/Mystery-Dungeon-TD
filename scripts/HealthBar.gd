@@ -24,7 +24,10 @@ func init_health(_health):
 	value = health
 	damage_bar.max_value = health
 	damage_bar.value = health
-
+	
+func add_max_health(_health):
+	max_value += _health
+	damage_bar.max_value += _health
 
 func _on_damage_stutter_timeout():
 	damage_bar.value = health

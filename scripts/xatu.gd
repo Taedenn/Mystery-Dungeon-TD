@@ -10,21 +10,33 @@ extends StaticBody2D
 @onready var attack_anim = $attack_anim
 @onready var collisionArea = $CollisionArea
 @onready var attackAura = $Attack_Aura
-@onready var attackAuraShape = $Attack_Aura/CollisionShape2D
 
 var taking_damage = false
+var first_attack = true
 var time_since_last_tick = 1.0
 
 const DAMAGE_TICK_INTERVAL = 0.8
 
 func _ready():
-	attackAuraShape.disabled = true
 	self.add_to_group("structures")
 	collisionArea.add_to_group("structures")
 	attackAura.add_to_group("hazards")
 	idle.visible = true
 	attack.visible = false
 	attack_anim.visible = false
+	if first_attack:
+		starting_attack()
+		first_attack = false
+
+func starting_attack():
+	idle.visible = false
+	attack.visible = true
+	attack_anim.visible = true
+	_animated_sprite.play("attack")
+	await _animated_sprite.animation_finished
+	attack.visible = false
+	attack_anim.visible = false
+	idle.visible = true
 
 func set_health(d):
 	if health - d > 0:
@@ -40,7 +52,6 @@ func _physics_process(delta):
 			time_since_last_tick = 0.0
 
 func _on_attack_delay_timeout():
-	attackAuraShape.disabled = false
 	idle.visible = false
 	attack.visible = true
 	attack_anim.visible = true
@@ -49,7 +60,6 @@ func _on_attack_delay_timeout():
 	attack.visible = false
 	attack_anim.visible = false
 	idle.visible = true
-	attackAuraShape.disabled = true
 
 
 func _on_collision_area_area_entered(area):

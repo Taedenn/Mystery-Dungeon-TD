@@ -1,0 +1,93 @@
+[gd_scene load_steps=9 format=3 uid="uid://m2y2c30ul83o"]
+
+[ext_resource type="Script" path="res://scripts/cascoon.gd" id="1_kuj5m"]
+[ext_resource type="Texture2D" uid="uid://8t4llo64mi6w" path="res://attacks/cascoon_attack.png" id="2_4nhb4"]
+[ext_resource type="Texture2D" uid="uid://cytl4tlid7r5t" path="res://attacks/cascoon_idle.png" id="3_ptpju"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lqc6v"]
+radius = 3.0
+height = 20.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dct8t"]
+radius = 4.0
+height = 22.0
+
+[sub_resource type="Animation" id="Animation_8cn3j"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("recoil:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_lqj3w"]
+resource_name = "recoil"
+length = 0.8
+step = 0.0727
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("recoil:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0727, 0.1454, 0.2181, 0.2908, 0.3635, 0.4362, 0.5089, 0.5816, 0.6543, 0.727, 0.7997),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_i1gvl"]
+_data = {
+"RESET": SubResource("Animation_8cn3j"),
+"recoil": SubResource("Animation_lqj3w")
+}
+
+[node name="Cascoon" type="StaticBody2D"]
+z_index = 1
+collision_layer = 32
+collision_mask = 45
+script = ExtResource("1_kuj5m")
+health = 60
+recoil = 10
+
+[node name="recoil" type="Sprite2D" parent="."]
+visibility_layer = 2
+position = Vector2(1, 1)
+texture = ExtResource("2_4nhb4")
+hframes = 11
+
+[node name="idle" type="Sprite2D" parent="."]
+position = Vector2(-1, 0)
+texture = ExtResource("3_ptpju")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 6)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_lqc6v")
+
+[node name="CollisionArea" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea"]
+position = Vector2(0, 6)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_dct8t")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_i1gvl")
+}
+
+[connection signal="area_entered" from="CollisionArea" to="." method="_on_collision_area_area_entered_override"]
+[connection signal="area_entered" from="CollisionArea" to="." method="_on_collision_area_area_entered"]
+[connection signal="area_exited" from="CollisionArea" to="." method="_on_collision_area_area_exited_override"]
+[connection signal="area_exited" from="CollisionArea" to="." method="_on_collision_area_area_exited"]

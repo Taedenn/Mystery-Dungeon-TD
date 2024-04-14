@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Roguelike_TowerDefense"
-run/main_scene="res://scenes/main.tscn"
+run/main_scene="res://scenes/play_scene.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
 
 [display]

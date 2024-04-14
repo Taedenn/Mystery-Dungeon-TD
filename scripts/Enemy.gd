@@ -3,6 +3,7 @@ extends CharacterBody2D
 @export var player_tutorial_end := false
 @export var health := 10
 @export var damage := 5
+@export var drops := 1
 
 const DAMAGE_TICK_INTERVAL = 0.8
 const ATTACK_INTERVAL = 0.1
@@ -14,6 +15,7 @@ const ATTACK_INTERVAL = 0.1
 @onready var walk = $walk
 @onready var hurt = $hurt
 @onready var Enemy_Container = $".."
+@onready var damage_display = $DamageDisplay
 @onready var soul_shard_scene = preload("res://scenes/soul_shard.tscn")
 
 var direction = position
@@ -74,7 +76,7 @@ func _physics_process(delta):
 	time_since_last_tick += delta
 	attack_cooldown_timer += delta
 	if hazard_damage:
-		if time_since_last_tick >= (DAMAGE_TICK_INTERVAL / 1.2):
+		if time_since_last_tick >= (DAMAGE_TICK_INTERVAL / 2):
 			set_health(hazard_tick)
 			time_since_last_tick = 0.0
 			
@@ -105,6 +107,7 @@ func _physics_process(delta):
 	
 func set_health(d):
 	is_hurt = true
+	damage_display.display(d)
 	if health - d > 0:
 		health -= d
 		hb._set_health(health)
@@ -114,9 +117,11 @@ func set_health(d):
 		_animated_enemy.play("hurt_" + dir)
 		await _animated_enemy.animation_finished
 		if Enemy_Container != null:
-			var soul_shard = soul_shard_scene.instantiate()
-			soul_shard.global_position = position
-			Enemy_Container.add_child(soul_shard)
+			for drop in drops:
+				var soul_shard = soul_shard_scene.instantiate()
+				var offset = Vector2(randi_range(-8, 8), randi_range(-8, 8))
+				soul_shard.global_position = global_position + offset
+				Enemy_Container.add_child(soul_shard)
 		queue_free()
 	
 func _on_collider_area_entered(area):
@@ -131,7 +136,6 @@ func _on_collider_area_entered(area):
 	
 	if area.is_in_group("hazards"):
 		hazard = area.get_parent()
-		print(hazard.aura)
 		hazard_tick = hazard.aura
 		hazard_damage = true
 
