@@ -14,6 +14,7 @@ extends CharacterBody2D
 @onready var nc = $Night_Cycle
 @onready var md = $Midday
 @onready var area2d = $player_area
+@onready var health_display = $HealthDisplay
 
 @onready var full = $"../../CanvasLayer/BoxContainer/PanelContainer/Full"
 @onready var ouch = $"../../CanvasLayer/BoxContainer/PanelContainer/Ouch"
@@ -30,7 +31,6 @@ var bg_music := AudioStreamPlayer.new()
 var sound_player := AudioStreamPlayer.new()
 var rng = RandomNumberGenerator.new()
 
-var shooting = false
 var is_attacking = false
 var freeze_input = true
 var left_tutorial_area = false
@@ -121,10 +121,7 @@ func get_input():
 
 func update_animation():
 	if velocity.length() == 0:
-		if is_dead:
-			_animated_sprite.play("sleep")
-			await $PlayerAnimations.animation_finished
-		elif not is_attacking:
+		if not is_attacking:
 			_animated_sprite.stop()
 			return
 		else:
@@ -132,7 +129,6 @@ func update_animation():
 			walk.visible = false
 			_animated_sprite.play("attack_" + direction)
 			await $PlayerAnimations.animation_finished
-			shooting = false
 			is_attacking = false
 			return
 	
@@ -157,7 +153,6 @@ func update_animation():
 		attack.visible = true
 		walk.visible = false
 		await $PlayerAnimations.animation_finished
-		shooting = false
 		is_attacking = false
 		
 	else:
@@ -268,8 +263,12 @@ func _on_night_cycle_timeout():
 	dc.start()
 
 func _on_player_area_area_entered(area):
-	if area.is_in_group("enemies"):
-		pass
+	if area.is_in_group("healing"):
+		if health < max_health and health > 0:
+			var healing = area.get_parent().heal
+			if healing != null:
+				health_display.display(healing)
+				_set_health(-healing)
 
 func _on_tutorial_end_area_entered(_area):
 	if not left_tutorial_area:

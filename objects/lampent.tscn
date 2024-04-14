@@ -1,8 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://dot2wnn88v0yh"]
+[gd_scene load_steps=12 format=3 uid="uid://dot2wnn88v0yh"]
 
 [ext_resource type="Script" path="res://scripts/lampent.gd" id="1_gfwsx"]
 [ext_resource type="Texture2D" uid="uid://brvg8er7p6y3d" path="res://attacks/lampent_idle.png" id="1_uptjx"]
 [ext_resource type="Texture2D" uid="uid://c6f07yuo7ioks" path="res://attacks/lampent_attack.png" id="2_3kb8t"]
+[ext_resource type="FontFile" uid="uid://ck6f0v3yk0xf4" path="res://assets/m5x7.ttf" id="4_idpu2"]
+[ext_resource type="Script" path="res://scenes/HealthDisplay.gd" id="5_hp5ss"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_byww4"]
 radius = 3.0
@@ -54,12 +56,11 @@ _data = {
 radius = 181.044
 
 [node name="Lampent" type="StaticBody2D"]
-z_index = 1
+z_index = 2
 collision_layer = 32
 collision_mask = 41
 script = ExtResource("1_gfwsx")
 aura = 0
-health = 40
 recoil = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -78,7 +79,7 @@ hframes = 9
 
 [node name="CollisionArea" type="Area2D" parent="."]
 collision_layer = 32
-collision_mask = 8
+collision_mask = 24
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea"]
 rotation = 1.5708
@@ -99,8 +100,24 @@ collision_mask = 8
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Attack_Aura"]
 shape = SubResource("CircleShape2D_582af")
 
+[node name="HealthDisplay" type="Label" parent="."]
+z_index = 3
+offset_left = -3.0
+offset_top = -39.0
+offset_right = 30.0
+offset_bottom = -15.0
+theme_override_colors/font_color = Color(0.0980392, 0.74902, 0, 0.615686)
+theme_override_fonts/font = ExtResource("4_idpu2")
+theme_override_font_sizes/font_size = 24
+script = ExtResource("5_hp5ss")
+
+[node name="DisplayTimer" type="Timer" parent="HealthDisplay"]
+wait_time = 0.25
+one_shot = true
+
 [connection signal="area_entered" from="CollisionArea" to="." method="_on_collision_area_area_entered"]
 [connection signal="area_exited" from="CollisionArea" to="." method="_on_collision_area_area_exited"]
 [connection signal="timeout" from="attack_delay" to="." method="_on_attack_delay_timeout"]
 [connection signal="area_entered" from="Attack_Aura" to="." method="_on_attack_aura_area_entered"]
 [connection signal="area_exited" from="Attack_Aura" to="." method="_on_attack_aura_area_exited"]
+[connection signal="timeout" from="HealthDisplay/DisplayTimer" to="HealthDisplay" method="_on_display_timer_timeout"]

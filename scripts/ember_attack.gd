@@ -4,13 +4,18 @@ extends StaticBody2D
 
 var target
 @export var move_speed = 100
+var detection_radius = 180
 
 func _ready():
 	$CollisionArea.add_to_group("hazards")
 
 func _process(delta):
 	if target != null:
-		move_towards_target(delta)
+		var distance_to_target = global_position.distance_to(target.global_position)
+		if distance_to_target <= detection_radius:
+			move_towards_target(delta)
+		else:
+			queue_free()
 	else:
 		queue_free()
 		

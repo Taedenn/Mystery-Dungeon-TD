@@ -1,8 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://m2y2c30ul83o"]
+[gd_scene load_steps=11 format=3 uid="uid://m2y2c30ul83o"]
 
 [ext_resource type="Script" path="res://scripts/cascoon.gd" id="1_kuj5m"]
 [ext_resource type="Texture2D" uid="uid://8t4llo64mi6w" path="res://attacks/cascoon_attack.png" id="2_4nhb4"]
 [ext_resource type="Texture2D" uid="uid://cytl4tlid7r5t" path="res://attacks/cascoon_idle.png" id="3_ptpju"]
+[ext_resource type="FontFile" uid="uid://ck6f0v3yk0xf4" path="res://assets/m5x7.ttf" id="4_1e8hm"]
+[ext_resource type="Script" path="res://scenes/HealthDisplay.gd" id="5_2ucqf"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lqc6v"]
 radius = 3.0
@@ -56,6 +58,7 @@ collision_layer = 32
 collision_mask = 45
 script = ExtResource("1_kuj5m")
 health = 60
+max_health = 60
 recoil = 10
 
 [node name="recoil" type="Sprite2D" parent="."]
@@ -75,7 +78,7 @@ shape = SubResource("CapsuleShape2D_lqc6v")
 
 [node name="CollisionArea" type="Area2D" parent="."]
 collision_layer = 32
-collision_mask = 8
+collision_mask = 24
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea"]
 position = Vector2(0, 6)
@@ -87,7 +90,23 @@ libraries = {
 "": SubResource("AnimationLibrary_i1gvl")
 }
 
+[node name="HealthDisplay" type="Label" parent="."]
+z_index = 3
+offset_left = -4.0
+offset_top = -26.0
+offset_right = 29.0
+offset_bottom = -2.0
+theme_override_colors/font_color = Color(0.0980392, 0.74902, 0, 0.615686)
+theme_override_fonts/font = ExtResource("4_1e8hm")
+theme_override_font_sizes/font_size = 24
+script = ExtResource("5_2ucqf")
+
+[node name="DisplayTimer" type="Timer" parent="HealthDisplay"]
+wait_time = 0.25
+one_shot = true
+
 [connection signal="area_entered" from="CollisionArea" to="." method="_on_collision_area_area_entered_override"]
 [connection signal="area_entered" from="CollisionArea" to="." method="_on_collision_area_area_entered"]
 [connection signal="area_exited" from="CollisionArea" to="." method="_on_collision_area_area_exited_override"]
 [connection signal="area_exited" from="CollisionArea" to="." method="_on_collision_area_area_exited"]
+[connection signal="timeout" from="HealthDisplay/DisplayTimer" to="HealthDisplay" method="_on_display_timer_timeout"]

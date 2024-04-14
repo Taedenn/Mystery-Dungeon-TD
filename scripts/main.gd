@@ -7,6 +7,7 @@ extends Node2D
 @onready var soul_shard_scene = preload("res://scenes/soul_shard.tscn")
 @onready var soul_shard_material = preload("res://materials/soul_shard.tres")
 @onready var dialogue_scene = preload("res://scenes/dialogue_box.tscn")
+@onready var pause = preload("res://scenes/pause_menu.tscn")
 
 @onready var world_enemies = $Enemies
 @onready var player = $World/Player
@@ -18,6 +19,10 @@ extends Node2D
 @onready var seal_anim = $World/sigil/SealAnim
 @onready var seal_ap = $World/sigil/SealAnimationPlayer
 
+@onready var baseItemStack = [preload("res://materials/base_item_stack.tres")]
+@onready var blissey_totem = preload("res://objects/blissey_placeable.tres")
+
+var itemslist
 
 var player_tutorial_end = false
 
@@ -47,6 +52,13 @@ func _ready():
 	var material_count = item_container.get_count(shard_item)
 	item_container.try_remove(shard_item, material_count)
 	item_display.update_inventory_display()
+	
+	# print(item_container.get_count(blissey_totem, baseItemStack))
+
+func _physics_process(_delt3a):
+	if Input.is_action_just_pressed("exit_game"):
+		var pause_menu = pause.instantiate()
+		add_child(pause_menu)
 
 func _on_spawner_timeout():
 	if player_tutorial_end and nighttime:
@@ -74,7 +86,6 @@ func _on_spawner_timeout():
 		
 		# scaling
 		enemy.health += healthscaling
-		
 		world_enemies.add_child(enemy)
 
 

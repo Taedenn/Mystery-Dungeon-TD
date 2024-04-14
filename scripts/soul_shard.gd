@@ -6,7 +6,7 @@ extends StaticBody2D
 
 var detection_radius = 100
 var pickup_radius = 5
-var move_speed = 75
+var move_speed = 100
 
 func _process(delta):
 	var distance_to_player = global_position.distance_to(player.global_position)

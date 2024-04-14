@@ -1,0 +1,19 @@
+/ *  Sprites  * / 
+
+https://sprites.pmdcollab.org/
+	Sprigatito: Emmuffin   https://twitter.com/Ernmuffin
+	Lampent: baronessfaron (no contact)
+	Zubat: CHUNSOFT
+	Banette: CHUNSOFT
+	Gligar: CHUNSOFT
+	Sableye: CHUNSOFT
+	Cascoon: CHUNSOFT
+	Xatu: CHUNSOFT
+	Blissey: CHUNSOFT
+	Mamoswine: CHUNSOFT
+	
+	
+/ *  Addons  * / 
+
+	Grid Building: Chris' Tutorials   https://www.youtube.com/@ChrisTutorialsYT
+	Grid Building Inventory: Chris' Tutorials   https://www.youtube.com/@ChrisTutorialsYT

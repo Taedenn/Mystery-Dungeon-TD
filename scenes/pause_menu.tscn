@@ -1,0 +1,56 @@
+[gd_scene load_steps=5 format=3 uid="uid://cty8v3k6hskfv"]
+
+[ext_resource type="StyleBox" uid="uid://danwv2f5syeji" path="res://resources/textbox_resource.tres" id="1_ad3x0"]
+[ext_resource type="FontFile" uid="uid://ck6f0v3yk0xf4" path="res://assets/m5x7.ttf" id="1_ptdg4"]
+[ext_resource type="Script" path="res://scripts/pause_menu.gd" id="1_pxw4a"]
+
+[sub_resource type="Theme" id="Theme_lhlay"]
+PanelContainer/styles/panel = ExtResource("1_ad3x0")
+
+[node name="Pause_Menu" type="CanvasLayer"]
+script = ExtResource("1_pxw4a")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
+layout_mode = 2
+theme = SubResource("Theme_lhlay")
+
+[node name="rows" type="VBoxContainer" parent="CenterContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="CenterContainer/PanelContainer/rows"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_ptdg4")
+theme_override_font_sizes/font_size = 60
+text = "Paused"
+
+[node name="ContinueButton" type="Button" parent="CenterContainer/PanelContainer/rows"]
+process_mode = 2
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_ptdg4")
+theme_override_font_sizes/font_size = 45
+text = "Continue"
+
+[node name="QuitButton" type="Button" parent="CenterContainer/PanelContainer/rows"]
+process_mode = 2
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_ptdg4")
+theme_override_font_sizes/font_size = 45
+text = "Quit"
+
+[connection signal="pressed" from="CenterContainer/PanelContainer/rows/ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="CenterContainer/PanelContainer/rows/QuitButton" to="." method="_on_quit_button_pressed"]

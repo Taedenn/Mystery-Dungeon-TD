@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cf4hj2mmcu8dd"
+path="res://.godot/imported/067 - Down a Dark Path.mp3-94793a0dcb22095a10bbf66289d28d46.mp3str"
+
+[deps]
+
+source_file="res://music/067 - Down a Dark Path.mp3"
+dest_files=["res://.godot/imported/067 - Down a Dark Path.mp3-94793a0dcb22095a10bbf66289d28d46.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

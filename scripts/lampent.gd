@@ -9,14 +9,14 @@ extends "res://scripts/structure.gd"
 
 var attack_proc = false
 var lock_on = false
-var target
+var targets = []
 
 func _ready():
 	idle.visible = true
 	attack_anim.visible = false
 
 func attack():
-	if attack_proc and lock_on and target != null:
+	if attack_proc and lock_on and targets.size() > 0:
 		idle.visible = false
 		attack_anim.visible = true
 		_animated_sprite.play("attack")
@@ -24,13 +24,11 @@ func attack():
 		attack_anim.visible = false
 		idle.visible = true
 		
-		# instantiate()
 		var projectile = ember.instantiate()
-		
-		projectile.global_position = Vector2(0 , 0)
-		if target != null:
-			projectile.target = target
-			add_child(projectile)
+		if targets.size() > 0:
+			if targets[0] != null:
+				projectile.target = targets[0]
+				add_child(projectile)
 		
 		attack_proc = false
 
@@ -40,14 +38,16 @@ func _on_attack_delay_timeout():
 
 func _on_attack_aura_area_entered(area):
 	if area.is_in_group("enemies"):
-		target = area
-		if target != null:
-			lock_on = true
-			attack()
-		else:
-			lock_on = false
+		if area not in targets:
+			targets.append(area)
+		lock_on = true
+		attack()
 
 func _on_attack_aura_area_exited(area):
 	if area.is_in_group("enemies"):
-		target = null
-		lock_on = false
+		if area in targets:
+			targets.erase(area)
+		if targets.size() == 0:
+			lock_on = false
+		else:
+			attack()

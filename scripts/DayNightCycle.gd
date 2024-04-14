@@ -11,11 +11,30 @@ var nightfall = false
 var sunrise = true
 var tutorial_end = false
 
+var fadeIn = true
+var fadeTimer: Timer
+
 @onready var nf = $Nightfall
 @onready var sr = $Sunrise
 @onready var md = $Midday
 
+func _ready():
+	fadeTimer = Timer.new()
+	fadeTimer.one_shot = true
+	fadeTimer.wait_time = 0.5
+	add_child(fadeTimer)
+	
+	fadeTimer.connect("timeout", _on_fade_timer_timeout)
+	fadeTimer.start()
+
+func _on_fade_timer_timeout():
+	fadeIn = false
+
 func _process(delta:float) -> void:
+	if fadeIn:
+		self.color = self.color.lerp(Color.BLACK, fadeTimer.time_left / fadeTimer.wait_time)
+		return
+		
 	self.time += delta * TIME_SCALE
 	if nightfall:
 		self.color = self.color.lerp(NIGHT_COLOR, self.time)

@@ -33,7 +33,8 @@ var is_vulnerable = true
 var player_in_range = false
 var damage_tick = true
 var taking_recoil = false
-var hazard_damage = false
+var dropped = false
+var hazard_damage_instances = []
 
 func _ready():
 	walk.visible = true
@@ -75,12 +76,11 @@ func update_animations(_delta):
 func _physics_process(delta):
 	time_since_last_tick += delta
 	attack_cooldown_timer += delta
-	if hazard_damage:
-		if time_since_last_tick >= (DAMAGE_TICK_INTERVAL / 2):
-			set_health(hazard_tick)
-			time_since_last_tick = 0.0
+	
+	if hazard_damage_instances.size() > 0:
+		process_hazard_damage(delta)
 			
-	elif taking_recoil:
+	if taking_recoil:
 		if time_since_last_tick >= DAMAGE_TICK_INTERVAL:
 			set_health(recoil)
 			time_since_last_tick = 0.0
@@ -100,14 +100,25 @@ func _physics_process(delta):
 			if attack_cooldown_timer >= ATTACK_INTERVAL:
 				attack_cooldown_timer = 0.0
 				is_vulnerable = true
+				
 		if not is_hurt:
 			velocity = direction * speed
 			move_and_collide(velocity * delta)
 		update_animations(delta)
 	
+func process_hazard_damage(delta):
+	for i in range(hazard_damage_instances.size() - 1):
+		if i < hazard_damage_instances.size():
+			var hazard_instance = hazard_damage_instances[i]
+			set_health(hazard_instance.hazard_tick)
+		if hazard_damage_instances.size() > 0:
+			hazard_damage_instances.pop_front()
+		i -= 1
+	
 func set_health(d):
 	is_hurt = true
-	damage_display.display(d)
+	if d > 0:
+		damage_display.display(d)
 	if health - d > 0:
 		health -= d
 		hb._set_health(health)
@@ -117,17 +128,19 @@ func set_health(d):
 		_animated_enemy.play("hurt_" + dir)
 		await _animated_enemy.animation_finished
 		if Enemy_Container != null:
-			for drop in drops:
-				var soul_shard = soul_shard_scene.instantiate()
-				var offset = Vector2(randi_range(-8, 8), randi_range(-8, 8))
-				soul_shard.global_position = global_position + offset
-				Enemy_Container.add_child(soul_shard)
+			if not dropped:
+				for drop in drops:
+					var soul_shard = soul_shard_scene.instantiate()
+					var offset = Vector2(randi_range(-8, 8), randi_range(-8, 8))
+					soul_shard.global_position = global_position + offset
+					Enemy_Container.add_child(soul_shard)
+				dropped = true
 		queue_free()
 	
 func _on_collider_area_entered(area):
 	if area.is_in_group("player"):
 		player_in_range = true
-		player.speed = 70
+		player.speed = 90
 	
 	if area.is_in_group("structures"):
 		structure = area.get_parent()
@@ -135,9 +148,12 @@ func _on_collider_area_entered(area):
 		taking_recoil = true
 	
 	if area.is_in_group("hazards"):
-		hazard = area.get_parent()
-		hazard_tick = hazard.aura
-		hazard_damage = true
+		var hazard_instance = {
+			"hazard": area.get_parent(),
+			"hazard_tick": area.get_parent().aura,
+			"time_since_last_tick": 0.0
+		}
+		hazard_damage_instances.append(hazard_instance)
 
 func _on_collider_area_exited(area):
 	if area.is_in_group("player"):
@@ -147,9 +163,6 @@ func _on_collider_area_exited(area):
 		
 	if area.is_in_group("structures"):
 		taking_recoil = false
-		
-	if area.is_in_group("hazards"):
-		hazard_damage = false
 
 func _on_tutorial_end_area_entered(area):
 	if area.is_in_group("player"):
