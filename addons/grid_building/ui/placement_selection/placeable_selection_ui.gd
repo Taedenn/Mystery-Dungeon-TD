@@ -96,7 +96,7 @@ func _create_placeable_item_list(tagged_placeables : Array[Placeable]) -> ItemLi
 	var item_list : ItemList = placeable_item_list_template.instantiate() 
 	
 	for placeable in tagged_placeables:
-		item_list.add_item(placeable.display_name, placeable.icon)
+		item_list.add_item( placeable.display_name, placeable.icon)
 
 	return item_list
 

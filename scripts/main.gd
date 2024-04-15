@@ -18,9 +18,12 @@ extends Node2D
 @onready var seal = $World/sigil/Seal
 @onready var seal_anim = $World/sigil/SealAnim
 @onready var seal_ap = $World/sigil/SealAnimationPlayer
+@onready var placeable_control = $CanvasLayer/BoxContainer/Catalogue/PlaceableSelectionUI
 
 @onready var baseItemStack = [preload("res://materials/base_item_stack.tres")]
 @onready var blissey_totem = preload("res://objects/blissey_placeable.tres")
+
+@onready var cascoon_scene = preload("res://objects/cascoon.tscn")
 
 var itemslist
 
@@ -36,6 +39,7 @@ var nighttime = false
 var basehealth = 100
 var healthscaling = 0
 var spawnrate = 0.7
+var select = Node2D
 
 
 func _ready():
@@ -59,7 +63,19 @@ func _physics_process(_delt3a):
 	if Input.is_action_just_pressed("exit_game"):
 		var pause_menu = pause.instantiate()
 		add_child(pause_menu)
-
+		
+	if Input.is_action_just_pressed("first"):
+		placeable_control._on_list_item_selected(0)
+		
+	if Input.is_action_just_pressed("second"):
+		placeable_control._on_list_item_selected(1)
+		
+	if Input.is_action_just_pressed("third"):
+		placeable_control._on_list_item_selected(2)
+	
+	if Input.is_action_just_pressed("fourth"):
+		placeable_control._on_list_item_selected(3)
+		
 func _on_spawner_timeout():
 	if player_tutorial_end and nighttime:
 		var enemy = zubat_scene.instantiate()

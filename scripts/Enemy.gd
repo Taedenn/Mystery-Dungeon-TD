@@ -106,7 +106,7 @@ func _physics_process(delta):
 			move_and_collide(velocity * delta)
 		update_animations(delta)
 	
-func process_hazard_damage(delta):
+func process_hazard_damage(_delta):
 	for i in range(hazard_damage_instances.size() - 1):
 		if i < hazard_damage_instances.size():
 			var hazard_instance = hazard_damage_instances[i]
