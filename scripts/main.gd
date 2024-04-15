@@ -21,9 +21,6 @@ extends Node2D
 @onready var placeable_control = $CanvasLayer/BoxContainer/Catalogue/PlaceableSelectionUI
 
 @onready var baseItemStack = [preload("res://materials/base_item_stack.tres")]
-@onready var blissey_totem = preload("res://objects/blissey_placeable.tres")
-
-@onready var cascoon_scene = preload("res://objects/cascoon.tscn")
 
 var itemslist
 
@@ -57,9 +54,8 @@ func _ready():
 	item_container.try_remove(shard_item, material_count)
 	item_display.update_inventory_display()
 	
-	# print(item_container.get_count(blissey_totem, baseItemStack))
 
-func _physics_process(_delt3a):
+func _input(InputEvent):
 	if Input.is_action_just_pressed("exit_game"):
 		var pause_menu = pause.instantiate()
 		add_child(pause_menu)
@@ -114,7 +110,7 @@ func _on_tutorial_end_area_entered(area):
 			dialogue.messages = ["It'll get dark soon... I should start building defenses...",
 			"(press tab to open/close inventory, left-click to place towers, right-click to deselect)"]
 			dialogue.timed_message = true
-			dialogue.read_time = 1.5
+			dialogue.read_time = 2.5
 			dialogue.speaking = "Me:"
 			add_child(dialogue)
 			

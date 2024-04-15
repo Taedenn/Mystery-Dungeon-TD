@@ -1,11 +1,10 @@
 extends Node2D
 
 @export var messages = [
-	"welcome to the world of pokemon",
-	"now survive!"
+	""
 ]
 
-@export var speaking := "Myterious Scroll:"
+@export var speaking := "Mysterious Scroll:"
 
 var typing_speed = 0.025
 var read_time = 0.3
@@ -24,7 +23,7 @@ func _ready():
 	$TextboxCanvas/Textbox/GridContainer/Name.text = speaking
 	start_dialogue()
 	
-func _process(_delta):
+func _input(InputEvent):
 	if Input.is_action_just_pressed("build") and display_next:
 			start_next_dialogue()
 

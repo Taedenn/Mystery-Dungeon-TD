@@ -10,8 +10,8 @@ func _ready():
 	attack_anim.visible = false
 	$CollisionArea.add_to_group("structures")
 
-func _process(_delta):
-	if is_touching:
+func _recoil():
+	while is_touching:
 		idle.visible = false
 		attack_anim.visible = true
 		_animated_sprite.play("recoil")
@@ -22,6 +22,7 @@ func _process(_delta):
 func _on_collision_area_area_entered_override(area):
 	if area.is_in_group("enemies"):
 		is_touching = true
+		_recoil()
 
 
 func _on_collision_area_area_exited_override(area):

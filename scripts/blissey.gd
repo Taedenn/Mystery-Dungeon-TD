@@ -14,13 +14,12 @@ var heal_pulse = true
 func _ready():
 	idle.visible = true
 	heal_range.add_to_group("healing")
-
-func _process(_delta):
-	if heal_pulse:
-		_animated_sprite.play("twirl")
-		await _animated_sprite.animation_finished
-		heal_pulse = false
+	_animated_sprite.play("twirl")
+	await _animated_sprite.animation_finished
+	heal_pulse = false
 
 func _on_attack_cooldown_timeout():
-	if not heal_pulse:
-		heal_pulse = true
+	_animated_sprite.play("twirl")
+	await _animated_sprite.animation_finished
+	heal_pulse = false
+	

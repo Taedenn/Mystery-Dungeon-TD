@@ -21,6 +21,7 @@ const ATTACK_INTERVAL = 0.1
 var direction = position
 var structure = StaticBody2D
 var hazard = Area2D
+var check_damage = Timer
 
 var dir = "down"
 var time_since_last_tick = 1.0
@@ -42,8 +43,14 @@ func _ready():
 	self.add_to_group("enemies")
 	areaCollider.add_to_group("enemies")
 	hb.init_health(health)
+	var damage_timer = check_damage.new()
+	damage_timer.wait_time = 0.1
+	damage_timer.connect("timeout", _on_Timer_timeout)
+	damage_timer.autostart = true
+	add_child(damage_timer)
+	damage_timer.start()
 
-func update_animations(_delta):
+func update_animations():
 	var old_position = position
 	direction = (player.global_position - position).normalized()
 	var new_pos = position + direction
@@ -76,44 +83,40 @@ func update_animations(_delta):
 func _physics_process(delta):
 	time_since_last_tick += delta
 	attack_cooldown_timer += delta
+				
+	if not is_hurt:
+		velocity = direction * speed
+		move_and_collide(velocity * delta)
+	update_animations()
 	
+func process_hazard_damage():
 	if hazard_damage_instances.size() > 0:
-		process_hazard_damage(delta)
+		for i in range(hazard_damage_instances.size() - 1):
+			if i < hazard_damage_instances.size():
+				var hazard_instance = hazard_damage_instances[i]
+				set_health(hazard_instance.hazard_tick)
+			if hazard_damage_instances.size() > 0:
+				hazard_damage_instances.pop_front()
+			i -= 1
 			
 	if taking_recoil:
 		if time_since_last_tick >= DAMAGE_TICK_INTERVAL:
 			set_health(recoil)
 			time_since_last_tick = 0.0
-			
-	if player_tutorial_end:
-		if player_in_range:
-			if time_since_last_tick >= DAMAGE_TICK_INTERVAL:
-				
+		
+	if player_in_range:
+		if time_since_last_tick >= DAMAGE_TICK_INTERVAL:
 				# take damage
-				if player.is_attacking and is_vulnerable:
-					set_health(player.damage)
-					is_vulnerable = false
+			if player.is_attacking and is_vulnerable:
+				set_health(player.damage)
+				is_vulnerable = false
 					
-				player._set_health(damage)
-				time_since_last_tick = 0.0
+			player._set_health(damage)
+			time_since_last_tick = 0.0
 				
-			if attack_cooldown_timer >= ATTACK_INTERVAL:
-				attack_cooldown_timer = 0.0
-				is_vulnerable = true
-				
-		if not is_hurt:
-			velocity = direction * speed
-			move_and_collide(velocity * delta)
-		update_animations(delta)
-	
-func process_hazard_damage(_delta):
-	for i in range(hazard_damage_instances.size() - 1):
-		if i < hazard_damage_instances.size():
-			var hazard_instance = hazard_damage_instances[i]
-			set_health(hazard_instance.hazard_tick)
-		if hazard_damage_instances.size() > 0:
-			hazard_damage_instances.pop_front()
-		i -= 1
+		if attack_cooldown_timer >= ATTACK_INTERVAL:
+			attack_cooldown_timer = 0.0
+			is_vulnerable = true
 	
 func set_health(d):
 	is_hurt = true
@@ -141,11 +144,13 @@ func _on_collider_area_entered(area):
 	if area.is_in_group("player"):
 		player_in_range = true
 		player.speed = 90
+		process_hazard_damage()
 	
 	if area.is_in_group("structures"):
 		structure = area.get_parent()
 		recoil = structure.recoil
 		taking_recoil = true
+		process_hazard_damage()
 	
 	if area.is_in_group("hazards"):
 		var hazard_instance = {
@@ -154,6 +159,7 @@ func _on_collider_area_entered(area):
 			"time_since_last_tick": 0.0
 		}
 		hazard_damage_instances.append(hazard_instance)
+		process_hazard_damage()
 
 func _on_collider_area_exited(area):
 	if area.is_in_group("player"):
@@ -167,3 +173,6 @@ func _on_collider_area_exited(area):
 func _on_tutorial_end_area_entered(area):
 	if area.is_in_group("player"):
 		player_tutorial_end = true
+
+func _on_Timer_timeout():
+	process_hazard_damage()
