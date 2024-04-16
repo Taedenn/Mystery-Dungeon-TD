@@ -36,6 +36,7 @@ var damage_tick = true
 var taking_recoil = false
 var dropped = false
 var hazard_damage_instances = []
+var merger
 
 func _ready():
 	walk.visible = true
@@ -49,6 +50,8 @@ func _ready():
 	damage_timer.autostart = true
 	add_child(damage_timer)
 	damage_timer.start()
+	
+	merger = get_parent()
 
 func update_animations():
 	var old_position = position
@@ -138,6 +141,7 @@ func set_health(d):
 					soul_shard.global_position = global_position + offset
 					Enemy_Container.add_child(soul_shard)
 				dropped = true
+		merger.removal_service(self)
 		queue_free()
 	
 func _on_collider_area_entered(area):

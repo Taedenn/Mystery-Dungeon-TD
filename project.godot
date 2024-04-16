@@ -14,6 +14,10 @@ config/name="Roguelike_TowerDefense"
 run/main_scene="res://scenes/play_scene.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
 
+[debug]
+
+gdscript/warnings/integer_division=0
+
 [display]
 
 window/size/viewport_width=1920

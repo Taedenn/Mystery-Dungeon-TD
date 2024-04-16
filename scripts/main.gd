@@ -55,7 +55,7 @@ func _ready():
 	item_display.update_inventory_display()
 	
 
-func _input(InputEvent):
+func _input(_InputEvent):
 	if Input.is_action_just_pressed("exit_game"):
 		var pause_menu = pause.instantiate()
 		add_child(pause_menu)
@@ -127,7 +127,7 @@ func _on_sunrise_timeout():
 
 func _on_nightfall_timeout():
 	nighttime = false
-	healthscaling += (basehealth * 0.25)
+	healthscaling += (basehealth * 0.05)
 	basehealth += healthscaling
 	
 	spawner.wait_time = spawner.wait_time * spawnrate

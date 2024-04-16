@@ -8,10 +8,10 @@
 [ext_resource type="FontFile" uid="uid://ck6f0v3yk0xf4" path="res://assets/m5x7.ttf" id="6_qjrm5"]
 [ext_resource type="Script" path="res://scripts/DamageDisplay.gd" id="7_olola"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_beng4"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_kcxgq"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_koc3h"]
-size = Vector2(22, 22)
+[sub_resource type="CircleShape2D" id="CircleShape2D_717l4"]
+radius = 11.0
 
 [sub_resource type="Animation" id="Animation_151ar"]
 length = 0.001
@@ -342,7 +342,7 @@ vframes = 8
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 position = Vector2(0, -11)
-shape = SubResource("RectangleShape2D_beng4")
+shape = SubResource("CircleShape2D_kcxgq")
 
 [node name="AreaCollider" type="Area2D" parent="."]
 collision_layer = 8
@@ -350,7 +350,7 @@ collision_mask = 35
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AreaCollider"]
 position = Vector2(0, -11)
-shape = SubResource("RectangleShape2D_koc3h")
+shape = SubResource("CircleShape2D_717l4")
 
 [node name="EnemyAnimations" type="AnimationPlayer" parent="."]
 libraries = {

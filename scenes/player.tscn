@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://bw27bm0nouknq"]
+[gd_scene load_steps=32 format=3 uid="uid://bw27bm0nouknq"]
 
 [ext_resource type="Script" path="res://scripts/PlayerBody.gd" id="1_1bo3v"]
 [ext_resource type="Texture2D" uid="uid://cdylmwnybdwa" path="res://character_models/Sleep-Anim.png" id="2_4urt7"]
@@ -10,8 +10,10 @@
 [ext_resource type="FontFile" uid="uid://ck6f0v3yk0xf4" path="res://assets/m5x7.ttf" id="8_efxue"]
 [ext_resource type="Script" path="res://scenes/HealthDisplay.gd" id="9_r3olk"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_i5v7i"]
-size = Vector2(18.25, 19.9809)
+[sub_resource type="CircleShape2D" id="CircleShape2D_02hvs"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rno57"]
+radius = 8.88889
 
 [sub_resource type="Animation" id="Animation_ddbbb"]
 length = 0.001
@@ -864,12 +866,12 @@ collision_mask = 24
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="player_area"]
 position = Vector2(0, -2)
-shape = SubResource("RectangleShape2D_i5v7i")
+shape = SubResource("CircleShape2D_02hvs")
 
 [node name="PlayerCollider" type="CollisionShape2D" parent="."]
 position = Vector2(0, -2)
 scale = Vector2(0.9, 0.9)
-shape = SubResource("RectangleShape2D_i5v7i")
+shape = SubResource("CircleShape2D_rno57")
 debug_color = Color(0, 0.6, 0.701961, 0.419608)
 
 [node name="PlayerAnimations" type="AnimationPlayer" parent="."]

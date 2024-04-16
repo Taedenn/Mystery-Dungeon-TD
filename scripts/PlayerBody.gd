@@ -3,6 +3,7 @@ extends CharacterBody2D
 @export var speed = 100
 @export var sleepy_start := true
 @export var damage := 5
+@export var engine_speed := 1
 
 @onready var _animated_sprite = $PlayerAnimations
 @onready var walk = $walk
@@ -46,6 +47,7 @@ var dialogue
 var dialogue_finished = false
 
 func _ready():
+	Engine.time_scale = engine_speed
 	self.add_to_group("player", true)
 	area2d.add_to_group("player", true)
 	

@@ -23,7 +23,7 @@ func _ready():
 	$TextboxCanvas/Textbox/GridContainer/Name.text = speaking
 	start_dialogue()
 	
-func _input(InputEvent):
+func _input(_InputEvent):
 	if Input.is_action_just_pressed("build") and display_next:
 			start_next_dialogue()
 
@@ -39,6 +39,7 @@ func start_next_dialogue():
 	if (current_message == len(messages) - 1):
 		stop_dialogue()
 	else: 
+		display_next = false
 		current_message += 1
 		display = ""
 		current_char = 0
