@@ -406,6 +406,7 @@ layer_3/tile_data = PackedInt32Array(1638396, 720896, 2, 1703932, 720896, 3, 176
 [node name="Player" parent="World" instance=ExtResource("1_03s17")]
 position = Vector2(0, 370)
 sleepy_start = false
+engine_speed = 2
 regen = 0
 
 [node name="ItemContainer" type="Node" parent="World/Player/Camera2D" index="0"]
@@ -1840,6 +1841,7 @@ autostart = true
 
 [connection signal="timeout" from="World/CanvasModulate/Nightfall" to="." method="_on_nightfall_timeout"]
 [connection signal="timeout" from="World/CanvasModulate/Nightfall" to="World/CanvasModulate" method="_on_day_cycle_timeout"]
+[connection signal="timeout" from="World/CanvasModulate/Nightfall" to="Enemies" method="_on_nightfall_timeout"]
 [connection signal="timeout" from="World/CanvasModulate/Sunrise" to="." method="_on_sunrise_timeout"]
 [connection signal="timeout" from="World/CanvasModulate/Sunrise" to="World/CanvasModulate" method="_on_night_cycle_timeout"]
 [connection signal="timeout" from="World/CanvasModulate/Midday" to="." method="_on_midday_timeout"]

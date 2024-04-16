@@ -127,17 +127,10 @@ func _on_sunrise_timeout():
 
 func _on_nightfall_timeout():
 	nighttime = false
-	healthscaling += (basehealth * 0.05)
+	healthscaling += (basehealth * 0.1)
 	basehealth += healthscaling
 	
 	spawner.wait_time = spawner.wait_time * spawnrate
-	
-	for x in range(5):
-		var soul_shard = soul_shard_scene.instantiate()
-		var offset = Vector2(randi_range(-20, 20), randi_range(-20, 20))
-		soul_shard.global_position = player.global_position + offset
-		world_enemies.add_child(soul_shard)
-
 
 func _on_midday_timeout():
 	nighttime = true

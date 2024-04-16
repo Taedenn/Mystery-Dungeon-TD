@@ -7,10 +7,15 @@ extends StaticBody2D
 var detection_radius = 100
 var pickup_radius = 5
 var move_speed = 100
+var merger
+@export var magnet := false
+
+func _ready():
+	merger = get_parent()
 
 func _process(delta):
 	var distance_to_player = global_position.distance_to(player.global_position)
-	if distance_to_player < detection_radius:
+	if distance_to_player < detection_radius or magnet:
 		move_towards_player(delta)
 		
 	if distance_to_player < pickup_radius:
@@ -28,5 +33,6 @@ func pick_up_shard():
 	item_display.update_inventory_display()
 	
 	if added_amount > 0:
+		merger.removal_service_soul_shard(self)
 		queue_free()
 		
