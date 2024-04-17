@@ -32,7 +32,7 @@ func _on_check_timeout():
 		elif child.get_script() == soul and not soul_stones.has(child):
 			soul_stones.append(child)
 			
-	if enemy_instances.size() > 150:
+	if enemy_instances.size() > 100:
 		var first = enemy_instances.pop_back()
 		var second = enemy_instances.pop_front()
 		if children.has(first) and children.has(second):
@@ -43,8 +43,11 @@ func _on_check_timeout():
 func _on_nightfall_timeout():
 	for s in soul_stones:
 		var soul_stone = soul_stones.pop_front()
-		if children.has(soul_stone):
-			soul_stone.magnet = true
-			soul_stones.erase(soul_stone)
+		if soul_stone != null:
+			if children.has(soul_stone):
+				soul_stone.magnet = true
+				soul_stones.erase(soul_stone)
+			else:
+				soul_stones.erase(soul_stone)
 		else:
 			soul_stones.erase(soul_stone)

@@ -36,6 +36,7 @@ var nighttime = false
 var basehealth = 100
 var healthscaling = 0
 var spawnrate = 0.7
+var damage_scale = 1
 var select = Node2D
 
 
@@ -98,6 +99,7 @@ func _on_spawner_timeout():
 		
 		# scaling
 		enemy.health += healthscaling
+		enemy.damage += damage_scale
 		world_enemies.add_child(enemy)
 
 
@@ -108,7 +110,7 @@ func _on_tutorial_end_area_entered(area):
 			player_tutorial_end = true
 			var dialogue = dialogue_scene.instantiate()
 			dialogue.messages = ["It'll get dark soon... I should start building defenses...",
-			"(press tab to open/close inventory, left-click to place towers, right-click to deselect)"]
+			"(Building towers cost soul shards. Keep track of them in your inventory.)"]
 			dialogue.timed_message = true
 			dialogue.read_time = 2.5
 			dialogue.speaking = "Me:"
@@ -130,7 +132,10 @@ func _on_nightfall_timeout():
 	healthscaling += (basehealth * 0.1)
 	basehealth += healthscaling
 	
-	spawner.wait_time = spawner.wait_time * spawnrate
+	if spawner.wait_time > 0.1:
+		spawner.wait_time = spawner.wait_time * spawnrate
+		
+	damage_scale += 1
 
 func _on_midday_timeout():
 	nighttime = true

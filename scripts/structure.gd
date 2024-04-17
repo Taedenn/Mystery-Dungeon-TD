@@ -8,6 +8,7 @@ extends StaticBody2D
 @onready var health_display = $HealthDisplay
 
 var taking_damage = false
+var damage = 0
 var time_since_last_tick = 1.0
 
 const DAMAGE_TICK_INTERVAL = 0.8
@@ -26,12 +27,14 @@ func _physics_process(delta):
 	if taking_damage:
 		time_since_last_tick += delta
 		if time_since_last_tick >= DAMAGE_TICK_INTERVAL:
-			set_health(5)
+			set_health(damage)
 			time_since_last_tick = 0.0
 
 func _on_collision_area_area_entered(area):
 	if area.is_in_group("enemies"):
 		taking_damage = true
+		var enemy = area.get_parent()
+		damage = enemy.damage
 	if area.is_in_group("healing"):
 		if health < max_health and health > 0:
 			var healing = area.get_parent().structure_heal

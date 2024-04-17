@@ -65,6 +65,7 @@ func _ready():
 			"I'm protecting you from the others noticing your presence... But once you leave this area they'll start coming for you at night...",
 			"You can generate defenses using Soul Shards... I've left some behind for you. Good luck."]
 		dialogue.connect("label_finished", _on_label_finished)
+
 	else:
 		scroll.visible = false
 		hb.visible = true
@@ -163,6 +164,20 @@ func update_animation():
 			attack.visible = false
 			walk.visible = true
 
+func _input(_event):
+	if not freeze_input:
+		if Input.is_action_just_pressed("open_build"):
+			if UI.visible:
+				UI.visible = false
+			else:
+				UI.visible = true
+		if Input.is_action_just_pressed("ff"):
+			if engine_speed == 1:
+				engine_speed = 2
+			else:
+				engine_speed = 1
+			Engine.time_scale = engine_speed
+
 func _physics_process(_delta):
 	if not freeze_input:
 		if not is_attacking:
@@ -171,12 +186,6 @@ func _physics_process(_delta):
 
 		if Input.is_action_just_pressed("attack"):
 			is_attacking = true
-			
-		if Input.is_action_just_pressed("open_build"):
-			if UI.visible:
-				UI.visible = false
-			else:
-				UI.visible = true
 			
 		if health <= 0:
 			is_dead = true
@@ -249,6 +258,11 @@ func _on_label_finished():
 	freeze_input = false
 	hb.visible = true
 	scroll.visible = false
+	dialogue = DialogueBoxStartScene.instantiate()
+	dialogue.messages = ["(Press ESC for controls. Leave this area to start the game!)"]
+	dialogue.timed_message = true
+	dialogue.read_time = 2.5
+	add_child(dialogue)
 
 func _on_sleeping_timeout():
 	if sleepy_start:

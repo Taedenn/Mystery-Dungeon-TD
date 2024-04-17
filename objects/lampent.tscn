@@ -91,6 +91,7 @@ libraries = {
 }
 
 [node name="attack_delay" type="Timer" parent="."]
+wait_time = 0.7
 autostart = true
 
 [node name="Attack_Aura" type="Area2D" parent="."]

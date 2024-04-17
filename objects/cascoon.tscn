@@ -57,8 +57,8 @@ z_index = 1
 collision_layer = 32
 collision_mask = 45
 script = ExtResource("1_kuj5m")
-health = 60
-max_health = 60
+health = 80
+max_health = 80
 recoil = 10
 
 [node name="recoil" type="Sprite2D" parent="."]
