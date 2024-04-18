@@ -1682,6 +1682,7 @@ texture = ExtResource("38_b8eqw")
 flip_v = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+follow_viewport_scale = 0.1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
 anchors_preset = 4

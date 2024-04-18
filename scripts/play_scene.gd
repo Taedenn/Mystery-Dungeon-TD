@@ -4,8 +4,8 @@ extends Node2D
 @onready var pause = preload("res://scenes/pause_menu.tscn")
 
 @onready var portrait = $CanvasLayer/PanelContainer
-@onready var sleep = $CanvasLayer/sleep
-@onready var _animated_sprite = $CanvasLayer/PlayerAnimations
+@onready var sleep = $CanvasLayer/playerAnim/sleep
+@onready var _animated_sprite = $CanvasLayer/playerAnim/PlayerAnimations
 
 var play_sprite = false
 var secondDialogue = true
