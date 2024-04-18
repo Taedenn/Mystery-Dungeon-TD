@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://p7tx0x7sfwtx"]
+[gd_scene load_steps=63 format=3 uid="uid://p7tx0x7sfwtx"]
 
 [ext_resource type="PackedScene" uid="uid://bw27bm0nouknq" path="res://scenes/player.tscn" id="1_03s17"]
 [ext_resource type="Texture2D" uid="uid://7eh803jggcnd" path="res://tilemaps/sat_tiles.png" id="1_aum2n"]
@@ -18,14 +18,12 @@
 [ext_resource type="Texture2D" uid="uid://bt5qoeq1i1ld3" path="res://assets/stons.png" id="11_lyh5t"]
 [ext_resource type="PackedScene" uid="uid://b85csecsg3tsa" path="res://addons/grid_building/grid_targeting_system/grid_targeter/grid_targeter.tscn" id="14_m3t5n"]
 [ext_resource type="PackedScene" uid="uid://erm78oe3trac" path="res://addons/grid_building/ui/placement_selection/placeable_selection_ui.tscn" id="15_qq2s4"]
-[ext_resource type="Texture2D" uid="uid://jsf03x3m1eqf" path="res://assets/seal.png" id="19_n023e"]
 [ext_resource type="StyleBox" uid="uid://danwv2f5syeji" path="res://resources/textbox_resource.tres" id="20_7xf2f"]
-[ext_resource type="Texture2D" uid="uid://cygix8wou5niw" path="res://assets/seal_anim.png" id="20_iejy5"]
+[ext_resource type="Texture2D" uid="uid://caant18a1manu" path="res://assets/gimmighoul.png" id="21_628pm"]
 [ext_resource type="Texture2D" uid="uid://i0cf6nlnqd2" path="res://assets/text_box.png" id="22_3hne5"]
 [ext_resource type="Script" path="res://addons/grid_building_inventory/ui/resource_display/base_item_display.gd" id="22_876ad"]
 [ext_resource type="Resource" uid="uid://c6wcdo8xicrve" path="res://objects/Categorical_Tags/tower_tag.tres" id="23_lhlbw"]
 [ext_resource type="Resource" uid="uid://8n0bwarataxy" path="res://objects/cascoon_placeable.tres" id="23_nugcd"]
-[ext_resource type="Texture2D" uid="uid://c6jiyoyqkdbky" path="res://assets/soul_shard_mini.png" id="24_kfuv2"]
 [ext_resource type="PackedScene" uid="uid://d4gityf6073j8" path="res://scenes/soul_shard.tscn" id="25_6tesc"]
 [ext_resource type="FontFile" uid="uid://ck6f0v3yk0xf4" path="res://assets/m5x7.ttf" id="25_d3i24"]
 [ext_resource type="Resource" uid="uid://capjqpsvi5h24" path="res://objects/xatu_placeable.tres" id="25_h7lyt"]
@@ -283,56 +281,10 @@ radius = 127.035
 [sub_resource type="CircleShape2D" id="CircleShape2D_u8afx"]
 radius = 110.114
 
-[sub_resource type="Animation" id="Animation_btdu1"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("SealAnim:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-
-[sub_resource type="Animation" id="Animation_aqjx6"]
-resource_name = "out"
-length = 0.7875
-step = 0.0625
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("SealAnim:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1125, 0.225, 0.3375, 0.45, 0.5625, 0.675, 0.7875, 0.9),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6, 7, 7]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_lkfmj"]
-_data = {
-"RESET": SubResource("Animation_btdu1"),
-"out": SubResource("Animation_aqjx6")
-}
-
-[sub_resource type="Theme" id="Theme_ymw8k"]
-PanelContainer/styles/panel = ExtResource("20_7xf2f")
-
-[sub_resource type="Theme" id="Theme_ryng5"]
-default_font = ExtResource("25_d3i24")
-default_font_size = 24
-PanelContainer/styles/panel = ExtResource("20_7xf2f")
-
 [sub_resource type="Theme" id="Theme_hmodl"]
 PanelContainer/styles/panel = ExtResource("20_7xf2f")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5c3rp"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a8mwb"]
 texture = ExtResource("22_3hne5")
 texture_margin_left = 13.0
 texture_margin_top = 10.0
@@ -340,8 +292,54 @@ texture_margin_right = 13.0
 texture_margin_bottom = 10.0
 
 [sub_resource type="Theme" id="Theme_q7uvs"]
-Panel/styles/panel = SubResource("StyleBoxTexture_5c3rp")
+Panel/styles/panel = SubResource("StyleBoxTexture_a8mwb")
 PanelContainer/styles/panel = ExtResource("20_7xf2f")
+
+[sub_resource type="Theme" id="Theme_ymw8k"]
+PanelContainer/styles/panel = ExtResource("20_7xf2f")
+
+[sub_resource type="Theme" id="Theme_ryng5"]
+default_font = ExtResource("25_d3i24")
+default_font_size = 36
+PanelContainer/styles/panel = ExtResource("20_7xf2f")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_asefl"]
+texture = ExtResource("22_3hne5")
+texture_margin_left = 9.0
+texture_margin_top = 5.0
+texture_margin_right = 9.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="Theme" id="Theme_lgsco"]
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_asefl")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uxg76"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2sj3r"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jt7jd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l30av"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 15
+border_width_top = 15
+border_width_right = 15
+border_width_bottom = 15
+border_color = Color(0.8, 0.8, 0.8, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3001b"]
+
+[sub_resource type="Theme" id="Theme_1tqk4"]
+Button/styles/disabled = SubResource("StyleBoxEmpty_uxg76")
+Button/styles/focus = SubResource("StyleBoxEmpty_2sj3r")
+Button/styles/hover = SubResource("StyleBoxEmpty_jt7jd")
+Button/styles/normal = SubResource("StyleBoxFlat_l30av")
+Button/styles/pressed = SubResource("StyleBoxEmpty_3001b")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7v864"]
+
+[sub_resource type="Theme" id="Theme_47nnr"]
+PanelContainer/styles/panel = SubResource("StyleBoxEmpty_7v864")
 
 [sub_resource type="Theme" id="Theme_12tbb"]
 PanelContainer/styles/panel = ExtResource("20_7xf2f")
@@ -1678,21 +1676,6 @@ shape = SubResource("CircleShape2D_u8afx")
 
 [node name="sigil" type="Node2D" parent="World"]
 
-[node name="Seal" type="Sprite2D" parent="World/sigil"]
-position = Vector2(0, 141)
-texture = ExtResource("19_n023e")
-
-[node name="SealAnim" type="Sprite2D" parent="World/sigil"]
-visible = false
-position = Vector2(0, 141)
-texture = ExtResource("20_iejy5")
-hframes = 8
-
-[node name="SealAnimationPlayer" type="AnimationPlayer" parent="World/sigil"]
-libraries = {
-"": SubResource("AnimationLibrary_lkfmj")
-}
-
 [node name="Scroll" type="Sprite2D" parent="World/sigil"]
 position = Vector2(-1, 394)
 texture = ExtResource("38_b8eqw")
@@ -1700,38 +1683,25 @@ flip_v = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="BoxContainer" type="BoxContainer" parent="CanvasLayer"]
-anchors_preset = 8
-anchor_left = 0.5
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
+anchors_preset = 4
 anchor_top = 0.5
-anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -960.0
-offset_top = -493.5
-offset_right = -552.0
-offset_bottom = 493.5
-grow_horizontal = 2
+offset_top = -437.5
+offset_right = 477.0
+offset_bottom = 437.5
 grow_vertical = 2
+theme_override_constants/separation = 5
+alignment = 1
+
+[node name="BoxContainer" type="BoxContainer" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
 vertical = true
 
-[node name="Catalogue" type="PanelContainer" parent="CanvasLayer/BoxContainer"]
-custom_minimum_size = Vector2(400, 400)
-layout_mode = 2
-theme = SubResource("Theme_ymw8k")
-
-[node name="PlaceableSelectionUI" parent="CanvasLayer/BoxContainer/Catalogue" node_paths=PackedStringArray("building_system") instance=ExtResource("15_qq2s4")]
-custom_minimum_size = Vector2(360, 360)
-layout_direction = 2
-layout_mode = 2
-theme = SubResource("Theme_ryng5")
-building_system = NodePath("../../../../Systems/BuildingSystem")
-category_tags = Array[Resource("res://addons/grid_building/categorical_tag.gd")]([ExtResource("23_lhlbw")])
-placeables = Array[Resource("res://addons/grid_building/building_system/placeable/placeable.gd")]([ExtResource("23_nugcd"), ExtResource("25_h7lyt"), ExtResource("26_7dm3e"), ExtResource("29_eap45")])
-
-[node name="BoxContainer" type="BoxContainer" parent="CanvasLayer/BoxContainer"]
+[node name="BoxContainer" type="BoxContainer" parent="CanvasLayer/HBoxContainer/BoxContainer"]
 layout_mode = 2
 
-[node name="BaseItemDisplay" type="PanelContainer" parent="CanvasLayer/BoxContainer/BoxContainer" node_paths=PackedStringArray("item_texture", "amount_label")]
+[node name="BaseItemDisplay" type="PanelContainer" parent="CanvasLayer/HBoxContainer/BoxContainer/BoxContainer" node_paths=PackedStringArray("item_texture", "amount_label")]
 custom_minimum_size = Vector2(130, 130)
 layout_mode = 2
 theme = SubResource("Theme_hmodl")
@@ -1739,34 +1709,34 @@ script = ExtResource("22_876ad")
 item_texture = NodePath("GridContainer/TextureRect")
 amount_label = NodePath("GridContainer/Amount")
 
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/BoxContainer/BoxContainer/BaseItemDisplay"]
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/HBoxContainer/BoxContainer/BoxContainer/BaseItemDisplay"]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/BoxContainer/BoxContainer/BaseItemDisplay/GridContainer"]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/HBoxContainer/BoxContainer/BoxContainer/BaseItemDisplay/GridContainer"]
 custom_minimum_size = Vector2(90, 90)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("24_kfuv2")
+texture = ExtResource("21_628pm")
 stretch_mode = 5
 
-[node name="Amount" type="Label" parent="CanvasLayer/BoxContainer/BoxContainer/BaseItemDisplay/GridContainer"]
+[node name="Amount" type="Label" parent="CanvasLayer/HBoxContainer/BoxContainer/BoxContainer/BaseItemDisplay/GridContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("25_d3i24")
 theme_override_font_sizes/font_size = 36
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Update" type="Timer" parent="CanvasLayer/BoxContainer/BoxContainer/BaseItemDisplay"]
+[node name="Update" type="Timer" parent="CanvasLayer/HBoxContainer/BoxContainer/BoxContainer/BaseItemDisplay"]
 wait_time = 0.1
 autostart = true
 
-[node name="Stopwatch" type="PanelContainer" parent="CanvasLayer/BoxContainer/BoxContainer"]
+[node name="Stopwatch" type="PanelContainer" parent="CanvasLayer/HBoxContainer/BoxContainer/BoxContainer"]
 custom_minimum_size = Vector2(266, 0)
 layout_mode = 2
 theme = SubResource("Theme_q7uvs")
 
-[node name="Time" type="Label" parent="CanvasLayer/BoxContainer/BoxContainer/Stopwatch"]
+[node name="Time" type="Label" parent="CanvasLayer/HBoxContainer/BoxContainer/BoxContainer/Stopwatch"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("25_d3i24")
 theme_override_font_sizes/font_size = 84
@@ -1774,36 +1744,85 @@ horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("26_e6skh")
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/BoxContainer"]
-custom_minimum_size = Vector2(408, 408)
+[node name="Catalogue" type="PanelContainer" parent="CanvasLayer/HBoxContainer/BoxContainer"]
+custom_minimum_size = Vector2(400, 700)
 layout_mode = 2
+theme = SubResource("Theme_ymw8k")
+
+[node name="PlaceableSelectionUI" parent="CanvasLayer/HBoxContainer/BoxContainer/Catalogue" node_paths=PackedStringArray("building_system") instance=ExtResource("15_qq2s4")]
+custom_minimum_size = Vector2(360, 360)
+layout_direction = 2
+layout_mode = 2
+theme = SubResource("Theme_ryng5")
+building_system = NodePath("../../../../../Systems/BuildingSystem")
+category_tags = Array[Resource("res://addons/grid_building/categorical_tag.gd")]([ExtResource("23_lhlbw")])
+placeables = Array[Resource("res://addons/grid_building/building_system/placeable/placeable.gd")]([ExtResource("23_nugcd"), ExtResource("25_h7lyt"), ExtResource("26_7dm3e"), ExtResource("29_eap45")])
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
+
+[node name="Tab" type="PanelContainer" parent="CanvasLayer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme = SubResource("Theme_lgsco")
+
+[node name="OpenClose" type="Button" parent="CanvasLayer/HBoxContainer/VBoxContainer/Tab"]
+layout_mode = 2
+theme = SubResource("Theme_1tqk4")
+theme_override_fonts/font = ExtResource("25_d3i24")
+theme_override_font_sizes/font_size = 36
+disabled = true
+text = "<
+<
+<"
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(48, 74)
+layout_mode = 2
+theme = SubResource("Theme_47nnr")
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer"]
+custom_minimum_size = Vector2(408, 408)
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -408.0
+offset_top = 30.0
+offset_bottom = 438.0
+grow_horizontal = 0
+grow_vertical = 2
 theme = SubResource("Theme_12tbb")
 
-[node name="KnockOut" type="TextureRect" parent="CanvasLayer/BoxContainer/PanelContainer"]
+[node name="KnockOut" type="TextureRect" parent="CanvasLayer/PanelContainer"]
 visible = false
 layout_mode = 2
 texture = ExtResource("30_yrc4s")
 stretch_mode = 5
 
-[node name="Low" type="TextureRect" parent="CanvasLayer/BoxContainer/PanelContainer"]
+[node name="Low" type="TextureRect" parent="CanvasLayer/PanelContainer"]
 visible = false
 layout_mode = 2
 texture = ExtResource("31_f1lly")
 stretch_mode = 5
 
-[node name="Half" type="TextureRect" parent="CanvasLayer/BoxContainer/PanelContainer"]
+[node name="Half" type="TextureRect" parent="CanvasLayer/PanelContainer"]
 visible = false
 layout_mode = 2
 texture = ExtResource("32_gwit7")
 stretch_mode = 5
 
-[node name="Ouch" type="TextureRect" parent="CanvasLayer/BoxContainer/PanelContainer"]
+[node name="Ouch" type="TextureRect" parent="CanvasLayer/PanelContainer"]
 visible = false
 layout_mode = 2
 texture = ExtResource("33_bpoxt")
 stretch_mode = 5
 
-[node name="Full" type="TextureRect" parent="CanvasLayer/BoxContainer/PanelContainer"]
+[node name="Full" type="TextureRect" parent="CanvasLayer/PanelContainer"]
 layout_mode = 2
 texture = ExtResource("30_77ipl")
 stretch_mode = 5
@@ -1855,7 +1874,8 @@ autostart = true
 [connection signal="area_entered" from="World/TutorialEnd" to="World/Player" method="_on_tutorial_end_area_entered"]
 [connection signal="area_entered" from="World/TutorialEnd" to="World/CanvasModulate" method="_on_tutorial_end_area_entered"]
 [connection signal="timeout" from="World/Spawners/Spawner" to="." method="_on_spawner_timeout"]
-[connection signal="timeout" from="CanvasLayer/BoxContainer/BoxContainer/BaseItemDisplay/Update" to="CanvasLayer/BoxContainer/BoxContainer/BaseItemDisplay" method="_on_update_timeout"]
+[connection signal="timeout" from="CanvasLayer/HBoxContainer/BoxContainer/BoxContainer/BaseItemDisplay/Update" to="CanvasLayer/HBoxContainer/BoxContainer/BoxContainer/BaseItemDisplay" method="_on_update_timeout"]
+[connection signal="pressed" from="CanvasLayer/HBoxContainer/VBoxContainer/Tab/OpenClose" to="World/Player" method="_on_open_close_pressed"]
 [connection signal="timeout" from="Enemies/Check" to="Enemies" method="_on_check_timeout"]
 
 [editable path="World/Player"]

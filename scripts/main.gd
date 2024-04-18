@@ -12,13 +12,10 @@ extends Node2D
 @onready var world_enemies = $Enemies
 @onready var player = $World/Player
 @onready var item_container = $World/Player/Camera2D/ItemContainer
-@onready var stopwatch = $CanvasLayer/BoxContainer/BoxContainer/Stopwatch/Time
+@onready var stopwatch = $CanvasLayer/HBoxContainer/BoxContainer/BoxContainer/Stopwatch/Time
 @onready var spawner = $World/Spawners/Spawner
-@onready var item_display = $CanvasLayer/BoxContainer/BoxContainer/BaseItemDisplay
-@onready var seal = $World/sigil/Seal
-@onready var seal_anim = $World/sigil/SealAnim
-@onready var seal_ap = $World/sigil/SealAnimationPlayer
-@onready var placeable_control = $CanvasLayer/BoxContainer/Catalogue/PlaceableSelectionUI
+@onready var item_display = $CanvasLayer/HBoxContainer/BoxContainer/BoxContainer/BaseItemDisplay
+@onready var placeable_control = $CanvasLayer/HBoxContainer/BoxContainer/Catalogue/PlaceableSelectionUI
 
 @onready var baseItemStack = [preload("res://materials/base_item_stack.tres")]
 
@@ -45,9 +42,6 @@ func _ready():
 	sa2 = $World/Spawners/Spawn_Area_2/sa2
 	sa3 = $World/Spawners/Spawn_Area_3/sa3
 	sa4 = $World/Spawners/Spawn_Area_4/sa4
-	
-	seal.visible = true
-	seal_anim.visible = false
 	
 	# reset inventory
 	var shard_item = soul_shard_material
@@ -115,10 +109,6 @@ func _on_tutorial_end_area_entered(area):
 			dialogue.read_time = 4 
 			dialogue.speaking = "Me:"
 			add_child(dialogue)
-			
-			seal.visible = false
-			seal_anim.visible = true
-			seal_ap.play("out")
 			
 			stopwatch.start()
 

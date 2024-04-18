@@ -6,7 +6,7 @@ class_name BaseItemDisplay
 @export var item_label : Label
 @export var amount_label : Label
 
-@onready var item_container = $"../../../../World/Player/Camera2D/ItemContainer"
+@onready var item_container = $"../../../../../World/Player/Camera2D/ItemContainer"
 @onready var soul_shard_material = preload("res://materials/soul_shard.tres")
 
 var resource_type : BaseItem :

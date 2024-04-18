@@ -2,7 +2,7 @@ extends StaticBody2D
 
 @onready var player = $"../../World/Player"
 @onready var soul_shard_material = preload("res://materials/soul_shard.tres")
-@onready var item_display = $"../../CanvasLayer/BoxContainer/BoxContainer/BaseItemDisplay"
+@onready var item_display = $"../../CanvasLayer/HBoxContainer/BoxContainer/BoxContainer/BaseItemDisplay"
 
 var detection_radius = 100
 var pickup_radius = 5

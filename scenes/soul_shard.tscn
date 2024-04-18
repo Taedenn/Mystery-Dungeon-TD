@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://d4gityf6073j8"]
 
-[ext_resource type="Texture2D" uid="uid://c6jiyoyqkdbky" path="res://assets/soul_shard_mini.png" id="1_15nnl"]
 [ext_resource type="Script" path="res://scripts/soul_shard.gd" id="1_h3vr0"]
+[ext_resource type="Texture2D" uid="uid://caant18a1manu" path="res://assets/gimmighoul.png" id="2_dt3of"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rnc7q"]
 radius = 5.0
@@ -13,7 +13,8 @@ collision_mask = 0
 script = ExtResource("1_h3vr0")
 
 [node name="SoulShardMini" type="Sprite2D" parent="."]
-texture = ExtResource("1_15nnl")
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_dt3of")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_rnc7q")

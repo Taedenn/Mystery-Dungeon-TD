@@ -51,3 +51,4 @@ func _on_nightfall_timeout():
 				soul_stones.erase(soul_stone)
 		else:
 			soul_stones.erase(soul_stone)
+

@@ -17,13 +17,14 @@ extends CharacterBody2D
 @onready var area2d = $player_area
 @onready var health_display = $HealthDisplay
 
-@onready var full = $"../../CanvasLayer/BoxContainer/PanelContainer/Full"
-@onready var ouch = $"../../CanvasLayer/BoxContainer/PanelContainer/Ouch"
-@onready var half = $"../../CanvasLayer/BoxContainer/PanelContainer/Half"
-@onready var low = $"../../CanvasLayer/BoxContainer/PanelContainer/Low"
-@onready var knockout = $"../../CanvasLayer/BoxContainer/PanelContainer/KnockOut"
-@onready var UI = $"../../CanvasLayer"
+@onready var full = $"../../CanvasLayer/PanelContainer/Full"
+@onready var ouch = $"../../CanvasLayer/PanelContainer/Ouch"
+@onready var half = $"../../CanvasLayer/PanelContainer/Half"
+@onready var low = $"../../CanvasLayer/PanelContainer/Low"
+@onready var knockout = $"../../CanvasLayer/PanelContainer/KnockOut"
+@onready var UI = $"../../CanvasLayer/HBoxContainer/BoxContainer"
 @onready var scroll = $"../sigil/Scroll"
+@onready var InvenButton = $"../../CanvasLayer/HBoxContainer/VBoxContainer/Tab/OpenClose"
 
 @onready var DialogueBoxStartScene = preload("res://scenes/dialogue_box.tscn")
 @onready var Enemies = preload("res://scripts/Enemy.gd")
@@ -63,7 +64,7 @@ func _ready():
 		dialogue.messages = [
 			"If you're reading this, you're finally awake...",  
 			"I'm protecting you from the others noticing your presence... But once you leave this area they'll start coming for you at night...",
-			"You can generate defenses using Soul Shards... I've left some behind for you. Good luck."]
+			"You can generate defenses using Gold... I've left some behind for you. Good luck."]
 		dialogue.connect("label_finished", _on_label_finished)
 
 	else:
@@ -258,8 +259,9 @@ func _on_label_finished():
 	freeze_input = false
 	hb.visible = true
 	scroll.visible = false
+	InvenButton.disabled = false
 	dialogue = DialogueBoxStartScene.instantiate()
-	dialogue.messages = ["(Press ESC for controls. Leave this area to start the game!)"]
+	dialogue.messages = ["(Press ESC for controls.)"]
 	dialogue.timed_message = true
 	dialogue.read_time = 2.5
 	add_child(dialogue)
@@ -296,3 +298,10 @@ func _on_midday_timeout():
 	bg_music.stop()
 	background_music_night()
 	nc.start()
+
+
+func _on_open_close_pressed():
+	if UI.visible:
+		UI.visible = false
+	else:
+		UI.visible = true
