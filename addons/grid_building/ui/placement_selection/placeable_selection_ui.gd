@@ -94,20 +94,39 @@ func _get_placeables_with_tag(tag : Resource) -> Array[Placeable]:
 		
 func _create_placeable_item_list(tagged_placeables : Array[Placeable]) -> ItemList:
 	var item_list : ItemList = placeable_item_list_template.instantiate() 
+	var vbox: VBoxContainer = VBoxContainer.new()
+	item_list.add_child(vbox)
 	
 	for placeable in tagged_placeables:
-		item_list.add_item( placeable.display_name, placeable.icon)
+		var hbox: HBoxContainer = HBoxContainer.new()
+		var label: Label = Label.new()
+		var icon_rect: TextureRect = TextureRect.new()
+		var cost_icon_rect: TextureRect = TextureRect.new()
+		
+		icon_rect.texture = placeable.icon
+		icon_rect.stretch_mode = icon_rect.STRETCH_KEEP_ASPECT_CENTERED
+		hbox.add_child(icon_rect)
+		
+		label.text = placeable.display_name
+		hbox.add_child(label)
+		
+		cost_icon_rect.texture = placeable.placement_rules[0].resource_stacks_to_spend[0].type.icon
+		cost_icon_rect.stretch_mode = cost_icon_rect.STRETCH_KEEP_ASPECT_CENTERED
+		hbox.add_child(cost_icon_rect)
+		
+		vbox.add_child(hbox)
+		item_list.add_item("\n")
 
 	return item_list
 
 func _on_list_item_selected(index : int):
 	# Get current selection
 	var current_list : ItemList = tab_container.get_current_tab_control() as ItemList
-	
+	var vbox = current_list.get_child(0)
+	var selected_display_name: String = vbox.get_child(index).get_child(1).text
 	# Match on name and texture
 	for placeable in placeables:
-		if(placeable.display_name == current_list.get_item_text(index) && 
-			placeable.icon == current_list.get_item_icon(index)):
+		if(placeable.display_name == selected_display_name):
 				building_system.set_buildable_preview(placeable)
 				
 				# Unselect and hide

@@ -21,7 +21,7 @@ locator = ExtResource("3_wkodk")
 
 [resource]
 script = ExtResource("7_skgom")
-display_name = &"Cascoon Totem (cost 1)"
+display_name = &"Cascoon: 1"
 icon = ExtResource("1_7jl6u")
 packed_scene = ExtResource("2_ux7he")
 tags = Array[Resource]([ExtResource("8_ovkak")])

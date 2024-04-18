@@ -300,7 +300,7 @@ PanelContainer/styles/panel = ExtResource("20_7xf2f")
 
 [sub_resource type="Theme" id="Theme_ryng5"]
 default_font = ExtResource("25_d3i24")
-default_font_size = 36
+default_font_size = 48
 PanelContainer/styles/panel = ExtResource("20_7xf2f")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_asefl"]
@@ -1879,3 +1879,4 @@ autostart = true
 [connection signal="timeout" from="Enemies/Check" to="Enemies" method="_on_check_timeout"]
 
 [editable path="World/Player"]
+[editable path="CanvasLayer/HBoxContainer/BoxContainer/Catalogue/PlaceableSelectionUI"]

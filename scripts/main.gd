@@ -104,7 +104,7 @@ func _on_tutorial_end_area_entered(area):
 			player_tutorial_end = true
 			var dialogue = dialogue_scene.instantiate()
 			dialogue.messages = ["It'll get dark soon... I should start building defenses...",
-			"(Building towers cost soul shards. Keep track of them in your inventory.)"]
+			"(Building towers cost Gold. You can keep track in your inventory.)"]
 			dialogue.timed_message = true
 			dialogue.read_time = 4 
 			dialogue.speaking = "Me:"
