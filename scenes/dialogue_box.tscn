@@ -13,13 +13,16 @@ script = ExtResource("1_xw6gj")
 [node name="TextboxCanvas" type="CanvasLayer" parent="."]
 
 [node name="Textbox" type="PanelContainer" parent="TextboxCanvas"]
-anchors_preset = 4
+anchors_preset = 8
+anchor_left = 0.5
 anchor_top = 0.5
+anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 480.0
-offset_top = 93.5
-offset_right = 1680.0
-offset_bottom = 525.5
+offset_left = -547.0
+offset_top = 90.0
+offset_right = 701.0
+offset_bottom = 498.0
+grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_8mpww")
 
@@ -27,16 +30,17 @@ theme = SubResource("Theme_8mpww")
 layout_mode = 2
 
 [node name="Name" type="Label" parent="TextboxCanvas/Textbox/GridContainer"]
+custom_minimum_size = Vector2(1200, 60)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_515wh")
 theme_override_font_sizes/font_size = 60
 
 [node name="Label" type="Label" parent="TextboxCanvas/Textbox/GridContainer"]
-custom_minimum_size = Vector2(1152, 332)
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_515wh")
 theme_override_font_sizes/font_size = 60
-autowrap_mode = 3
+autowrap_mode = 2
 
 [node name="nextchar" type="Timer" parent="."]
 

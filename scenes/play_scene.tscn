@@ -60,14 +60,17 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [node name="PanelContainer" type="PanelContainer" parent="CanvasLayer"]
-custom_minimum_size = Vector2(400, 400)
-anchors_preset = 4
+custom_minimum_size = Vector2(408, 408)
+anchors_preset = 8
+anchor_left = 0.5
 anchor_top = 0.5
+anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 66.0
-offset_top = 93.5
-offset_right = 474.0
-offset_bottom = 493.5
+offset_left = -960.0
+offset_top = 90.0
+offset_right = -552.0
+offset_bottom = 498.0
+grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_v5wxw")
 

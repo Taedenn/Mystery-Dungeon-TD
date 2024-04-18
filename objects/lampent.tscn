@@ -53,7 +53,7 @@ _data = {
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_582af"]
-radius = 181.044
+radius = 300.0
 
 [node name="Lampent" type="StaticBody2D"]
 z_index = 2

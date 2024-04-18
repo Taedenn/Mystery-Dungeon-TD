@@ -112,7 +112,7 @@ func _on_tutorial_end_area_entered(area):
 			dialogue.messages = ["It'll get dark soon... I should start building defenses...",
 			"(Building towers cost soul shards. Keep track of them in your inventory.)"]
 			dialogue.timed_message = true
-			dialogue.read_time = 2.5
+			dialogue.read_time = 4 
 			dialogue.speaking = "Me:"
 			add_child(dialogue)
 			

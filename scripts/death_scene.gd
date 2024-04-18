@@ -14,7 +14,7 @@ func _ready():
 	bg_music.play()
 	bg_music.autoplay = true
 	sleep.visible = true
-	portrait.visible = false
+	portrait.visible = true
 	var dialogue = DialogueBoxStartScene.instantiate()
 	dialogue.messages = ["Oh Dear...",
 		"I knew this might happen, and unfortunately I must say, there is no end in sight for you.",

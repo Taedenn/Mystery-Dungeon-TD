@@ -4,7 +4,7 @@ extends StaticBody2D
 
 var target
 @export var move_speed = 100
-var detection_radius = 180
+var detection_radius = 400
 
 func _ready():
 	$CollisionArea.add_to_group("hazards")
