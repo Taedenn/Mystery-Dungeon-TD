@@ -23,6 +23,7 @@ extends CharacterBody2D
 @onready var low = $"../../CanvasLayer/PanelContainer/Low"
 @onready var knockout = $"../../CanvasLayer/PanelContainer/KnockOut"
 @onready var UI = $"../../CanvasLayer/HBoxContainer/BoxContainer"
+@onready var playerUI = $"../../CanvasLayer/PanelContainer"
 @onready var scroll = $"../sigil/Scroll"
 @onready var InvenButton = $"../../CanvasLayer/HBoxContainer/VBoxContainer/Tab/OpenClose"
 
@@ -170,8 +171,10 @@ func _input(_event):
 		if Input.is_action_just_pressed("open_build"):
 			if UI.visible:
 				UI.visible = false
+				playerUI.visible = false
 			else:
 				UI.visible = true
+				playerUI.visible = true
 		if Input.is_action_just_pressed("ff"):
 			if engine_speed == 1:
 				engine_speed = 2
@@ -303,5 +306,7 @@ func _on_midday_timeout():
 func _on_open_close_pressed():
 	if UI.visible:
 		UI.visible = false
+		playerUI.visible = false
 	else:
 		UI.visible = true
+		playerUI.visible = true
