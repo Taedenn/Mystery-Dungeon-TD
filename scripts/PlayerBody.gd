@@ -26,6 +26,7 @@ extends CharacterBody2D
 @onready var playerUI = $"../../CanvasLayer/PanelContainer"
 @onready var scroll = $"../sigil/Scroll"
 @onready var InvenButton = $"../../CanvasLayer/HBoxContainer/VBoxContainer/Tab/OpenClose"
+@onready var camera = $Camera2D
 
 @onready var DialogueBoxStartScene = preload("res://scenes/dialogue_box.tscn")
 @onready var Enemies = preload("res://scripts/Enemy.gd")
@@ -181,6 +182,14 @@ func _input(_event):
 			else:
 				engine_speed = 1
 			Engine.time_scale = engine_speed
+			
+		if Input.is_action_just_pressed("zoom_in"):
+			if camera.zoom >= Vector2(2, 2) and camera.zoom	< Vector2(4, 4):
+				camera.zoom = camera.zoom + Vector2(0.5, 0.5)
+				
+		if Input.is_action_just_pressed("zoom_out"):
+			if camera.zoom <= Vector2(4, 4) and camera.zoom > Vector2(2, 2):
+				camera.zoom = camera.zoom - Vector2(0.5, 0.5)
 
 func _physics_process(_delta):
 	if not freeze_input:

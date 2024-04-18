@@ -404,6 +404,7 @@ layer_3/tile_data = PackedInt32Array(1638396, 720896, 2, 1703932, 720896, 3, 176
 
 [node name="Player" parent="World" instance=ExtResource("1_03s17")]
 position = Vector2(0, 370)
+sleepy_start = false
 regen = 0
 
 [node name="ItemContainer" type="Node" parent="World/Player/Camera2D" index="0"]
@@ -412,9 +413,6 @@ _slots = Array[Resource("res://addons/grid_building_inventory/items/base_item_st
 
 [node name="healthbar" parent="World/Player" index="1"]
 z_index = 4
-
-[node name="PlayerAnimations" parent="World/Player" index="9"]
-blend_times = [&"walk_down_right", &"walk_down", 0.001]
 
 [node name="Day_Cycle" parent="World/Player" index="13"]
 wait_time = 30.0
@@ -1688,11 +1686,11 @@ follow_viewport_scale = 0.1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_top = -437.5
+offset_top = -414.5
 offset_right = 477.0
-offset_bottom = 437.5
+offset_bottom = 460.5
 grow_vertical = 2
-theme_override_constants/separation = 5
+theme_override_constants/separation = 0
 alignment = 1
 
 [node name="BoxContainer" type="BoxContainer" parent="CanvasLayer/HBoxContainer"]
@@ -1793,8 +1791,8 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = -408.0
-offset_top = 30.0
-offset_bottom = 438.0
+offset_top = 53.0
+offset_bottom = 461.0
 grow_horizontal = 0
 grow_vertical = 2
 theme = SubResource("Theme_12tbb")

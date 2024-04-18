@@ -63,9 +63,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 117.0
-offset_top = -261.0
+offset_top = -193.0
 offset_right = 600.0
-offset_bottom = 127.0
+offset_bottom = 195.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_j642a")
@@ -180,6 +180,21 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("1_ptdg4")
 theme_override_font_sizes/font_size = 45
 text = "1, 2, 3, 4"
+
+[node name="HBoxContainer10" type="HBoxContainer" parent="CenterContainer2/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer2/PanelContainer2/VBoxContainer/HBoxContainer10"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_ptdg4")
+theme_override_font_sizes/font_size = 45
+text = "Zoom:"
+
+[node name="Label2" type="Label" parent="CenterContainer2/PanelContainer2/VBoxContainer/HBoxContainer10"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_ptdg4")
+theme_override_font_sizes/font_size = 45
+text = "- / +"
 
 [connection signal="pressed" from="CenterContainer/PanelContainer/rows/ContinueButton" to="." method="_on_continue_button_pressed"]
 [connection signal="pressed" from="CenterContainer/PanelContainer/rows/QuitButton" to="." method="_on_quit_button_pressed"]
