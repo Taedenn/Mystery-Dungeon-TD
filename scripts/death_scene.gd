@@ -24,7 +24,7 @@ func _ready():
 	
 	dialogue = DialogueBoxStartScene.instantiate()
 	dialogue.messages = ["Oh Dear...",
-		"I knew this might happen, and unfortunately I must say, there is no end in sight for you.",
+		"I knew this might happen...",
 		"Keep trying, little one. I'm sure you'll make it to the end."] 
 	dialogue.speaking = "???"
 	dialogue.connect("label_finished", _on_label_finished)
