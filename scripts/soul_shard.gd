@@ -2,23 +2,24 @@ extends StaticBody2D
 
 @onready var player = $"../../World/Player"
 @onready var soul_shard_material = preload("res://materials/soul_shard.tres")
+@onready var global_data = get_node("/root/global")
 @onready var item_display = $"../../CanvasLayer/HBoxContainer/BoxContainer/BoxContainer/BaseItemDisplay"
 
-var detection_radius = 100
-var pickup_radius = 5
+var detection_radius = false
+var pickup_radius = false
 var move_speed = 100
 var merger
 @export var magnet := false
 
 func _ready():
 	merger = get_parent()
+	self.add_to_group("coins")
 
 func _process(delta):
-	var distance_to_player = global_position.distance_to(player.global_position)
-	if distance_to_player < detection_radius or magnet:
+	if detection_radius or magnet:
 		move_towards_player(delta)
 		
-	if distance_to_player < pickup_radius:
+	if pickup_radius:
 		pick_up_shard()
 		
 func move_towards_player(delta):
@@ -34,5 +35,14 @@ func pick_up_shard():
 	
 	if added_amount > 0:
 		merger.removal_service_soul_shard(self)
+		global_data.gold += added_amount
 		queue_free()
-		
+
+func _on_detection_area_entered(area):
+	if area.is_in_group("player"):
+		detection_radius = true
+
+
+func _on_pickup_area_entered(area):
+	if area.is_in_group("player"):
+		pickup_radius = true

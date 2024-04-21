@@ -1,14 +1,19 @@
 extends Label
 
+@onready var player = $"../../../../../../World/Player"
+@onready var global_data = get_node("/root/global")
+
 var time_elapsed := 0.0
 var counter = 1
 var is_stopped := true
+
+func _ready():
+	player.connect("died", _player_death)
 
 func _process(delta: float) -> void:
 	if !is_stopped:
 		time_elapsed += delta
 		update_label()
-		# $".".text = str(time_elapsed).pad_decimals(2)
 
 func update_label() -> void:
 	var total_centiseconds = int(time_elapsed * 100)
@@ -30,3 +35,8 @@ func stop() -> void:
 
 func start() -> void: 
 	is_stopped = false
+
+func _player_death():
+	stop()
+	if text != null:
+		global_data.time = str(text)

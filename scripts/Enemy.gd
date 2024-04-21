@@ -17,6 +17,7 @@ const ATTACK_INTERVAL = 0.1
 @onready var Enemy_Container = $".."
 @onready var damage_display = $DamageDisplay
 @onready var soul_shard_scene = preload("res://scenes/soul_shard.tscn")
+@onready var global_data = get_node("/root/global")
 
 var direction = position
 var structure = StaticBody2D
@@ -36,6 +37,7 @@ var damage_tick = true
 var taking_recoil = false
 var dropped = false
 var hazard_damage_instances = []
+var recurring_hazard_instances = []
 var merger
 
 func _ready():
@@ -48,6 +50,7 @@ func _ready():
 	damage_timer.wait_time = 0.1
 	damage_timer.connect("timeout", _on_Timer_timeout)
 	damage_timer.autostart = true
+	damage_timer.one_shot = false
 	add_child(damage_timer)
 	damage_timer.start()
 	
@@ -94,18 +97,26 @@ func _physics_process(delta):
 	
 func process_hazard_damage():
 	if hazard_damage_instances.size() > 0:
-		for i in range(hazard_damage_instances.size() - 1):
+		for i in range(hazard_damage_instances.size()):
+			i -= 1
 			if i < hazard_damage_instances.size():
 				var hazard_instance = hazard_damage_instances[i]
 				set_health(hazard_instance.hazard_tick)
-			if hazard_damage_instances.size() > 0:
+				
+				var hazard_keys = hazard_instance.keys()
+				var damage_track = { hazard_instance.get(hazard_keys[0]): hazard_instance.get(hazard_keys[1]) + global_data.tower_damage.get(hazard_instance.get(hazard_keys[0]))}
+				global_data.tower_damage.merge(damage_track, true)
+				
 				hazard_damage_instances.pop_front()
-			i -= 1
 			
 	if taking_recoil:
-		if time_since_last_tick >= DAMAGE_TICK_INTERVAL:
-			set_health(recoil)
-			time_since_last_tick = 0.0
+		if time_since_last_tick >= DAMAGE_TICK_INTERVAL and recurring_hazard_instances.size() > 0:
+			for i in range(recurring_hazard_instances.size()):
+				i -= 1
+				if i < recurring_hazard_instances.size():
+					var hazard_instance = recurring_hazard_instances[i]
+					hazard_damage_instances.append(hazard_instance)
+					time_since_last_tick = 0.0
 		
 	if player_in_range:
 		if time_since_last_tick >= DAMAGE_TICK_INTERVAL:
@@ -142,7 +153,20 @@ func set_health(d):
 					Enemy_Container.add_child(soul_shard)
 				dropped = true
 		merger.removal_service(self)
+		
 		queue_free()
+	
+# Get the base name without the appended number
+func get_base_name(string: String) -> String:
+	var base_name = string
+	# Check if the name ends with a number
+	var last_char = string[string.length() - 1]
+	while last_char.is_valid_int():
+		# Remove the last character
+		base_name = base_name.left(base_name.length() - 1)
+		# Check the next last character
+		last_char = base_name[base_name.length() - 1]
+	return base_name
 	
 func _on_collider_area_entered(area):
 	if area.is_in_group("player"):
@@ -151,16 +175,21 @@ func _on_collider_area_entered(area):
 		process_hazard_damage()
 	
 	if area.is_in_group("structures"):
-		structure = area.get_parent()
-		recoil = structure.recoil
+		var structure_name = get_base_name(area.get_parent().get_name())
+		var hazard_instance = {
+			"hazard": structure_name,
+			"hazard_tick": area.get_parent().recoil
+		}
+		hazard_damage_instances.append(hazard_instance)
+		recurring_hazard_instances.append(hazard_instance)
 		taking_recoil = true
 		process_hazard_damage()
 	
 	if area.is_in_group("hazards"):
+		var hazard_name = get_base_name(area.get_parent().get_name())
 		var hazard_instance = {
-			"hazard": area.get_parent(),
-			"hazard_tick": area.get_parent().aura,
-			"time_since_last_tick": 0.0
+			"hazard": hazard_name,
+			"hazard_tick": area.get_parent().aura
 		}
 		hazard_damage_instances.append(hazard_instance)
 		process_hazard_damage()
@@ -173,6 +202,8 @@ func _on_collider_area_exited(area):
 		
 	if area.is_in_group("structures"):
 		taking_recoil = false
+		if recurring_hazard_instances.size() > 0:
+			recurring_hazard_instances.pop_front()
 
 func _on_tutorial_end_area_entered(area):
 	if area.is_in_group("player"):

@@ -7,13 +7,11 @@
 [ext_resource type="FontFile" uid="uid://ck6f0v3yk0xf4" path="res://assets/m5x7.ttf" id="5_nusta"]
 [ext_resource type="Script" path="res://scenes/HealthDisplay.gd" id="6_b6b3f"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0f3co"]
-radius = 5.0
-height = 12.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_pqvjn"]
+radius = 8.0
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uo038"]
-radius = 6.0
-height = 14.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_osfk5"]
+radius = 9.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_632um"]
 radius = 32.0
@@ -95,7 +93,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.0667, 0.1334, 0.2001, 0.2668, 0.3335, 0.4002),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [0.01, 0.01, 0.1, 13.0384, 21.0238, 32.0, 0.01]
+"values": [0.01, 0.01, 0.1, 15.0, 25.0, 45.0, 0.01]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_dyj28"]
@@ -110,15 +108,15 @@ position = Vector2(0, -9)
 collision_layer = 32
 collision_mask = 41
 script = ExtResource("1_u5k0j")
-health = 50
-max_health = 50
+health = 65
+max_health = 65
 recoil = 0
-aura = 20
+aura = 25
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 11)
+position = Vector2(0, 7)
 rotation = 1.5708
-shape = SubResource("CapsuleShape2D_0f3co")
+shape = SubResource("CircleShape2D_pqvjn")
 
 [node name="attack" type="Sprite2D" parent="."]
 visible = false
@@ -141,11 +139,12 @@ collision_mask = 24
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea"]
-position = Vector2(0, 11)
+position = Vector2(0, 7)
 rotation = 1.5708
-shape = SubResource("CapsuleShape2D_uo038")
+shape = SubResource("CircleShape2D_osfk5")
 
 [node name="Attack_Aura" type="Area2D" parent="."]
+visible = false
 position = Vector2(1, -2)
 collision_layer = 2
 collision_mask = 8

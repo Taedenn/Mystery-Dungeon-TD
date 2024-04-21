@@ -12,6 +12,7 @@ var lock_on = false
 var targets = []
 
 func _ready():
+	name = "Lampent"
 	idle.visible = true
 	attack_anim.visible = false
 
@@ -28,6 +29,7 @@ func attack():
 		if targets.size() > 0:
 			if targets[0] != null:
 				projectile.target = targets[0]
+				projectile.name = "Lampent"
 				add_child(projectile)
 		
 		attack_proc = false

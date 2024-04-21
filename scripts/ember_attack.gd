@@ -8,6 +8,7 @@ var detection_radius = 400
 
 func _ready():
 	$CollisionArea.add_to_group("hazards")
+	name = "Lampent"
 
 func _process(delta):
 	if target != null:

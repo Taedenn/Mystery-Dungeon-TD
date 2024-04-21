@@ -6,13 +6,10 @@
 [ext_resource type="FontFile" uid="uid://ck6f0v3yk0xf4" path="res://assets/m5x7.ttf" id="4_idpu2"]
 [ext_resource type="Script" path="res://scenes/HealthDisplay.gd" id="5_hp5ss"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_byww4"]
-radius = 3.0
-height = 14.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_rknm0"]
+radius = 9.0
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_s6wfn"]
-radius = 4.0
-height = 16.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_gnb28"]
 
 [sub_resource type="Animation" id="Animation_fqvrc"]
 length = 0.001
@@ -64,8 +61,9 @@ aura = 0
 recoil = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2)
 rotation = 1.5708
-shape = SubResource("CapsuleShape2D_byww4")
+shape = SubResource("CircleShape2D_rknm0")
 
 [node name="idle" type="Sprite2D" parent="."]
 position = Vector2(0, -10)
@@ -82,8 +80,9 @@ collision_layer = 32
 collision_mask = 24
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea"]
+position = Vector2(0, -2)
 rotation = 1.5708
-shape = SubResource("CapsuleShape2D_s6wfn")
+shape = SubResource("CircleShape2D_gnb28")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -91,7 +90,6 @@ libraries = {
 }
 
 [node name="attack_delay" type="Timer" parent="."]
-wait_time = 0.7
 autostart = true
 
 [node name="Attack_Aura" type="Area2D" parent="."]
@@ -99,6 +97,7 @@ collision_layer = 2
 collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Attack_Aura"]
+position = Vector2(0, -2)
 shape = SubResource("CircleShape2D_582af")
 
 [node name="HealthDisplay" type="Label" parent="."]

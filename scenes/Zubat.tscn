@@ -1,7 +1,7 @@
 [gd_scene load_steps=28 format=3 uid="uid://c8ojrn6h4bmri"]
 
 [ext_resource type="Texture2D" uid="uid://bb0sj08aesloa" path="res://character_models/2d_lights_and_shadows_neutral_point_light.webp" id="1_jr3ll"]
-[ext_resource type="Script" path="res://scripts/Enemy.gd" id="1_v005v"]
+[ext_resource type="Script" path="res://scripts/Zubat.gd" id="1_jsh6y"]
 [ext_resource type="Texture2D" uid="uid://dmmpgh6sotvgd" path="res://character_models/Zubat.png" id="2_2kj3b"]
 [ext_resource type="PackedScene" uid="uid://cg5cndm8txb50" path="res://scenes/healthbar.tscn" id="3_mrusb"]
 [ext_resource type="Texture2D" uid="uid://dnq7trbtf21du" path="res://character_models/Hurt_Zubat.png" id="4_aal5q"]
@@ -320,9 +320,9 @@ _data = {
 [node name="Zubat" type="CharacterBody2D"]
 collision_layer = 8
 collision_mask = 41
-script = ExtResource("1_v005v")
+script = ExtResource("1_jsh6y")
 health = 100
-damage = 2
+damage = 1
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 scale = Vector2(0.5, 0.5)

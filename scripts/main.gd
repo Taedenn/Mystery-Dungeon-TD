@@ -35,6 +35,7 @@ var healthscaling = 0
 var spawnrate = 0.7
 var damage_scale = 1
 var select = Node2D
+@export var start_amount = 0
 
 
 func _ready():
@@ -48,6 +49,7 @@ func _ready():
 	var material_count = item_container.get_count(shard_item)
 	item_container.try_remove(shard_item, material_count)
 	item_display.update_inventory_display()
+	item_container.try_add(shard_item, start_amount)
 	
 
 func _input(_InputEvent):

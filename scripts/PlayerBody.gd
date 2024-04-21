@@ -4,7 +4,10 @@ extends CharacterBody2D
 @export var sleepy_start := true
 @export var damage := 5
 @export var engine_speed := 1
+@export var max_health := 100
+@export var regen := 2
 
+# local scene
 @onready var _animated_sprite = $PlayerAnimations
 @onready var walk = $walk
 @onready var attack = $attack
@@ -16,7 +19,9 @@ extends CharacterBody2D
 @onready var md = $Midday
 @onready var area2d = $player_area
 @onready var health_display = $HealthDisplay
+@onready var camera = $Camera2D
 
+# main
 @onready var full = $"../../CanvasLayer/PanelContainer/Full"
 @onready var ouch = $"../../CanvasLayer/PanelContainer/Ouch"
 @onready var half = $"../../CanvasLayer/PanelContainer/Half"
@@ -25,9 +30,11 @@ extends CharacterBody2D
 @onready var UI = $"../../CanvasLayer/HBoxContainer/BoxContainer"
 @onready var playerUI = $"../../CanvasLayer/PanelContainer"
 @onready var scroll = $"../sigil/Scroll"
+@onready var stopwatch = $"../../CanvasLayer/HBoxContainer/BoxContainer/BoxContainer/Stopwatch/Time"
 @onready var InvenButton = $"../../CanvasLayer/HBoxContainer/VBoxContainer/Tab/OpenClose"
-@onready var camera = $Camera2D
 
+# preload/autoload
+@onready var global_data = get_node("/root/global")
 @onready var DialogueBoxStartScene = preload("res://scenes/dialogue_box.tscn")
 @onready var Enemies = preload("res://scripts/Enemy.gd")
 
@@ -39,15 +46,15 @@ var is_attacking = false
 var freeze_input = true
 var left_tutorial_area = false
 var is_dead = false
+var dialogue_finished = false
 
 var direction = "down"
 
-@export var max_health := 100
-@export var regen := 2
 var health
 var num = 0
 var dialogue
-var dialogue_finished = false
+
+signal died
 
 func _ready():
 	Engine.time_scale = engine_speed
@@ -80,6 +87,7 @@ func _ready():
 	
 	health = max_health
 	hb.init_health(health)
+	
 	full.visible = true
 	ouch.visible = false
 	half.visible = false
@@ -207,6 +215,7 @@ func _physics_process(_delta):
 		update_animation()
 		
 	elif is_dead:
+		emit_signal("died")
 		update_animation()
 		get_tree().change_scene_to_file("res://scenes/death_scene.tscn")
 
@@ -299,6 +308,9 @@ func _on_player_area_area_entered(area):
 			if healing != null:
 				health_display.display(healing)
 				_set_health(-healing)
+				var healing_tower = get_base_name(area.get_parent().get_name())
+				var heal_track = { healing_tower: global_data.tower_damage.get(healing_tower) + healing}
+				global_data.tower_damage.merge(heal_track, true)
 
 func _on_tutorial_end_area_entered(_area):
 	if not left_tutorial_area:
@@ -311,7 +323,6 @@ func _on_midday_timeout():
 	background_music_night()
 	nc.start()
 
-
 func _on_open_close_pressed():
 	if UI.visible:
 		UI.visible = false
@@ -319,3 +330,14 @@ func _on_open_close_pressed():
 	else:
 		UI.visible = true
 		playerUI.visible = true
+
+func get_base_name(string: String) -> String:
+	var base_name = string
+	# Check if the name ends with a number
+	var last_char = string[string.length() - 1]
+	while last_char.is_valid_int():
+		# Remove the last character
+		base_name = base_name.left(base_name.length() - 1)
+		# Check the next last character
+		last_char = base_name[base_name.length() - 1]
+	return base_name

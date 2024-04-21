@@ -14,6 +14,10 @@ config/name="Roguelike_TowerDefense"
 run/main_scene="res://scenes/play_scene.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
 
+[autoload]
+
+global="*res://scripts/global.gd"
+
 [debug]
 
 gdscript/warnings/integer_division=0
@@ -135,6 +139,7 @@ zoom_out={
 2d_physics/layer_4="enemies"
 2d_physics/layer_5="healing"
 2d_physics/layer_6="structures"
+2d_physics/layer_7="coins"
 
 [rendering]
 

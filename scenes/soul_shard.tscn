@@ -1,14 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://d4gityf6073j8"]
+[gd_scene load_steps=6 format=3 uid="uid://d4gityf6073j8"]
 
 [ext_resource type="Script" path="res://scripts/soul_shard.gd" id="1_h3vr0"]
 [ext_resource type="Texture2D" uid="uid://caant18a1manu" path="res://assets/gimmighoul.png" id="2_dt3of"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rnc7q"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_fs07w"]
+radius = 2.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_58piy"]
+radius = 100.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hl61a"]
 radius = 5.0
-height = 10.0
 
 [node name="SoulShard" type="StaticBody2D"]
-collision_layer = 16
+collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_h3vr0")
 
@@ -17,4 +22,19 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_dt3of")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CapsuleShape2D_rnc7q")
+shape = SubResource("CircleShape2D_fs07w")
+
+[node name="Detection" type="Area2D" parent="."]
+collision_layer = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Detection"]
+shape = SubResource("CircleShape2D_58piy")
+
+[node name="Pickup" type="Area2D" parent="."]
+collision_layer = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pickup"]
+shape = SubResource("CircleShape2D_hl61a")
+
+[connection signal="area_entered" from="Detection" to="." method="_on_detection_area_entered"]
+[connection signal="area_entered" from="Pickup" to="." method="_on_pickup_area_entered"]

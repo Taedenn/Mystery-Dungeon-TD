@@ -173,6 +173,7 @@ var _grid_drag: GridPathingComponent:
 		if _grid_drag != null:
 			_grid_drag.connect("targeting_new_tile", _on_grid_pathing_targeting_new_tile)
 
+@onready var global_data = get_node("/root/global")
 
 func _init(
 	p_positioner: Node2D = null,
@@ -319,7 +320,25 @@ func _build() -> Node2D:
 	# Set the name root base to the packed scene root base
 	instance.name = scene._bundled["names"][0]
 	building_signal_bus.object_placed.emit(placer, instance)
+	
+	# update global data
+	var base_name = get_base_name(instance.get_name())
+	var tower = {base_name: global_data.tower_dict.get(base_name) + 1}
+	global_data.tower_dict.merge(tower, true)
+	
 	return instance
+
+# Get the base name without the appended number
+func get_base_name(name: String) -> String:
+	var base_name = name
+	# Check if the name ends with a number
+	var last_char = name[name.length() - 1]
+	while last_char.is_valid_int():
+		# Remove the last character
+		base_name = base_name.left(base_name.length() - 1)
+		# Check the next last character
+		last_char = base_name[base_name.length() - 1]
+	return base_name
 
 ## Removing build mode nodes and sprites from the active scene
 func _exit_build_cleanup():

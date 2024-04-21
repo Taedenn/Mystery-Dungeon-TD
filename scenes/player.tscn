@@ -862,7 +862,7 @@ hframes = 7
 vframes = 8
 
 [node name="player_area" type="Area2D" parent="."]
-collision_mask = 24
+collision_mask = 88
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="player_area"]
 position = Vector2(0, -2)

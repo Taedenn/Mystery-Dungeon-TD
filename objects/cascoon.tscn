@@ -6,13 +6,10 @@
 [ext_resource type="FontFile" uid="uid://ck6f0v3yk0xf4" path="res://assets/m5x7.ttf" id="4_1e8hm"]
 [ext_resource type="Script" path="res://scenes/HealthDisplay.gd" id="5_2ucqf"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lqc6v"]
-radius = 3.0
-height = 20.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_sg7hx"]
+radius = 8.0
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dct8t"]
-radius = 4.0
-height = 22.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_u5ioh"]
 
 [sub_resource type="Animation" id="Animation_8cn3j"]
 length = 0.001
@@ -57,8 +54,8 @@ z_index = 1
 collision_layer = 32
 collision_mask = 45
 script = ExtResource("1_kuj5m")
-health = 80
-max_health = 80
+health = 120
+max_health = 120
 recoil = 10
 
 [node name="recoil" type="Sprite2D" parent="."]
@@ -72,18 +69,16 @@ position = Vector2(-1, 0)
 texture = ExtResource("3_ptpju")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 6)
 rotation = 1.5708
-shape = SubResource("CapsuleShape2D_lqc6v")
+shape = SubResource("CircleShape2D_sg7hx")
 
 [node name="CollisionArea" type="Area2D" parent="."]
 collision_layer = 32
 collision_mask = 24
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea"]
-position = Vector2(0, 6)
 rotation = 1.5708
-shape = SubResource("CapsuleShape2D_dct8t")
+shape = SubResource("CircleShape2D_u5ioh")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -105,8 +100,8 @@ script = ExtResource("5_2ucqf")
 wait_time = 0.25
 one_shot = true
 
-[connection signal="area_entered" from="CollisionArea" to="." method="_on_collision_area_area_entered_override"]
 [connection signal="area_entered" from="CollisionArea" to="." method="_on_collision_area_area_entered"]
-[connection signal="area_exited" from="CollisionArea" to="." method="_on_collision_area_area_exited_override"]
+[connection signal="area_entered" from="CollisionArea" to="." method="_on_collision_area_area_entered_override"]
 [connection signal="area_exited" from="CollisionArea" to="." method="_on_collision_area_area_exited"]
+[connection signal="area_exited" from="CollisionArea" to="." method="_on_collision_area_area_exited_override"]
 [connection signal="timeout" from="HealthDisplay/DisplayTimer" to="HealthDisplay" method="_on_display_timer_timeout"]
