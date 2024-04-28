@@ -7,7 +7,7 @@
 radius = 2.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_58piy"]
-radius = 100.0
+radius = 75.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hl61a"]
 radius = 5.0
@@ -25,6 +25,7 @@ texture = ExtResource("2_dt3of")
 shape = SubResource("CircleShape2D_fs07w")
 
 [node name="Detection" type="Area2D" parent="."]
+visible = false
 collision_layer = 64
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Detection"]

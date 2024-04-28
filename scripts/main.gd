@@ -32,8 +32,9 @@ var spawn_pos = Vector2(0,0)
 var nighttime = false
 var basehealth = 100
 var healthscaling = 0
-var spawnrate = 0.7
-var damage_scale = 1
+var spawnrate = 0.6
+var damage_scale = 0
+var speed_scale = 0
 var select = Node2D
 @export var start_amount = 0
 
@@ -96,6 +97,7 @@ func _on_spawner_timeout():
 		# scaling
 		enemy.health += healthscaling
 		enemy.damage += damage_scale
+		enemy.speed += speed_scale
 		world_enemies.add_child(enemy)
 
 
@@ -121,13 +123,14 @@ func _on_sunrise_timeout():
 
 func _on_nightfall_timeout():
 	nighttime = false
-	healthscaling += (basehealth * 0.1)
+	healthscaling += (basehealth * 0.2)
 	basehealth += healthscaling
+	speed_scale += 2
 	
-	if spawner.wait_time > 0.1:
+	if spawner.wait_time > 0.2:
 		spawner.wait_time = spawner.wait_time * spawnrate
 		
-	damage_scale += 1
+	damage_scale += 2
 
 func _on_midday_timeout():
 	nighttime = true

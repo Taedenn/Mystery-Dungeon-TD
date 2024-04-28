@@ -13,6 +13,7 @@ extends StaticBody2D
 @onready var collisionArea = $CollisionArea
 @onready var attackAura = $Attack_Aura
 @onready var health_display = $HealthDisplay
+@onready var attack_delay = $attack_delay
 
 var taking_damage = false
 var first_attack = true
@@ -28,6 +29,14 @@ func _ready():
 	idle.visible = true
 	attack.visible = false
 	attack_anim.visible = false
+	
+	var upgrade = Timer.new()
+	upgrade.wait_time = 30
+	upgrade.connect("timeout", _upgrade)
+	upgrade.autostart = true
+	upgrade.one_shot = false
+	add_child(upgrade)
+	
 	if first_attack:
 		starting_attack()
 		first_attack = false
@@ -98,3 +107,8 @@ func get_base_name(string: String) -> String:
 		# Check the next last character
 		last_char = base_name[base_name.length() - 1]
 	return base_name
+
+func _upgrade():
+	self.health_display.levelup()
+	self.max_health += 15
+	self.health += 15

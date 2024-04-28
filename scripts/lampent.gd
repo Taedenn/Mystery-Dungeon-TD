@@ -5,16 +5,27 @@ extends "res://scripts/structure.gd"
 @onready var idle = $idle
 @onready var attack_anim = $attack
 @onready var _animated_sprite = $AnimationPlayer
+@onready var attack_timer = $attack_delay
+@onready var attack_aura_area = $Attack_Aura/CollisionShape2D
 @onready var ember = preload("res://scenes/ember_attack.tscn")
 
 var attack_proc = false
 var lock_on = false
 var targets = []
+var movespeed = 100
+var aurascale = 0
 
 func _ready():
 	name = "Lampent"
 	idle.visible = true
 	attack_anim.visible = false
+	
+	var upgrade = Timer.new()
+	upgrade.wait_time = 30
+	upgrade.connect("timeout", _upgrade)
+	upgrade.autostart = true
+	upgrade.one_shot = false
+	add_child(upgrade)
 
 func attack():
 	if attack_proc and lock_on and targets.size() > 0:
@@ -27,10 +38,12 @@ func attack():
 		
 		var projectile = ember.instantiate()
 		if targets.size() > 0:
-			if targets[0] != null:
-				projectile.target = targets[0]
-				projectile.name = "Lampent"
-				add_child(projectile)
+			var temp = targets.duplicate()
+			projectile.targets = temp
+			projectile.name = "Lampent"
+			projectile.move_speed = movespeed
+			projectile.aura += aurascale
+			add_child(projectile)
 		
 		attack_proc = false
 
@@ -53,3 +66,11 @@ func _on_attack_aura_area_exited(area):
 			lock_on = false
 		else:
 			attack()
+
+func _upgrade():
+	self.health_display.levelup()
+	self.max_health += 10
+	self.health += 10
+	attack_aura_area.shape.radius += 2
+	movespeed += 5
+	aurascale += 0.5

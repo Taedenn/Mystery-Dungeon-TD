@@ -8,13 +8,8 @@
 bg_color = Color(0, 1, 0.0156863, 0.717647)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g1dmc"]
-bg_color = Color(0.415686, 0.415686, 0.415686, 1)
-expand_margin_left = 1.0
-expand_margin_top = 1.0
-expand_margin_right = 1.0
-expand_margin_bottom = 1.0
+bg_color = Color(1, 0.101961, 0.101961, 1)
 shadow_color = Color(0, 0, 0, 0.27451)
-shadow_offset = Vector2(0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gh37d"]
 bg_color = Color(1, 1, 1, 1)

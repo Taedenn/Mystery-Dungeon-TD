@@ -34,35 +34,44 @@ func _input(_event):
 	if Input.is_action_just_pressed("exit_game"):
 		var pause_menu = pause.instantiate()
 		add_child(pause_menu)
-	
+
+func abbreviateNumber(number: float) -> String:
+	var abbreviatedNumber: String
+	if number >= 1000000.0:
+		abbreviatedNumber = str(number / 1000000.0).left(5) + "M"
+	elif number >= 1000.0:
+		abbreviatedNumber = str(number / 1000.0).left(5) + "K"
+	else:
+		abbreviatedNumber = str(number)
+	return abbreviatedNumber
+
 func _on_label_finished():
 	dialogue = DialogueBoxStartScene.instantiate()
-	var string = "Survived: " + global_data.time + "  Gold Earned: " + str(global_data.gold) + "\n"
-	var hpg = 0
-	var dpg = 0
+	var string = "Survived: " + global_data.time + "  Gold Earned: " + abbreviateNumber(global_data.gold) + "\n"
+	var hpg = 0.0
+	var dpg = 0.0
 	for key in global_data.tower_dict.keys():
+		var amount = global_data.tower_dict[key]
+		var damage = global_data.tower_damage[key]
+		var dps = 0.0
+		
+		if amount != 0:
+			dps = damage / amount
+			
 		if key == "Blissey":
-			string += key + ":     amount: " + str(global_data.tower_dict[key]) + "   healing: " + str(global_data.tower_damage[key])
-			if global_data.tower_dict[key] != 0:
-				hpg = global_data.tower_damage[key] / (global_data.tower_dict[key]*4)
-			string += "   hpg: " + str(hpg) + "\n"
+			hpg = dps / 4.0
 		elif key == "Xatu":
-			string += key + ":       amount: " + str(global_data.tower_dict[key]) + "   damage: " + str(global_data.tower_damage[key])
-			if global_data.tower_dict[key] != 0:
-				dpg = global_data.tower_damage[key] / (global_data.tower_dict[key]*2)
-			string += "   dpg: " + str(dpg) + "\n"
+			dpg = dps / 2.0
 		elif key == "Lampent":
-			string += key + ":   amount: " + str(global_data.tower_dict[key]) + "   damage: " + str(global_data.tower_damage[key])
-			if global_data.tower_dict[key] != 0:
-				dpg = global_data.tower_damage[key] / (global_data.tower_dict[key]*3)
-			string += "   dpg: " + str(dpg) + "\n"
+			dpg = dps / 3.0
 		elif key == "Cascoon":
-			string += key + ":   amount: " + str(global_data.tower_dict[key]) + "   damage: " + str(global_data.tower_damage[key])
-			if global_data.tower_dict[key] != 0:
-				dpg = global_data.tower_damage[key] / (global_data.tower_dict[key])
-			string += "   dpg: " + str(dpg) + "\n"
+			dpg = dps
+		
+		if key == "Blissey":
+			string += "%s:   placed: %s   healing: %s   h/gold: %s\n" % [key, amount, abbreviateNumber(damage), abbreviateNumber(hpg)]
 		else:
-			string += key + ":   amount: " + str(global_data.tower_dict[key]) + "   damage: " + str(global_data.tower_damage[key])
+			string += "%s:   placed: %s   damage: %s   d/gold: %s\n" % [key, amount, abbreviateNumber(damage), abbreviateNumber(dpg)]
+	
 	dialogue.messages = [string]
 	dialogue.speaking = "???"
 	dialogue.connect("label_finished", _change_scene)

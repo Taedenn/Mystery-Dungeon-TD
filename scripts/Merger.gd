@@ -32,11 +32,14 @@ func _on_check_timeout():
 		elif child.get_script() == soul and not soul_stones.has(child):
 			soul_stones.append(child)
 			
-	if enemy_instances.size() > 100:
-		var first = enemy_instances.pop_back()
-		var second = enemy_instances.pop_front()
+	if enemy_instances.size() > 65:
+		
+		var first = enemy_instances.pop_at(enemy_instances.find(enemy_instances.pick_random()))
+		var second = enemy_instances.pop_at(enemy_instances.find(enemy_instances.pick_random()))
 		if children.has(first) and children.has(second):
 			first.set_health(-second.health)
+			first.scale += Vector2(0.15, 0.15)
+			first.damage += second.damage
 			second.queue_free()
 			enemy_instances.append(first)
 

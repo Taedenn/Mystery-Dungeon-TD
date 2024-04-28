@@ -22,16 +22,17 @@ const ATTACK_INTERVAL = 0.1
 var direction = position
 var structure = StaticBody2D
 var hazard = Area2D
-var check_damage = Timer
+var damage_timer = Timer
+var vuln_timer = Timer
+var attack_timer = Timer
 
 var dir = "down"
-var time_since_last_tick = 1.0
-var attack_cooldown_timer = 0.0
 var speed = 50
 var recoil = 0
 var hazard_tick = 0
 var is_hurt = false
 var is_vulnerable = true
+var can_attack = false
 var player_in_range = false
 var damage_tick = true
 var taking_recoil = false
@@ -46,13 +47,26 @@ func _ready():
 	self.add_to_group("enemies")
 	areaCollider.add_to_group("enemies")
 	hb.init_health(health)
-	var damage_timer = check_damage.new()
-	damage_timer.wait_time = 0.1
+	
+	damage_timer = Timer.new()
+	damage_timer.wait_time = DAMAGE_TICK_INTERVAL
 	damage_timer.connect("timeout", _on_Timer_timeout)
 	damage_timer.autostart = true
 	damage_timer.one_shot = false
 	add_child(damage_timer)
 	damage_timer.start()
+	
+	vuln_timer = Timer.new()
+	vuln_timer.wait_time = DAMAGE_TICK_INTERVAL
+	vuln_timer.connect("timeout", _on_vulnerability_timeout)
+	vuln_timer.autostart = true
+	add_child(vuln_timer)
+	
+	attack_timer = Timer.new()
+	attack_timer.wait_time = ATTACK_INTERVAL
+	attack_timer.connect("timeout", _on_attack_cooldown_timeout)
+	attack_timer.autostart = true
+	add_child(attack_timer)
 	
 	merger = get_parent()
 
@@ -87,9 +101,6 @@ func update_animations():
 		is_hurt = false
 
 func _physics_process(delta):
-	time_since_last_tick += delta
-	attack_cooldown_timer += delta
-				
 	if not is_hurt:
 		velocity = direction * speed
 		move_and_collide(velocity * delta)
@@ -110,27 +121,29 @@ func process_hazard_damage():
 				hazard_damage_instances.pop_front()
 			
 	if taking_recoil:
-		if time_since_last_tick >= DAMAGE_TICK_INTERVAL and recurring_hazard_instances.size() > 0:
+		if is_vulnerable and recurring_hazard_instances.size() > 0:
 			for i in range(recurring_hazard_instances.size()):
 				i -= 1
 				if i < recurring_hazard_instances.size():
 					var hazard_instance = recurring_hazard_instances[i]
 					hazard_damage_instances.append(hazard_instance)
-					time_since_last_tick = 0.0
+			is_vulnerable = false
+			vuln_timer.start()
 		
 	if player_in_range:
-		if time_since_last_tick >= DAMAGE_TICK_INTERVAL:
+		if is_vulnerable:
 				# take damage
-			if player.is_attacking and is_vulnerable:
+			if player.is_attacking:
 				set_health(player.damage)
 				is_vulnerable = false
 					
-			player._set_health(damage)
-			time_since_last_tick = 0.0
-				
-		if attack_cooldown_timer >= ATTACK_INTERVAL:
-			attack_cooldown_timer = 0.0
-			is_vulnerable = true
+			if can_attack:
+				player._set_health(damage)
+				can_attack = false
+				attack_timer.start()
+			
+			is_vulnerable = false
+			vuln_timer.start()
 	
 func set_health(d):
 	is_hurt = true
@@ -196,7 +209,6 @@ func _on_collider_area_entered(area):
 
 func _on_collider_area_exited(area):
 	if area.is_in_group("player"):
-		time_since_last_tick = 1.0
 		player.speed = 100
 		player_in_range = false
 		
@@ -208,6 +220,12 @@ func _on_collider_area_exited(area):
 func _on_tutorial_end_area_entered(area):
 	if area.is_in_group("player"):
 		player_tutorial_end = true
+
+func _on_attack_cooldown_timeout():
+	can_attack = true
+
+func _on_vulnerability_timeout():
+	is_vulnerable = true
 
 func _on_Timer_timeout():
 	process_hazard_damage()

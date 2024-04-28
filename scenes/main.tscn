@@ -41,7 +41,7 @@
 [sub_resource type="Resource" id="Resource_tw68v"]
 script = ExtResource("4_inuow")
 pass_on_collision = false
-collision_mask = 45
+collision_mask = 44
 success_message = "No placement collisions found"
 expected_no_collisions_message = "Must have no collisions"
 expected_collisions_message = "Must overlap "
@@ -267,7 +267,7 @@ physics_layer_0/collision_layer = 4
 sources/0 = SubResource("TileSetAtlasSource_mjadm")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_64v5p"]
-size = Vector2(99, 4)
+size = Vector2(339, 2)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pg0jf"]
 radius = 144.031
@@ -440,7 +440,7 @@ one_shot = true
 collision_layer = 0
 
 [node name="LeavingTutorialArea" type="CollisionShape2D" parent="World/TutorialEnd"]
-position = Vector2(-2, 171)
+position = Vector2(-0.5, 293)
 shape = SubResource("RectangleShape2D_64v5p")
 
 [node name="AssetFolder" type="Node2D" parent="World"]
@@ -1630,6 +1630,7 @@ position = Vector2(592, -472)
 texture = ExtResource("8_ry0gu")
 
 [node name="Spawners" type="Node2D" parent="World"]
+visible = false
 
 [node name="Spawner" type="Timer" parent="World/Spawners"]
 wait_time = 5.0
@@ -1827,36 +1828,37 @@ stretch_mode = 5
 script = ExtResource("38_22yat")
 
 [node name="SoulShard" parent="Enemies" instance=ExtResource("25_6tesc")]
-position = Vector2(-133, 322)
+position = Vector2(0, 158)
 
 [node name="SoulShard2" parent="Enemies" instance=ExtResource("25_6tesc")]
-position = Vector2(124, 280)
+position = Vector2(19, 175)
 
 [node name="SoulShard3" parent="Enemies" instance=ExtResource("25_6tesc")]
-position = Vector2(-129, 287)
+position = Vector2(-6, 175)
 
 [node name="SoulShard4" parent="Enemies" instance=ExtResource("25_6tesc")]
-position = Vector2(-18, 220)
+position = Vector2(-18, 175)
 
 [node name="SoulShard5" parent="Enemies" instance=ExtResource("25_6tesc")]
-position = Vector2(20, 222)
+position = Vector2(12, 163)
 
 [node name="SoulShard6" parent="Enemies" instance=ExtResource("25_6tesc")]
-position = Vector2(-59, 229)
+position = Vector2(7, 175)
 
 [node name="SoulShard7" parent="Enemies" instance=ExtResource("25_6tesc")]
-position = Vector2(66, 233)
+position = Vector2(-12, 163)
 
 [node name="SoulShard8" parent="Enemies" instance=ExtResource("25_6tesc")]
-position = Vector2(-96, 249)
+position = Vector2(-12, 187)
 
 [node name="SoulShard9" parent="Enemies" instance=ExtResource("25_6tesc")]
-position = Vector2(98, 255)
+position = Vector2(0, 192)
 
 [node name="SoulShard10" parent="Enemies" instance=ExtResource("25_6tesc")]
-position = Vector2(127, 316)
+position = Vector2(12, 188)
 
 [node name="Check" type="Timer" parent="Enemies"]
+wait_time = 0.5
 autostart = true
 
 [connection signal="timeout" from="World/CanvasModulate/Nightfall" to="." method="_on_nightfall_timeout"]

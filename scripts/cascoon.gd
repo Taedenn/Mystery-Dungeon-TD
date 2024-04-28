@@ -9,6 +9,13 @@ func _ready():
 	idle.visible = true
 	attack_anim.visible = false
 	$CollisionArea.add_to_group("structures")
+	
+	var upgrade = Timer.new()
+	upgrade.wait_time = 30
+	upgrade.connect("timeout", _upgrade)
+	upgrade.autostart = true
+	upgrade.one_shot = false
+	add_child(upgrade)
 
 func _recoil():
 	while is_touching:
@@ -28,3 +35,9 @@ func _on_collision_area_area_entered_override(area):
 func _on_collision_area_area_exited_override(area):
 	if area.is_in_group("enemies"):
 		is_touching = false
+
+func _upgrade():
+	self.health_display.levelup()
+	self.max_health += 15
+	self.health += 15
+	recoil += 2

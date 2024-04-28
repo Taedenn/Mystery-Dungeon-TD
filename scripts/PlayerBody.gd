@@ -317,6 +317,13 @@ func _on_tutorial_end_area_entered(_area):
 		background_music_day()
 		md.start()
 		left_tutorial_area = true
+		
+		var upgrade = Timer.new()
+		upgrade.wait_time = 30
+		upgrade.autostart = true
+		upgrade.one_shot = false
+		upgrade.connect("timeout", _upgrade)
+		add_child(upgrade)
 
 func _on_midday_timeout():
 	bg_music.stop()
@@ -341,3 +348,11 @@ func get_base_name(string: String) -> String:
 		# Check the next last character
 		last_char = base_name[base_name.length() - 1]
 	return base_name
+
+func _upgrade():
+	self.health_display.levelup()
+	max_health += 10
+	hb.add_max_health(10)
+	_set_health(-10)
+	damage += 2
+	speed += 2

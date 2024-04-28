@@ -8,5 +8,9 @@ func display(damage : float):
 	text = str(amount)
 	display_timer.start()
 
+func levelup():
+	text = "lvlup"
+	display_timer.start()
+	
 func _on_display_timer_timeout():
 	text = ""
