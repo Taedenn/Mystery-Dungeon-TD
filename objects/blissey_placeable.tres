@@ -4,14 +4,14 @@
 [ext_resource type="Script" path="res://addons/grid_building/building_system/placeable/placeable.gd" id="1_sl0u8"]
 [ext_resource type="Resource" uid="uid://ht43mx5sifwv" path="res://resources/item_container_locator.tres" id="2_pjh8d"]
 [ext_resource type="Script" path="res://addons/grid_building/building_system/building_rules/template_rules/resources/resource_stack.gd" id="3_ovcd1"]
-[ext_resource type="Resource" uid="uid://u6mqp04h8dtt" path="res://materials/soul_shard.tres" id="4_40wqb"]
+[ext_resource type="Resource" uid="uid://u6mqp04h8dtt" path="res://materials/gimmie_coin.tres" id="5_kx4wj"]
 [ext_resource type="Script" path="res://addons/grid_building/building_system/building_rules/template_rules/spend_materials_rule_generic.gd" id="5_nljaq"]
 [ext_resource type="PackedScene" uid="uid://d1mx8gujjbtlg" path="res://objects/blissey.tscn" id="7_axrww"]
 [ext_resource type="Resource" uid="uid://c6wcdo8xicrve" path="res://objects/Categorical_Tags/tower_tag.tres" id="8_ec7a3"]
 
 [sub_resource type="Resource" id="Resource_rm8p4"]
 script = ExtResource("3_ovcd1")
-type = ExtResource("4_40wqb")
+type = ExtResource("5_kx4wj")
 count = 4
 
 [sub_resource type="Resource" id="Resource_rwtl1"]

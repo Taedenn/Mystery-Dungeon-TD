@@ -6,6 +6,7 @@ extends "res://scripts/structure.gd"
 var is_touching = false
 
 func _ready():
+	super._ready()
 	idle.visible = true
 	attack_anim.visible = false
 	$CollisionArea.add_to_group("structures")
@@ -16,6 +17,14 @@ func _ready():
 	upgrade.autostart = true
 	upgrade.one_shot = false
 	add_child(upgrade)
+	
+	vuln = Timer.new()
+	vuln.wait_time = 0.8
+	vuln.connect("timeout", onvulntimeout)
+	vuln.autostart = true
+	vuln.one_shot = true
+	add_child(vuln)
+	vuln.start()
 
 func _recoil():
 	while is_touching:

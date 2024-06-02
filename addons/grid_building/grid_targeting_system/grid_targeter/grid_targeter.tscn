@@ -1,20 +1,20 @@
 [gd_scene load_steps=7 format=3 uid="uid://b85csecsg3tsa"]
 
-[ext_resource type="Texture2D" uid="uid://npiwpojmygus" path="res://addons/grid_building/grid_targeting_system/grid_targeter/grid_targeter_1.png" id="1_npuvp"]
+[ext_resource type="Texture2D" uid="uid://3m6780rxxrcj" path="res://addons/grid_building/grid_targeting_system/grid_targeter/grid_targeter_1.png" id="1_npuvp"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_l360l"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_rqlk2"]
 atlas = ExtResource("1_npuvp")
 region = Rect2(0, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_pno16"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_62w80"]
 atlas = ExtResource("1_npuvp")
 region = Rect2(32, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_0vay1"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1hk5"]
 atlas = ExtResource("1_npuvp")
 region = Rect2(64, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_kddac"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_6mt58"]
 atlas = ExtResource("1_npuvp")
 region = Rect2(96, 0, 32, 32)
 
@@ -22,25 +22,23 @@ region = Rect2(96, 0, 32, 32)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_l360l")
+"texture": SubResource("AtlasTexture_rqlk2")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_pno16")
+"texture": SubResource("AtlasTexture_62w80")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_0vay1")
+"texture": SubResource("AtlasTexture_f1hk5")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_kddac")
+"texture": SubResource("AtlasTexture_6mt58")
 }],
 "loop": true,
-"name": &"loop",
+"name": &"new_animation",
 "speed": 5.0
 }]
 
 [node name="GridTargeter" type="AnimatedSprite2D"]
 z_index = 1000
 sprite_frames = SubResource("SpriteFrames_4omko")
-animation = &"loop"
-autoplay = "loop"
-frame_progress = 0.585304
+animation = &"new_animation"

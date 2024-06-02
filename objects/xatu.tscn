@@ -7,11 +7,11 @@
 [ext_resource type="FontFile" uid="uid://ck6f0v3yk0xf4" path="res://assets/m5x7.ttf" id="5_nusta"]
 [ext_resource type="Script" path="res://scenes/HealthDisplay.gd" id="6_b6b3f"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_pqvjn"]
-radius = 8.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3muov"]
+size = Vector2(9.00003, 7.99997)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_osfk5"]
-radius = 9.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2ifp1"]
+size = Vector2(12, 14)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_632um"]
 radius = 32.0
@@ -108,15 +108,15 @@ position = Vector2(0, -9)
 collision_layer = 32
 collision_mask = 41
 script = ExtResource("1_u5k0j")
-health = 65
-max_health = 65
+health = 80
+max_health = 80
 recoil = 0
 aura = 15
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 7)
+position = Vector2(-1.19209e-07, 5.5)
 rotation = 1.5708
-shape = SubResource("CircleShape2D_pqvjn")
+shape = SubResource("RectangleShape2D_3muov")
 
 [node name="attack" type="Sprite2D" parent="."]
 visible = false
@@ -139,12 +139,11 @@ collision_mask = 24
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea"]
-position = Vector2(0, 7)
+position = Vector2(-3.00407e-05, 6.99998)
 rotation = 1.5708
-shape = SubResource("CircleShape2D_osfk5")
+shape = SubResource("RectangleShape2D_2ifp1")
 
 [node name="Attack_Aura" type="Area2D" parent="."]
-visible = false
 position = Vector2(1, -2)
 collision_layer = 2
 collision_mask = 8

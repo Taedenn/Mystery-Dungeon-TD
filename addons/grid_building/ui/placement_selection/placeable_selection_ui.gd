@@ -1,6 +1,7 @@
 extends Control
 # Example placement UI For setting buildable scenes
 # in the building system.
+@onready var global_data = get_node("/root/global")
 
 @export_group("External Dependencies")
 ## System to call building calls on
@@ -39,8 +40,11 @@ extends Control
 func _ready():
 	if(!show_at_start):
 		ui_root.hide()
-	
+	while placeables.size() > global_data.limit:
+		placeables.pop_back()
 	_setup_tabs()
+	
+	
 
 func _input(event : InputEvent):
 	for action in open_actions:

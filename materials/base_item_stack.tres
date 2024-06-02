@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="BaseItemStack" load_steps=3 format=3 uid="uid://cm252q601r421"]
 
 [ext_resource type="Script" path="res://addons/grid_building_inventory/items/base_item_stack.gd" id="1_fpxwn"]
-[ext_resource type="Resource" uid="uid://u6mqp04h8dtt" path="res://materials/soul_shard.tres" id="2_fcro8"]
+[ext_resource type="Resource" uid="uid://u6mqp04h8dtt" path="res://materials/gimmie_coin.tres" id="2_fcro8"]
 
 [resource]
 script = ExtResource("1_fpxwn")

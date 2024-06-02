@@ -15,10 +15,14 @@ extends StaticBody2D
 @onready var health_display = $HealthDisplay
 @onready var attack_delay = $attack_delay
 
-var taking_damage = false
 var first_attack = true
 var time_since_last_tick = 1.0
-var damage = 0
+var damage_proc = 0
+
+var vuln : Timer
+var is_vuln = false
+var taking_damage = false
+var aura_track
 
 const DAMAGE_TICK_INTERVAL = 0.8
 
@@ -37,6 +41,17 @@ func _ready():
 	upgrade.one_shot = false
 	add_child(upgrade)
 	
+	vuln = Timer.new()
+	vuln.wait_time = 0.8
+	vuln.connect("timeout", onvulntimeout)
+	vuln.autostart = true
+	vuln.one_shot = true
+	add_child(vuln)
+	vuln.start()
+	
+	aura_track = aura
+	aura = 0
+	
 	if first_attack:
 		starting_attack()
 		first_attack = false
@@ -45,41 +60,42 @@ func starting_attack():
 	idle.visible = false
 	attack.visible = true
 	attack_anim.visible = true
+	aura = aura_track
 	_animated_sprite.play("attack")
 	await _animated_sprite.animation_finished
 	attack.visible = false
 	attack_anim.visible = false
 	idle.visible = true
+	aura = 0
 
 func set_health(d):
 	if health - d > 0:
 		health -= d
 	else:
 		queue_free()
-		
-func _physics_process(delta):
-	if taking_damage:
-		time_since_last_tick += delta
-		if time_since_last_tick >= DAMAGE_TICK_INTERVAL:
-			set_health(damage)
-			time_since_last_tick = 0.0
 
 func _on_attack_delay_timeout():
 	idle.visible = false
 	attack.visible = true
 	attack_anim.visible = true
+	aura = aura_track
 	_animated_sprite.play("attack")
 	await _animated_sprite.animation_finished
 	attack.visible = false
 	attack_anim.visible = false
 	idle.visible = true
-
+	aura = 0
 
 func _on_collision_area_area_entered(area):
 	if area.is_in_group("enemies"):
-		taking_damage = true
 		var enemy = area.get_parent()
-		damage = enemy.damage
+		damage_proc = enemy.damage
+		
+		taking_damage = true
+		if is_vuln:
+			set_health(damage_proc)
+			vuln.start()
+			is_vuln = false
 	if area.is_in_group("healing"):
 		if health < max_health and health > 0:
 			var healing = area.get_parent().structure_heal
@@ -90,13 +106,11 @@ func _on_collision_area_area_entered(area):
 				var healing_tower = get_base_name(area.get_parent().get_name())
 				var heal_track = { healing_tower: global_data.tower_damage.get(healing_tower) + healing}
 				global_data.tower_damage.merge(heal_track, true)
-
-
+				
 func _on_collision_area_area_exited(area):
 	if area.is_in_group("enemies"):
 		taking_damage = false
-		
-		
+	
 func get_base_name(string: String) -> String:
 	var base_name = string
 	# Check if the name ends with a number
@@ -109,6 +123,18 @@ func get_base_name(string: String) -> String:
 	return base_name
 
 func _upgrade():
-	self.health_display.levelup()
-	self.max_health += 15
-	self.health += 15
+	health_display.levelup()
+	max_health += 15
+	health += 15
+	aura_track += 2
+
+func take_damage():
+	if taking_damage and is_vuln:
+		set_health(damage_proc)
+		vuln.start()
+		is_vuln = false
+
+func onvulntimeout():
+	is_vuln = true
+	take_damage()
+

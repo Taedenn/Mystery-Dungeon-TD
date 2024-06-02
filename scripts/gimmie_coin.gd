@@ -1,7 +1,7 @@
 extends StaticBody2D
 
 @onready var player = $"../../World/Player"
-@onready var soul_shard_material = preload("res://materials/soul_shard.tres")
+@onready var gimmie_coin_material = preload("res://materials/gimmie_coin.tres")
 @onready var global_data = get_node("/root/global")
 @onready var item_display = $"../../CanvasLayer/HBoxContainer/BoxContainer/BoxContainer/BaseItemDisplay"
 
@@ -19,29 +19,27 @@ func _process(delta):
 	if detection_radius or magnet:
 		move_towards_player(delta)
 		
-	if pickup_radius:
-		pick_up_shard()
-		
 func move_towards_player(delta):
 	var direction = (player.global_position - global_position).normalized()
 	var velocity = direction * move_speed * delta
 	global_position += velocity
+	if pickup_radius:
+		pick_up_shard()
 	
 func pick_up_shard():
 	var inventory = $"../../World/Player/Camera2D/ItemContainer"
-	var shard_item = soul_shard_material
-	var added_amount = inventory.try_add(shard_item, 1)
+	var gimmie_coin = gimmie_coin_material
+	var added_amount = inventory.try_add(gimmie_coin, 1)
 	item_display.update_inventory_display()
 	
 	if added_amount > 0:
-		merger.removal_service_soul_shard(self)
+		merger.removal_service_coin(self)
 		global_data.gold += added_amount
 		queue_free()
 
 func _on_detection_area_entered(area):
 	if area.is_in_group("player"):
 		detection_radius = true
-
 
 func _on_pickup_area_entered(area):
 	if area.is_in_group("player"):

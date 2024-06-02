@@ -11,6 +11,11 @@ extends StaticBody2D
 var taking_damage = false
 var damage = 0
 var time_since_last_tick = 1.0
+var is_vulnerable = true
+
+var vuln : Timer
+var is_vuln = false
+var damage_proc = 0
 
 const DAMAGE_TICK_INTERVAL = 0.8
 
@@ -24,18 +29,18 @@ func set_health(d):
 	else:
 		queue_free()
 
-func _physics_process(delta):
-	if taking_damage:
-		time_since_last_tick += delta
-		if time_since_last_tick >= DAMAGE_TICK_INTERVAL:
-			set_health(damage)
-			time_since_last_tick = 0.0
-
 func _on_collision_area_area_entered(area):
 	if area.is_in_group("enemies"):
-		taking_damage = true
 		var enemy = area.get_parent()
 		damage = enemy.damage
+		
+		taking_damage = true
+		if is_vuln:
+			damage_proc = area.get_parent().damage
+			set_health(damage_proc)
+			vuln.start()
+			is_vuln = false
+			
 	if area.is_in_group("healing"):
 		if health < max_health and health > 0:
 			var healing = area.get_parent().structure_heal
@@ -62,3 +67,12 @@ func get_base_name(string: String) -> String:
 		last_char = base_name[base_name.length() - 1]
 	return base_name
 	
+func take_damage():
+	if taking_damage and is_vuln:
+		set_health(damage_proc)
+		vuln.start()
+		is_vuln = false
+
+func onvulntimeout():
+	is_vuln = true
+	take_damage()

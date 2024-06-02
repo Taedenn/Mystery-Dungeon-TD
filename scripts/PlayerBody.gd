@@ -61,7 +61,7 @@ func _ready():
 	self.add_to_group("player", true)
 	area2d.add_to_group("player", true)
 	
-	if sleepy_start:
+	if sleepy_start and global_data.tutorial:
 		scroll.visible = true
 		hb.visible = false
 		walk.visible = false
@@ -77,6 +77,7 @@ func _ready():
 		dialogue.connect("label_finished", _on_label_finished)
 
 	else:
+		InvenButton.disabled = false
 		scroll.visible = false
 		hb.visible = true
 		wake.visible = false
@@ -288,7 +289,7 @@ func _on_label_finished():
 	add_child(dialogue)
 
 func _on_sleeping_timeout():
-	if sleepy_start:
+	if sleepy_start and global_data.tutorial:
 		wake_up()
 	
 func _on_day_cycle_timeout():

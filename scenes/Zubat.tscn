@@ -1,17 +1,18 @@
 [gd_scene load_steps=28 format=3 uid="uid://c8ojrn6h4bmri"]
 
 [ext_resource type="Texture2D" uid="uid://bb0sj08aesloa" path="res://character_models/2d_lights_and_shadows_neutral_point_light.webp" id="1_jr3ll"]
-[ext_resource type="Script" path="res://scripts/Zubat.gd" id="1_jsh6y"]
+[ext_resource type="Script" path="res://scripts/Enemy.gd" id="1_xgbqn"]
 [ext_resource type="Texture2D" uid="uid://dmmpgh6sotvgd" path="res://character_models/Zubat.png" id="2_2kj3b"]
 [ext_resource type="PackedScene" uid="uid://cg5cndm8txb50" path="res://scenes/healthbar.tscn" id="3_mrusb"]
 [ext_resource type="Texture2D" uid="uid://dnq7trbtf21du" path="res://character_models/Hurt_Zubat.png" id="4_aal5q"]
 [ext_resource type="FontFile" uid="uid://ck6f0v3yk0xf4" path="res://assets/m5x7.ttf" id="6_qjrm5"]
 [ext_resource type="Script" path="res://scripts/DamageDisplay.gd" id="7_olola"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_kcxgq"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4k33d"]
+size = Vector2(12, 12)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_717l4"]
-radius = 11.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rjdim"]
+size = Vector2(15, 16)
 
 [sub_resource type="Animation" id="Animation_151ar"]
 length = 0.001
@@ -320,16 +321,19 @@ _data = {
 [node name="Zubat" type="CharacterBody2D"]
 collision_layer = 8
 collision_mask = 41
-script = ExtResource("1_jsh6y")
-health = 100
-damage = 1
+script = ExtResource("1_xgbqn")
+health = 50
+damage = 2
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
+visible = false
+position = Vector2(18, 10)
 scale = Vector2(0.5, 0.5)
 energy = 0.1
 texture = ExtResource("1_jr3ll")
 
 [node name="walk" type="Sprite2D" parent="."]
+position = Vector2(0, 4)
 texture = ExtResource("2_2kj3b")
 hframes = 8
 vframes = 8
@@ -341,16 +345,16 @@ hframes = 2
 vframes = 8
 
 [node name="Collider" type="CollisionShape2D" parent="."]
-position = Vector2(0, -11)
-shape = SubResource("CircleShape2D_kcxgq")
+position = Vector2(0, -7)
+shape = SubResource("RectangleShape2D_4k33d")
 
 [node name="AreaCollider" type="Area2D" parent="."]
 collision_layer = 8
 collision_mask = 35
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AreaCollider"]
-position = Vector2(0, -11)
-shape = SubResource("CircleShape2D_717l4")
+position = Vector2(0, -7)
+shape = SubResource("RectangleShape2D_rjdim")
 
 [node name="EnemyAnimations" type="AnimationPlayer" parent="."]
 libraries = {

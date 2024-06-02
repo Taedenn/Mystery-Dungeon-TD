@@ -1,57 +1,77 @@
 extends Node2D
 
-@onready var check = $Check
 var enemy_script = preload("res://scripts/Enemy.gd")
-var soul = preload("res://scripts/soul_shard.gd")
+var soul = preload("res://scripts/gimmie_coin.gd")
 var children
 var enemy_instances
-var soul_stones
+var gimmie_coins
 var remove_child = CharacterBody2D
 var remove_shard = StaticBody2D
 
 func _ready():
 	enemy_instances = []
-	soul_stones = []
+	gimmie_coins = []
 	children = []
-
-func removal_service(node):
-	remove_child = node
-	if enemy_instances.has(remove_child):
-		enemy_instances.erase(remove_child)
-		
-func removal_service_soul_shard(shard):
-	remove_child = shard
-	if soul_stones.has(remove_child):
-		soul_stones.erase(remove_child)
-
-func _on_check_timeout():
-	children = get_children()
+	
 	for child in children:
 		if child.get_script() == enemy_script and not enemy_instances.has(child):
 			enemy_instances.append(child)
-		elif child.get_script() == soul and not soul_stones.has(child):
-			soul_stones.append(child)
-			
-	if enemy_instances.size() > 65:
+
+func removal_service_enemy(enemy):
+	remove_child = enemy
+	if enemy_instances.has(remove_child):
+		enemy_instances.erase(remove_child)
 		
-		var first = enemy_instances.pop_at(enemy_instances.find(enemy_instances.pick_random()))
-		var second = enemy_instances.pop_at(enemy_instances.find(enemy_instances.pick_random()))
-		if children.has(first) and children.has(second):
-			first.set_health(-second.health)
-			first.scale += Vector2(0.15, 0.15)
-			first.damage += second.damage
-			second.queue_free()
-			enemy_instances.append(first)
+func removal_service_coin(coin):
+	remove_child = coin
+	if gimmie_coins.has(remove_child):
+		gimmie_coins.erase(remove_child)
+
+func survey_children():
+	children = get_children()
+	for child in children:
+		if child.get_script() == soul and not gimmie_coins.has(child):
+			gimmie_coins.append(child)
+	
+	var active_enemies = []
+	for child in children:
+		if child.get_script() == enemy_script:
+			if child.freeze == true:
+				active_enemies.append(child)
+			else:
+				if active_enemies.has(child):
+					active_enemies.erase(child)
+	if active_enemies.size() > 75:
+		var first = active_enemies.pop_at(active_enemies.find(active_enemies.pick_random()))
+		var second = active_enemies.pop_at(active_enemies.find(active_enemies.pick_random()))
+		first.set_health(-second.health)
+		first.scale += Vector2(0.15, 0.15)
+		first.damage += (second.damage / 2)
+		second.freeze = false
+		second.position = Vector2(-5000, -5000)
+		second.hazard_damage_instances = []
+		second.recurring_hazard_instances = []
+		second.scale = Vector2(1, 1)
+		second.process_mode = Node.PROCESS_MODE_DISABLED
+
+func magnet():
+	# survey_children()
+	for s in gimmie_coins:
+		var gimmie_coin = gimmie_coins.pop_front()
+		if gimmie_coin != null:
+			if children.has(gimmie_coin):
+				gimmie_coin.magnet = true
+				gimmie_coins.erase(gimmie_coin)
+			else:
+				gimmie_coins.erase(gimmie_coin)
+		else:
+			gimmie_coins.erase(gimmie_coin)
 
 func _on_nightfall_timeout():
-	for s in soul_stones:
-		var soul_stone = soul_stones.pop_front()
-		if soul_stone != null:
-			if children.has(soul_stone):
-				soul_stone.magnet = true
-				soul_stones.erase(soul_stone)
-			else:
-				soul_stones.erase(soul_stone)
-		else:
-			soul_stones.erase(soul_stone)
+	magnet()
 
+func _on_sunrise_timeout():
+	magnet()
+
+func _on_timer_timeout():
+	survey_children()

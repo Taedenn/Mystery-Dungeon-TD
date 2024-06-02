@@ -22,6 +22,7 @@ offset_right = 240.0
 offset_bottom = 4.0
 theme_override_styles/background = SubResource("StyleBoxEmpty_spth5")
 theme_override_styles/fill = SubResource("StyleBoxFlat_rnipx")
+max_value = 10000.0
 value = 60.0
 show_percentage = false
 script = ExtResource("1_ukka8")

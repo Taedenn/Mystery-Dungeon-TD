@@ -12,6 +12,7 @@ var bg_music = AudioStreamPlayer.new()
 var dialogue
 
 func _ready():
+	global_data.tutorial = false
 	add_child(bg_music)
 	bg_music.stream = load("res://music/067 - Down a Dark Path.mp3")
 	bg_music.play()
@@ -74,8 +75,22 @@ func _on_label_finished():
 	
 	dialogue.messages = [string]
 	dialogue.speaking = "???"
-	dialogue.connect("label_finished", _change_scene)
+	dialogue.connect("label_finished", level_up)
 	add_child(dialogue)
-	
+
+func level_up():
+	if global_data.limit < 4:
+		global_data.limit += 1
+		dialogue = DialogueBoxStartScene.instantiate()
+		dialogue.messages = ["You've gained some experience...",
+		"You've unlocked a new tower!"] 
+		dialogue.speaking = "???"
+		dialogue.timed_message = true
+		dialogue.read_time = 2
+		dialogue.connect("label_finished", _change_scene)
+		add_child(dialogue)
+	else:
+		_change_scene()
+
 func _change_scene():
 	get_tree().change_scene_to_file("res://scenes/main.tscn")

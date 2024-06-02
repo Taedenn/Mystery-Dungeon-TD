@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://d4gityf6073j8"]
 
-[ext_resource type="Script" path="res://scripts/soul_shard.gd" id="1_h3vr0"]
-[ext_resource type="Texture2D" uid="uid://caant18a1manu" path="res://assets/gimmighoul.png" id="2_dt3of"]
+[ext_resource type="Script" path="res://scripts/gimmie_coin.gd" id="1_ifals"]
+[ext_resource type="Texture2D" uid="uid://caant18a1manu" path="res://assets/gimmighoul.png" id="2_o8ekm"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fs07w"]
 radius = 2.0
@@ -12,14 +12,14 @@ radius = 75.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_hl61a"]
 radius = 5.0
 
-[node name="SoulShard" type="StaticBody2D"]
+[node name="GimmieCoin" type="StaticBody2D"]
 collision_layer = 0
 collision_mask = 0
-script = ExtResource("1_h3vr0")
+script = ExtResource("1_ifals")
 
 [node name="SoulShardMini" type="Sprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_dt3of")
+texture = ExtResource("2_o8ekm")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_fs07w")
@@ -32,6 +32,7 @@ collision_layer = 64
 shape = SubResource("CircleShape2D_58piy")
 
 [node name="Pickup" type="Area2D" parent="."]
+visible = false
 collision_layer = 64
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Pickup"]

@@ -13,6 +13,7 @@ var heal_pulse = true
 @export var structure_heal := 5
 
 func _ready():
+	super._ready()
 	idle.visible = true
 	heal_range.add_to_group("healing")
 	_animated_sprite.play("twirl")
@@ -25,6 +26,14 @@ func _ready():
 	upgrade.autostart = true
 	upgrade.one_shot = false
 	add_child(upgrade)
+	
+	vuln = Timer.new()
+	vuln.wait_time = 0.8
+	vuln.connect("timeout", onvulntimeout)
+	vuln.autostart = true
+	vuln.one_shot = true
+	add_child(vuln)
+	vuln.start()
 
 func _on_attack_cooldown_timeout():
 	_animated_sprite.play("twirl")
@@ -35,5 +44,8 @@ func _upgrade():
 	self.health_display.levelup()
 	self.max_health += 10
 	self.health += 10
+	self.heal += 1
+	self.structure_heal += 1
+	
 	if heal_delay.wait_time - 0.25 > 0:
 		heal_delay.wait_time -= 0.25

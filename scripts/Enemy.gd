@@ -1,12 +1,13 @@
 extends CharacterBody2D
 
-@export var player_tutorial_end := false
+@export var freeze := true
 @export var health := 10
 @export var damage := 5
 @export var drops := 1
 
-const DAMAGE_TICK_INTERVAL = 0.8
+const DAMAGE_TICK_INTERVAL = 0.5
 const ATTACK_INTERVAL = 0.1
+const PROCESS_INTERVAL = 0.03
 
 @onready var player = $"../../World/Player"
 @onready var _animated_enemy = $EnemyAnimations
@@ -16,7 +17,7 @@ const ATTACK_INTERVAL = 0.1
 @onready var hurt = $hurt
 @onready var Enemy_Container = $".."
 @onready var damage_display = $DamageDisplay
-@onready var soul_shard_scene = preload("res://scenes/soul_shard.tscn")
+@onready var soul_shard_scene = preload("res://scenes/gimmie_coin.tscn")
 @onready var global_data = get_node("/root/global")
 
 var direction = position
@@ -30,6 +31,7 @@ var dir = "down"
 var speed = 50
 var recoil = 0
 var hazard_tick = 0
+var wait_tick = 0
 var is_hurt = false
 var is_vulnerable = true
 var can_attack = false
@@ -40,6 +42,8 @@ var dropped = false
 var hazard_damage_instances = []
 var recurring_hazard_instances = []
 var merger
+
+var time_since_last_process = 0
 
 func _ready():
 	walk.visible = true
@@ -69,6 +73,8 @@ func _ready():
 	add_child(attack_timer)
 	
 	merger = get_parent()
+	
+	time_since_last_process = randi_range(0, int(PROCESS_INTERVAL * 100)) / 100.0
 
 func update_animations():
 	var old_position = position
@@ -100,11 +106,19 @@ func update_animations():
 		await _animated_enemy.animation_finished
 		is_hurt = false
 
-func _physics_process(delta):
-	if not is_hurt:
-		velocity = direction * speed
-		move_and_collide(velocity * delta)
-	update_animations()
+func _process(delta):
+	if not freeze:
+		return
+	else:
+		time_since_last_process += delta
+		if time_since_last_process >= PROCESS_INTERVAL:
+			time_since_last_process = 0
+			if not is_hurt:
+				velocity = direction * speed
+				move_and_slide()
+				
+			update_animations()
+			wait_tick = 0
 	
 func process_hazard_damage():
 	if hazard_damage_instances.size() > 0:
@@ -132,7 +146,6 @@ func process_hazard_damage():
 		
 	if player_in_range:
 		if is_vulnerable:
-				# take damage
 			if player.is_attacking:
 				set_health(player.damage)
 				is_vulnerable = false
@@ -146,9 +159,9 @@ func process_hazard_damage():
 			vuln_timer.start()
 	
 func set_health(d):
-	is_hurt = true
 	if d > 0:
 		damage_display.display(d)
+		is_hurt = true
 	if health - d > 0:
 		health -= d
 		hb._set_health(health)
@@ -164,10 +177,15 @@ func set_health(d):
 					var offset = Vector2(randi_range(-8, 8), randi_range(-8, 8))
 					soul_shard.global_position = global_position + offset
 					Enemy_Container.add_child(soul_shard)
-				dropped = true
-		merger.removal_service(self)
+					dropped = true
+		merger.removal_service_enemy(self)
 		
-		queue_free()
+		freeze = false
+		position = Vector2(-5000,-5000)
+		hazard_damage_instances = []
+		recurring_hazard_instances = []
+		scale = Vector2(1, 1)
+		process_mode = Node.PROCESS_MODE_DISABLED
 	
 # Get the base name without the appended number
 func get_base_name(string: String) -> String:
@@ -185,7 +203,6 @@ func _on_collider_area_entered(area):
 	if area.is_in_group("player"):
 		player_in_range = true
 		player.speed = 90
-		process_hazard_damage()
 	
 	if area.is_in_group("structures"):
 		var structure_name = get_base_name(area.get_parent().get_name())
@@ -196,7 +213,6 @@ func _on_collider_area_entered(area):
 		hazard_damage_instances.append(hazard_instance)
 		recurring_hazard_instances.append(hazard_instance)
 		taking_recoil = true
-		process_hazard_damage()
 	
 	if area.is_in_group("hazards"):
 		var hazard_name = get_base_name(area.get_parent().get_name())
@@ -205,7 +221,6 @@ func _on_collider_area_entered(area):
 			"hazard_tick": area.get_parent().aura
 		}
 		hazard_damage_instances.append(hazard_instance)
-		process_hazard_damage()
 
 func _on_collider_area_exited(area):
 	if area.is_in_group("player"):
@@ -217,10 +232,6 @@ func _on_collider_area_exited(area):
 		if recurring_hazard_instances.size() > 0:
 			recurring_hazard_instances.pop_front()
 
-func _on_tutorial_end_area_entered(area):
-	if area.is_in_group("player"):
-		player_tutorial_end = true
-
 func _on_attack_cooldown_timeout():
 	can_attack = true
 
@@ -229,3 +240,4 @@ func _on_vulnerability_timeout():
 
 func _on_Timer_timeout():
 	process_hazard_damage()
+

@@ -10,10 +10,11 @@
 [ext_resource type="FontFile" uid="uid://ck6f0v3yk0xf4" path="res://assets/m5x7.ttf" id="8_efxue"]
 [ext_resource type="Script" path="res://scenes/HealthDisplay.gd" id="9_r3olk"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_02hvs"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p7tq3"]
+size = Vector2(15, 16)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_rno57"]
-radius = 8.88889
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jdjow"]
+size = Vector2(12.2222, 12.2222)
 
 [sub_resource type="Animation" id="Animation_ddbbb"]
 length = 0.001
@@ -822,6 +823,7 @@ z_index = 2
 collision_mask = 36
 script = ExtResource("1_1bo3v")
 damage = 35
+regen = 0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 visibility_layer = 5
@@ -834,6 +836,7 @@ offset_right = 26.0
 offset_bottom = 20.0
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
+visible = false
 scale = Vector2(0.5, 0.5)
 energy = 0.15
 texture = ExtResource("2_i8306")
@@ -866,12 +869,12 @@ collision_mask = 88
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="player_area"]
 position = Vector2(0, -2)
-shape = SubResource("CircleShape2D_02hvs")
+shape = SubResource("RectangleShape2D_p7tq3")
 
 [node name="PlayerCollider" type="CollisionShape2D" parent="."]
 position = Vector2(0, -2)
 scale = Vector2(0.9, 0.9)
-shape = SubResource("CircleShape2D_rno57")
+shape = SubResource("RectangleShape2D_jdjow")
 debug_color = Color(0, 0.6, 0.701961, 0.419608)
 
 [node name="PlayerAnimations" type="AnimationPlayer" parent="."]
@@ -888,7 +891,7 @@ wait_time = 2.0
 autostart = true
 
 [node name="Sleeping" type="Timer" parent="."]
-wait_time = 4.0
+wait_time = 5.0
 one_shot = true
 autostart = true
 

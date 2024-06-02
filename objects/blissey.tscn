@@ -6,11 +6,11 @@
 [ext_resource type="FontFile" uid="uid://ck6f0v3yk0xf4" path="res://assets/m5x7.ttf" id="4_rqs7c"]
 [ext_resource type="Script" path="res://scenes/HealthDisplay.gd" id="5_3fj0c"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_hvhiv"]
-radius = 11.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xfunb"]
+size = Vector2(12.5, 12.5)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_gccxm"]
-radius = 12.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0dqhq"]
+size = Vector2(18, 18)
 
 [sub_resource type="Animation" id="Animation_uf7xw"]
 length = 0.001
@@ -102,18 +102,19 @@ radius = 0.01
 
 [node name="Blissey" type="StaticBody2D"]
 z_index = 2
-position = Vector2(12, 11)
+position = Vector2(0, 2)
 collision_layer = 32
 collision_mask = 41
 script = ExtResource("1_ucpru")
-structure_heal = 10
+heal = 15
+structure_heal = 15
 health = 100
 max_health = 100
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -8)
+position = Vector2(0, -2)
 rotation = 1.5708
-shape = SubResource("CircleShape2D_hvhiv")
+shape = SubResource("RectangleShape2D_xfunb")
 
 [node name="heal_pulse" type="Sprite2D" parent="."]
 z_index = 1
@@ -130,9 +131,9 @@ collision_layer = 32
 collision_mask = 24
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea"]
-position = Vector2(0, -8)
+position = Vector2(-2.09808e-05, -4)
 rotation = 1.5708
-shape = SubResource("CircleShape2D_gccxm")
+shape = SubResource("RectangleShape2D_0dqhq")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

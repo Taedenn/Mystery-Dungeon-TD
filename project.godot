@@ -13,6 +13,7 @@ config_version=5
 config/name="Roguelike_TowerDefense"
 run/main_scene="res://scenes/play_scene.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
+run/max_fps=1000
 
 [autoload]
 
@@ -26,7 +27,7 @@ gdscript/warnings/integer_division=0
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/mode=3
+window/size/mode=2
 window/size/initial_position_type=0
 window/size/initial_position=Vector2i(0, -25)
 window/stretch/mode="canvas_items"

@@ -17,21 +17,23 @@ var fadeTimer: Timer
 @onready var nf = $Nightfall
 @onready var sr = $Sunrise
 @onready var md = $Midday
+@onready var global_data = get_node("/root/global")
 
 func _ready():
-	fadeTimer = Timer.new()
-	fadeTimer.one_shot = true
-	fadeTimer.wait_time = 0.5
-	add_child(fadeTimer)
-	
-	fadeTimer.connect("timeout", _on_fade_timer_timeout)
-	fadeTimer.start()
+	if global_data.tutorial:
+		fadeTimer = Timer.new()
+		fadeTimer.one_shot = true
+		fadeTimer.wait_time = 0.5
+		add_child(fadeTimer)
+		
+		fadeTimer.connect("timeout", _on_fade_timer_timeout)
+		fadeTimer.start()
 
 func _on_fade_timer_timeout():
 	fadeIn = false
 
 func _process(delta:float) -> void:
-	if fadeIn:
+	if fadeIn and global_data.tutorial:
 		self.color = self.color.lerp(Color.BLACK, fadeTimer.time_left / fadeTimer.wait_time)
 		return
 		
